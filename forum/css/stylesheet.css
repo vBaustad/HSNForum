@@ -1,0 +1,408 @@
+/* GLOBALS */
+html{
+	font-family:sans-serif;
+}
+
+/* CHATBOX */
+.chatbox-container {
+	width: 64%;
+	height: 200px;
+}
+
+.chatbox-messages {
+	width: 99%;
+	height: 80%;
+	resize: none;
+}
+
+.chatbox-msg {
+	width: 79%;
+	height: 20%;
+	resize: none;
+}
+
+.chatbox-send {
+	width: 19%;
+	height: 23%;
+}
+
+/* TEXTAREA */
+.textarea {
+	width: 34%;
+}
+
+
+/* LOG INN / REGISTRER */
+#registrer-box {
+	position: absolute;
+	margin: auto;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	top: 0;
+	width: 400px;
+	height: 390px;
+	border-radius: 3px;
+	background: #c3c3c3;
+	z-index: 50;
+  	box-shadow: 0px 0px  10px #585858;
+  	-mox-box-shadow: 0px 0px  10px #585858;
+  	-webkit-box-shadow: 0px 0px  10px #585858;
+}
+
+.popup-header {
+	height: 45px;
+	width: 100%;
+	border-radius: 3px 3px 0px 0px;
+	background: #8c8c8c;
+	position: absolute;
+}
+
+.popup-header-text {
+	line-height: 45px;
+	font-size: 1.5em;
+	color: white;
+	display: inline;
+}
+
+.popup-header-icon {
+	content: url(https://cdn2.iconfinder.com/data/icons/oxygen/22x22/actions/list-add-user.png);
+	display: inline-block;
+	color: #fff;
+	height: 16px;
+	width: 16px;
+}
+
+.popup-container {
+	padding-top: 50px;
+	width: 95%;
+}
+
+.popup-registrer-form {
+
+}
+
+.double {
+	width: 40% !important;
+}
+
+.popup-input {
+	width: 91%;
+	display: block;
+	font-family: sans-serif;
+	font-family: 18px;
+	box-shadow: none;
+	border-radius: none;
+	padding: 10px;
+	border: solid 3px #b1b1b1;
+	transition: border 0.3s;
+}
+
+.popup-input:focus {
+	outline: none;
+	border: solid 3px #60bb80;
+}
+
+.popup-divider {
+	padding-top: 15px;
+}
+
+.popup-registrer-button {
+	color: white;
+	font-size: 1em;
+
+	width: 50%;
+	height: 40px;
+	display: inline-block;
+	font-size: 16px;
+	text-decoration: none;
+	text-align: center;
+	border: none;
+	border-radius: 0px 0px 0px 3px;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	background: #14b933;
+}
+
+.popup-registrer-button:hover {
+	background: #059620;
+	transition: background 0.2s;
+	cursor: pointer;
+}
+
+.popup-registrer-button-avbryt {
+	color: white;
+	font-size: 1em;
+	width: 50%;
+	height: 40px;
+	display: inline-block;
+	text-decoration: none;
+	text-align: center;
+	border: none;
+	border-radius: 0px 0px 3px 0px;
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	background: #c92024;
+}
+
+.popup-registrer-button-avbryt:hover {
+	background: #b7080c;
+	transition: background 0.2s;
+	cursor: pointer;
+}
+
+/* MAIN */
+.container{
+	padding-right:15px;
+	padding-left:15px;
+	margin-right:auto;
+	margin-left:auto
+}
+
+.page-header{
+    padding-bottom:9px;margin:40px 0 20px;border-bottom:1px solid #eee
+}
+
+.breadcrumb{
+	padding:8px 15px;
+	margin-bottom:20px;
+	list-style:none;
+	background-color:#f5f5f5;
+	border-radius:4px;
+}
+
+.breadcrumb>li{
+	display:inline-block;
+}
+
+.breadcrumb>li+li:before{
+	padding:0 5px;
+	color:#ccc;
+	content:"/\00a0";
+}
+
+.breadcrumb a {
+	text-decoration: none;
+	color: #aad;
+	font-size: .85em;
+}
+
+.breadcrumb a:hover {
+	text-decoration: underline;
+}
+
+.clearfix {
+	clear: both;
+}
+
+.seperator {
+	padding-top: 5px;
+}
+
+/* TEXT */
+.lead{
+	margin-bottom:20px;
+	font-size:16px;
+	font-weight:300;
+	line-height:1.4
+}
+
+@media (min-width:768px){
+	.lead{
+		font-size:21px;
+	}
+}
+
+.text-center{
+	text-align:center;
+}
+
+h1 {
+	margin: .67em 0;
+	font-size: 2em;
+}
+
+.h1,.h2,.h3,.h4,.h5,.h6,h1,h2,h3,h4,h5,h6{
+	font-family:inherit;
+	font-weight:500;
+	line-height:1.1;
+	color:inherit
+}
+
+.h1 .small,.h1 small,.h2 .small,.h2 small,.h3 .small,.h3 small,.h4 .small,.h4 small,.h5 .small,.h5 small,.h6 .small,.h6 small,h1 .small,h1 small,h2 .small,h2 small,h3 .small,h3 small,h4 .small,h4 small,h5 .small,h5 small,h6 .small,h6 small{
+	font-weight:400;
+	line-height:1;
+	color:#777;
+}
+
+.h1,.h2,.h3,h1,h2,h3{
+	margin-top:20px;
+	margin-bottom:10px;
+}
+
+.h1 .small,.h1 small,.h2 .small,.h2 small,.h3 .small,.h3 small,h1 .small,h1 small,h2 .small,h2 small,h3 .small,h3 small{
+	font-size:65%;
+}
+
+.h4,.h5,.h6,h4,h5,h6{
+	margin-top:10px;
+	margin-bottom:10px;
+}
+.h4 .small,.h4 small,.h5 .small,.h5 small,.h6 .small,.h6 small,h4 .small,h4 small,h5 .small,h5 small,h6 .small,h6 small{
+	font-size:75%;
+}
+
+/* FORUM */
+table {
+	background-color:transparent;
+	border-spacing: 0px;
+}
+
+th {
+	background: #bfbfbf;
+}
+
+th:nth-child(1) {
+	border-radius: 3px 0px 0px 0px;
+}
+th:nth-last-child(1) {
+	border-radius: 0px 3px 0px 0px;
+}
+
+th {
+	text-align:left
+}
+
+thead > tr > th > h3 {
+	color: #262626;
+}
+
+thead > tr > th {
+	color: #262626;
+	font-size: .85em;
+}
+
+tbody > tr > td > a {
+	text-decoration: none;
+	color: #4d4d4d;
+	font-size: .8em;
+}
+
+tbody > tr > td > a:hover {
+	text-decoration: underline;
+	color: #333333;
+}
+
+.table {
+	width:100%;
+	max-width:100%;
+	margin-bottom:20px
+}
+
+.table>tbody>tr>td,.table>tbody>tr>th,.table>tfoot>tr>td,.table>tfoot>tr>th,.table>thead>tr>td,.table>thead>tr>th {
+	padding: 8px;
+	line-height: 1.4;
+	vertical-align: top;
+	border-top: 1px solid #ddd
+}
+
+.table>thead>tr>th {
+	vertical-align: bottom;
+	border-bottom: 2px solid #ddd
+}
+
+.table>caption+thead>tr:first-child>td,.table>caption+thead>tr:first-child>th,.table>colgroup+thead>tr:first-child>td,.table>colgroup+thead>tr:first-child>th,.table>thead:first-child>tr:first-child>td,.table>thead:first-child>tr:first-child>th{
+    border-top:0
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) {
+	background-color:#f9f9f9
+}
+
+.table-striped > tbody > tr:nth-of-type(even) {
+	background-color:#ddd;
+}
+
+.table-striped>tbody>tr:hover {
+	background-color:#eee;
+}
+
+.forum .fa {
+	width: 1em;
+	text-align: center;
+}
+
+.forum.table th.cell-stat {
+	width: 6em;
+}
+
+.forum.table th.cell-stat-2x {
+	width: 14em;
+}
+
+/* MEDIA */
+@media (min-width: 768px){
+	.container {
+		width: 750px
+	}
+}
+
+@media (min-width: 992px){
+	.container {
+		width: 970px
+	}
+}
+
+@media (min-width: 1200px){
+	.container{
+		width: 1170px
+	}
+}
+
+/* ---- */
+@media (max-width: 767px) {
+	.hidden-xs {
+		display: none !important;
+	}
+}
+
+@media (max-width: 400px) {
+	#registrer-box {
+		width: 90% !important;
+		height: 360px;
+	}
+	.double {
+		margin-right: 5px !important;
+	}
+
+	.popup-divider {
+		padding-top: 10px;
+	}
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+	.hidden-sm {
+		display: none !important
+	}
+}
+
+/* POSITIONING ELEMENTS */
+.center {
+	margin-right: auto;
+	margin-left: auto;
+	text-align: center;
+}
+
+.input-pull-left {
+	float: left;
+	margin-right: 15px;
+}
+
+.pull-right {
+	float: right !important;
+}
+.pull-left {
+	float: left !important;
+}
