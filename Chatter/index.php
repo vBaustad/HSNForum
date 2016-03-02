@@ -18,7 +18,7 @@ $user = $_GET['u'];
 		<div class='chatMessages'> </div>
 		<div class='chatBottom'>
 			<form action='#' onSubmit='return false;' id='chatForm'>
-				<input type='hidden' id='name' value='<?php echo $user; ?>'/>
+				<input type='hidden' name='name' id='name' value='<?php echo $user; ?>'/>
 				<input type='text' name='text' id='text' value='' placeholder='type your chat message' />
 				<input type='submit' name='submit' value='Post' />
 			</form>
