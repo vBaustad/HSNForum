@@ -1,4 +1,3 @@
-
 <?php
 // Get username
 $user = $_GET['u'];
@@ -9,6 +8,7 @@ $user = $_GET['u'];
 	<link rel='stylesheet' type='text/css' href='css/style.css' />
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800' rel='stylesheet' type='text/css'>
 	<script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+	<script src="chat.js"></script>
 </head>
 <body>
 	<div class='chatContainer'>
