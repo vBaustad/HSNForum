@@ -34,7 +34,7 @@ html{
 
 /* LOG INN / REGISTRER */
 #registrer-box {
-	position: absolute;
+	position: fixed;
 	margin: auto;
 	left: 0;
 	right: 0;
@@ -43,7 +43,7 @@ html{
 	width: 400px;
 	height: 390px;
 	border-radius: 3px;
-	background: #c3c3c3;
+	background: white;
 	z-index: 50;
   	box-shadow: 0px 0px  10px #585858;
   	-mox-box-shadow: 0px 0px  10px #585858;
@@ -361,30 +361,38 @@ tbody > tr > td > a:hover {
 	}
 }
 
-/* ---- */
+/* Veldig små enheter */
 @media (max-width: 767px) {
 	.hidden-xs {
 		display: none !important;
+	}
+	.chatbox-container {
+		width: 100% !important;
 	}
 }
 
 @media (max-width: 400px) {
 	#registrer-box {
 		width: 90% !important;
-		height: 360px;
+		height: 360px !important;
 	}
+
 	.double {
 		margin-right: 5px !important;
 	}
 
 	.popup-divider {
-		padding-top: 10px;
+		padding-top: 10px !important;
 	}
 }
 
 @media (min-width: 768px) and (max-width: 991px) {
 	.hidden-sm {
-		display: none !important
+		display: none !important;
+	}
+
+	.chatbox-container {
+		width: 100% !important;
 	}
 }
 

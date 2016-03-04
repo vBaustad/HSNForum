@@ -2,78 +2,65 @@
 require_once 'db_connect.php';
 
 //send the welcome letter
-function send_email($info){
-    //setup the mailer
-    $transport = Swift_SmtpTransport::newInstance('smtp.gmail.com', 465, 'ssl')
-        ->setUsername("jogex123@gmail.com")
-        ->setpassword("Spionspmia6258");
-
-    // Creating the instance
-    $swift = \Swift_Mailer::newInstance($transport);
-
-    // Creating content
+function send_email($info) {
+    // Henter infor fra array
     $bruker = $info['brukernavn'];
     $fornavn = $info['fornavn'];
     $epost = $info['epost'];
     $nokkel = $info['nokkel'];
-    $root = 'http://home/120400/public_html/html/2016/eksamen/forum_v2/';
+    $root = 'localhost/forum/';
 
     // Creating the message
-    $message = \Swift_Message::newInstance("Velkommen til HSN forum!")
-        ->setFrom(["post@test.no" => "Admin"])
-        ->SetTO(["jogex123@gmail.com" => "Jørgen"])
-        ->setBody(
-'<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">' .
-'<html xmlns="http://www.w3.org/1999/xhtml">' .
-'<head>' .
-'<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />' .
-'<title>Bekreft bruker</title>' .
-'<style>' .
-'p { font-family: Geneva, sans-serif; color: #666666 }' .
-'h1 { font-family: Geneva, sans-serif; font-size: 2em; text-align: center;}' .
-'h2 { font-size: 3em;  }' .
-'h2 a { text-decoration: none; color: gray }' .
-'h2 a:hover { color: black }' .
-'</style>' .
-'</head>' .
+    $melding = '<!DOCTYPE html PUBLIC>';
+    $melding .= '<html xmlns="http://www.w3.org/1999/xhtml">';
+    $melding .= '<head>';
+    $melding .= '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />';
+    $melding .= '<title>Bekreft bruker</title>';
+    $melding .= '<style>';
+    $melding .= '  p { font-family: Geneva, sans-serif; color: #666666 }';
+    $melding .= '  h1 { font-family: Geneva, sans-serif; font-size: 2em; text-align: center;}';
+    $melding .= '  h2 { font-size: 3em;  }';
+    $melding .= '  h2 a { text-decoration: none; color: gray }';
+    $melding .= '  h2 a:hover { color: black }';
+    $melding .= '</style>';
+    $melding .= '</head>';
+    $melding .= '<body style="width: 605px; margin-right: auto; margin-left: auto;">';
+    $melding .= '    <table cellpadding="0" cellspacing="0">';
+    $melding .= '        <tr>';
+    $melding .= '            <td width="605px" height="245px" valign="top">';
+    $melding .= '                <center>';
+    $melding .= '                <table width="560px" align="center">';
+    $melding .= '                    <tr>';
+    $melding .= '                        <td>';
+    $melding .= '                            <h1>Velkommen, ' . $fornavn . '!</h1>';
+    $melding .= '                            <p>Takk for at du registrerte deg</p>';
+    $melding .= '                            <p>Venligst bekreft eposten din ved å trykke på lenken under</p>';
+    $melding .= '                            <center>';
+    $melding .= '                                <h2>';
+    $melding .= '                                    <a href="' . $root . 'bekreft.php?email=' . $epost . '&nokkel=' . $nokkel . '">BEKREFT BRUKER</a>';
+    $melding .= '                                </h2>';
+    $melding .= '                            </center>';
+    $melding .= '                        </td>';
+    $melding .= '                    </tr>';
+    $melding .= '                </table>';
+    $melding .= '                </center>';
+    $melding .= '            </td>';
+    $melding .= '        </tr>';
+    $melding .= '    </table>';
+    $melding .= '    <footer>';
+    $melding .= '        <p style="clear: both;">Du har mottatt denne eposten fordi du registrerte deg på HSN forum. Hvis du mener du ikke skulle ha mottatt denne eposten, <a href="mailto:jorgen@solli.graphics">kontakt jorgen@solli.graphics</a></p>';
+    $melding .= '    </footer>';
+    $melding .= '</body>';
+    $melding .= '</html>';
+    $melding .= '</html>';
 
-'<body style="width: 605px; margin-right: auto; margin-left: auto;">' .
-    '<table cellpadding="0" cellspacing="0">' .
-        '<tr>' .
-            '<td width="605px" height="245px" valign="top">' .
-                '<center>' .
-                '<table width="560px" align="center">' .
-                    '<tr>' .
-                        '<td>' .
-                            '<h1>Velkommen, ' . $fornavn . '!</h1>' .
-                            '<p>Takk for at du registrerte deg</p>' .
-                            '<p>Venligst bekreft eposten din ved å trykke på lenken under</p>' .
-                            '<center>' .
-                                '<h2>' .
-                                    '<a href="' . $root . 'bekreft.php?email=' . $epost . '&nokkel=' . $nokkel . '">BEKREFT BRUKER</a>' .
-                                '</h2>' .
-                            '</center>' .
-                        '</td>' .
-                    '</tr>' .
-                '</table>' .
-                '</center>' .
-            '</td>' .
-        '</tr>' .
-    '</table>' .
-    '<footer>' .
-        '<p style="clear: both;">Du har mottatt denne eposten fordi du registrerte deg på HSN forum. Hvis du mener du ikke skulle ha mottatt denne eposten, <a href="mailto:jorgen@solli.graphics">kontakt jorgen@solli.graphics</a></p>' .
-    '</footer>' .
-'</body>' .
-'</html>',
+    $headers = "MIME-Version: 1.0" . "\r\n";
+    $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+    $headers .= 'From: <post@hsn.no>' . "\r\n";
 
-'text/html' // Mark the content-type as HTML
-);
+    mail($epost, "Velkommen til HSN forum, " . $fornavn . "!", $melding, $headers);
 
-    // Send mail
-    $swift->send($message);
-    
-    // Grab the result      
-    $result = $swift->send($message);
+    $result = "Mail sendt!";
     return $result;
 }
 
@@ -102,7 +89,6 @@ function show_errors($action){
         }
          
         $error .= "</ul>"."\n";
-         
     }
  
     return $error;

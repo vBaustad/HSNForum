@@ -6,11 +6,12 @@
 	</div>
 </div>
 
-<div class="textarea pull-right">
+<div class="textarea pull-right hidden-xs hidden-sm">
 	<h1>TESTING</h1>
 	<p>Mer test her om test og anndre ikke test reaterte tester </p>
 </div>
 <div class="clearfix seperator"></div>
+
 <?php
 	require_once '/php/functions.php';
 	require_once '/php/db_connect.php';
