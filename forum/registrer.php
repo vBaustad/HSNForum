@@ -29,7 +29,6 @@ if(isset($_POST['registrer-btn'])) {
             VALUES(NULL, '$brukernavn', '$passordhash', '$epost', '$dato', '$level', '$aktiv', '$fornavn', '$etternavn')");
     
     if($leggtil_bruker) {
-      echo "We added shit  ";
       // Henter den nye IDen som nettopp ble laget i databasen
       // Skal bruke mysqli!!
       $bruker_id = mysql_insert_id();
@@ -52,27 +51,22 @@ if(isset($_POST['registrer-btn'])) {
       
         //Prøver å sende eposten
         if(send_email($info)){
-          echo "mail sendt!  ";
-
           //email sent
           $action['result'] = 'success';
           array_push($text,'Thanks for signing up. Please check your email for confirmation!');
         
         }else{
-          echo "Mail failed";
           $action['result'] = 'error';
           array_push($text,'Could not send confirm email');
         
         }
       
       } else {
-        echo "Bekreft kunne ikke legge til i database";
         $action['result'] = 'error';
         array_push($text,'Confirm row was not added to the database. Reason: ' . mysql_error());
       }
 
     } else {
-      echo "Bruker kunne ikke legge til bruker i database";
       $action['result'] = 'error';
       array_push($text,'User could not be added to the database. Reason: ' . mysql_error());
     
