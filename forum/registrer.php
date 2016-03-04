@@ -31,6 +31,7 @@ if(isset($_POST['registrer-btn'])) {
     if($leggtil_bruker) {
       echo "We added shit  ";
       // Henter den nye IDen som nettopp ble laget i databasen
+      // Skal bruke mysqli!!
       $bruker_id = mysql_insert_id();
       
       // Genererer en random nøkkel
