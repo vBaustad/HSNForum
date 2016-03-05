@@ -1,5 +1,11 @@
 <?php
 	// db_connect.php
-	$conn = mysql_connect('localhost', 'root', '') or die("Kunne ikke koble til databassen!");
-	mysql_select_db('forum') or die("Kunne ikke finne databasen. Pass på du har skrevet riktig!!");
+	$conn = mysqli_connect("localhost","root","","forum");
+
+	// Check connection
+	if (mysqli_connect_errno()) {
+  		echo "Failed to connect to MySQL: " . mysqli_connect_error();
+  	}
+
+
 ?>
