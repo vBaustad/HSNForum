@@ -9,40 +9,41 @@ $text = array();
 
 if(isset($_POST['registrer-btn'])) {
   // Forhindrer SQL injection med escape string
-  // NB! Prepared statements er en bedre løsning enn mysqli_real_escape_string
-  $brukernavn = mysql_real_escape_string($_POST["brukernavn_reg"]);
-  $fornavn = mysql_real_escape_string($_POST["fornavn_reg"]);
-  $etternavn = mysql_real_escape_string($_POST["etternavn_reg"]);
-  $passord = mysql_real_escape_string($_POST["pass_reg"]);
-  $epost = mysql_real_escape_string($_POST["epost_reg"]);
+  $brukernavn = mysqli_real_escape_string($conn, $_POST["brukernavn_reg"]);
+  $fornavn = mysqli_real_escape_string($conn, $_POST["fornavn_reg"]);
+  $etternavn = mysqli_real_escape_string($conn, $_POST["etternavn_reg"]);
+  $passord = mysqli_real_escape_string($conn, $_POST["pass_reg"]);
+  $epost = mysqli_real_escape_string($conn, $_POST["epost_reg"]);
   $dato = date("Y-m-d G:i:s");
   $level = 1;
   $aktiv = 0;
   
   if($action['result'] != 'error') {
+    // Genererer passord
     $salt1 = 'dkn?';
     $salt2 = '$l3*!';
     $passordhash = hash('ripemd160', "$salt1$passord$salt2");
       
+    // Setter riktig charset for
+    $conn->set_charset("utf8");
     // Legg til bruker i databasen
-    $leggtil_bruker = mysql_query("INSERT INTO bruker (bruker_id, bruker_navn, bruker_pass, bruker_mail, bruker_dato, bruker_level, bruker_aktiv, bruker_fornavn, bruker_etternavn)
-            VALUES(NULL, '$brukernavn', '$passordhash', '$epost', '$dato', '$level', '$aktiv', '$fornavn', '$etternavn')");
+    $leggtil_bruker = mysqli_query($conn, "INSERT INTO 'bruker' (bruker_id, bruker_navn, bruker_pass, bruker_mail, bruker_dato, bruker_level, bruker_aktiv, bruker_fornavn, bruker_etternavn)
+          VALUES(NULL, '$brukernavn', '$passordhash', '$epost', '$dato', '$level', '$aktiv', '$fornavn', '$etternavn')");
     
     if($leggtil_bruker) {
       // Henter den nye IDen som nettopp ble laget i databasen
-      // Skal bruke mysqli!!
-      $bruker_id = mysql_insert_id();
+      $bruker_id = mysqli_insert_id($conn);
       
       // Genererer en random nøkkel
       $nokkel = $brukernavn . $epost . date('mYG');
       $nokkel = md5($nokkel);
       
       // Legger brukeren til i "bekreft" tabellen
-      $bekreft = mysql_query("INSERT INTO bekreft (nokkel, bruker_mail, bruker_id)
+      $bekreft = mysqli_query($conn, "INSERT INTO 'bekreft' (nokkel, bruker_mail, bruker_id)
                               VALUES('$nokkel','$epost', '$bruker_id')");
       
       if($bekreft) {
-        //Sender informasjon til funksjonen
+        //Sender informasjon til send_mail
         $info = array(
           'brukernavn' => $brukernavn,
           'epost' => $epost,
@@ -50,15 +51,13 @@ if(isset($_POST['registrer-btn'])) {
           'fornavn' => $fornavn);
       
         //Prøver å sende eposten
-        if(send_email($info)){
-          //email sent
+        if(send_email($info)) {
           $action['result'] = 'success';
           array_push($text,'Thanks for signing up. Please check your email for confirmation!');
         
-        }else{
+        } else {
           $action['result'] = 'error';
           array_push($text,'Could not send confirm email');
-        
         }
       
       } else {
@@ -74,7 +73,6 @@ if(isset($_POST['registrer-btn'])) {
   }
   $action['text'] = $text;
 }
-
 ?>
 
 <script type="text/javascript">

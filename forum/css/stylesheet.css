@@ -12,7 +12,11 @@ html{
 .chatbox-messages {
 	width: 99%;
 	height: 80%;
-	resize: none;
+	background: gray;
+}
+
+.chatbox-bottom {
+	width: 100%;
 }
 
 .chatbox-msg {
@@ -21,9 +25,28 @@ html{
 	resize: none;
 }
 
-.chatbox-send {
-	width: 19%;
-	height: 23%;
+.chat-box-username {
+	float: left;
+	padding-right: 5px;
+}
+
+.chatbox-bottom input {
+	-ms-box-sizing:content-box;
+	-moz-box-sizing:content-box;
+	-webkit-box-sizing:content-box; 
+	box-sizing:content-box;
+}
+
+#chatbox-msg {
+}
+
+#chatbox-msg:focus {
+	border: 2px solid green;
+	transition: border 0.3s;
+}
+
+#chatbox-send {
+	
 }
 
 /* TEXTAREA */
