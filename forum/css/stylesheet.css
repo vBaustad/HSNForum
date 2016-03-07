@@ -1,5 +1,5 @@
 /* GLOBALS */
-html{
+html {
 	font-family:sans-serif;
 }
 
@@ -31,13 +31,14 @@ html{
 }
 
 .chatbox-bottom input {
-	-ms-box-sizing:content-box;
-	-moz-box-sizing:content-box;
-	-webkit-box-sizing:content-box; 
-	box-sizing:content-box;
+	-ms-box-sizing: content-box;
+	-moz-box-sizing: content-box;
+	-webkit-box-sizing: content-box; 
+	box-sizing: content-box;
 }
 
 #chatbox-msg {
+
 }
 
 #chatbox-msg:focus {
@@ -56,7 +57,7 @@ html{
 
 
 /* LOG INN / REGISTRER */
-#registrer-box {
+.registrer-box-success, .registrer-box-mail-sendt, .registrer-box-loading, #registrer-box {
 	position: fixed;
 	margin: auto;
 	left: 0;
@@ -66,38 +67,93 @@ html{
 	width: 400px;
 	height: 390px;
 	border-radius: 3px;
-	background: white;
-	z-index: 50;
-  	box-shadow: 0px 0px  10px #585858;
-  	-mox-box-shadow: 0px 0px  10px #585858;
-  	-webkit-box-shadow: 0px 0px  10px #585858;
+	box-shadow: 0px 0px  5px #11a5ae;
+  	-mox-box-shadow: 0px 0px  5px #11a5ae;
+  	-webkit-box-shadow: 0px 0px  5px #11a5ae;
+  	background: white;
+}
+
+.registrer-box-success {
+	height: 250px !important;
+}
+
+.registrer-box-mail-sendt {
+	z-index: 51 !important;
+	height: 240px !important;
+}
+
+.registrer-box-loading {
+	z-index: 51 !important;
+	background: rgba(236, 240, 241,0.5) !important;
+}
+
+.opptatt {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	position: absolute;
+	right: 0;
+	left: 0;
+	top: 50%;
+	transform: translateY(-50%);
+	opacity: 1;
+}
+
+#registrer-box {
+	z-index: 50 !important;
 }
 
 .popup-header {
+	text-align: center;
+	margin: 0;
+	top: 50%;
 	height: 45px;
+	line-height: 50px;
 	width: 100%;
 	border-radius: 3px 3px 0px 0px;
-	background: #8c8c8c;
-	position: absolute;
+	background: #11a5ae;
 }
 
 .popup-header-text {
-	line-height: 45px;
+	font-family: 'Segoe UI', Arial, sans-serif;
 	font-size: 1.5em;
+	line-height: 35px;
+	text-align: horizontal;
 	color: white;
 	display: inline;
 }
 
-.popup-header-icon {
-	content: url(https://cdn2.iconfinder.com/data/icons/oxygen/22x22/actions/list-add-user.png);
+.icon-mail::before {
+	content: url(http://localhost/forum/img/icons/icon_mail_alt.png);
+	vertical-align: middle;
+}
+
+.icon-user::before {
+	content: url(http://localhost/forum/img/icons/icon_id.png);
 	display: inline-block;
-	color: #fff;
-	height: 16px;
-	width: 16px;
+	vertical-align: middle;
+}
+
+.icon-success::before {
+	content: url(http://localhost/forum/img/icons/icon_check_alt2.png);
+	vertical-align: middle;
+	display: inline-block;
+}
+
+.icon-error {
+	content: url(http://localhost/forum/img/icons/icon_error-oct_alt.png);
+	vertical-align: middle;
+	margin-top: 10px;
+}
+
+.icon-time {
+	content: url(http://localhost/forum/img/icons/icon_clock_alt.png);
+	width: 12px;
+	height: 12px;
+	display: inline-block;
 }
 
 .popup-container {
-	padding-top: 50px;
 	width: 95%;
 }
 
@@ -110,7 +166,7 @@ html{
 }
 
 .popup-input {
-	width: 91%;
+	width: 93%;
 	display: block;
 	font-family: sans-serif;
 	font-family: 18px;
@@ -133,7 +189,6 @@ html{
 .popup-registrer-button {
 	color: white;
 	font-size: 1em;
-
 	width: 50%;
 	height: 40px;
 	display: inline-block;
@@ -154,7 +209,7 @@ html{
 	cursor: pointer;
 }
 
-.popup-registrer-button-avbryt {
+.popup-registrer-button-avbryt, .popup-registrer-button-lukk {
 	color: white;
 	font-size: 1em;
 	width: 50%;
@@ -174,6 +229,14 @@ html{
 	background: #b7080c;
 	transition: background 0.2s;
 	cursor: pointer;
+}
+
+.popup-registrer-button-lukk {
+	width: 100% !important;
+}
+
+.popup-registrer-button-lukk:hover {
+	
 }
 
 /* MAIN */
@@ -395,9 +458,16 @@ tbody > tr > td > a:hover {
 }
 
 @media (max-width: 400px) {
-	#registrer-box {
+	#registrer-box, .registrer-box-mail-sendt, .registrer-box-success{
 		width: 90% !important;
+	}
+
+	#registrer-box {
 		height: 360px !important;
+	}
+
+	.registrer-box-mail-sendt {
+		height: 280px !important;
 	}
 
 	.double {
