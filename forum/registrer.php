@@ -2,12 +2,22 @@
 require_once '/php/functions.php';
 require_once '/php/db_connect.php';
 
+// Fjerner alle elementer som ikke skal vises med en gang
+echo <<<_END
+  <script type='text/javascript'>
+    $(document).ready(function() {
+      $('.registrer-box-mail-sendt').hide();
+    });
+  </script>
+_END;
+
 //setup some variables/arrays
 $action = array();
 $action['result'] = null;
 $text = array();
 
 if(isset($_POST['registrer-btn'])) {
+
   // Forhindrer SQL injection med escape string
   $brukernavn = mysqli_real_escape_string($conn, $_POST["brukernavn_reg"]);
   $fornavn = mysqli_real_escape_string($conn, $_POST["fornavn_reg"]);
@@ -27,7 +37,7 @@ if(isset($_POST['registrer-btn'])) {
     // Setter riktig charset for
     $conn->set_charset("utf8");
     // Legg til bruker i databasen
-    $leggtil_bruker = mysqli_query($conn, "INSERT INTO 'bruker' (bruker_id, bruker_navn, bruker_pass, bruker_mail, bruker_dato, bruker_level, bruker_aktiv, bruker_fornavn, bruker_etternavn)
+    $leggtil_bruker = mysqli_query($conn, "INSERT INTO bruker (bruker_id, bruker_navn, bruker_pass, bruker_mail, bruker_dato, bruker_level, bruker_aktiv, bruker_fornavn, bruker_etternavn)
           VALUES(NULL, '$brukernavn', '$passordhash', '$epost', '$dato', '$level', '$aktiv', '$fornavn', '$etternavn')");
     
     if($leggtil_bruker) {
@@ -39,7 +49,7 @@ if(isset($_POST['registrer-btn'])) {
       $nokkel = md5($nokkel);
       
       // Legger brukeren til i "bekreft" tabellen
-      $bekreft = mysqli_query($conn, "INSERT INTO 'bekreft' (nokkel, bruker_mail, bruker_id)
+      $bekreft = mysqli_query($conn, "INSERT INTO bekreft (nokkel, bruker_mail, bruker_id)
                               VALUES('$nokkel','$epost', '$bruker_id')");
       
       if($bekreft) {
@@ -52,8 +62,13 @@ if(isset($_POST['registrer-btn'])) {
       
         //Prøver å sende eposten
         if(send_email($info)) {
-          $action['result'] = 'success';
-          array_push($text,'Thanks for signing up. Please check your email for confirmation!');
+          echo <<<_END
+              <script type='text/javascript'>
+                $(document).ready(function() {
+                  $('.registrer-box-mail-sendt').show();
+                });
+              </script>
+_END;
         
         } else {
           $action['result'] = 'error';
@@ -75,30 +90,31 @@ if(isset($_POST['registrer-btn'])) {
 }
 ?>
 
-<script type="text/javascript">
-  $(document).ready(function() {
-    $("#registrer-box").hide();
-    $("#registrer").click(function() {
-      $("#registrer-box").show();
-    });
 
-    $(".popup-registrer-button-avbryt").click(function() {
-      $("#registrer-box").hide();
-    });
 
-    $(document).mouseup(function (i) {
-      var box = $("#registrer-box");
-      if (!box.is(i.target) && box.has(i.target).length === 0) {
-        box.hide();
-      }
-    });
-  });
-</script>
+<!-- Mail sendt -->
+<div class="registrer-box-mail-sendt">
+  <div class="popup-header center">
+    <h2 class="popup-header-text icon-mail"> Mail sendt!</h2>
+  </div>
+
+  <div class="popup-container center">
+    <h1>Takk for din registrering!</h1>
+    <p>Fullfør registreringen ved å sjekke eposten din.</p>
+    <p>Du kan nå trykt lukke dette vinduet.</p>
+    <button form="registrer" name="button-avbryt" type="submit" class="popup-registrer-button-lukk pull-right"><span class=""></span> Lukk</button>
+  </div>
+</div>
+
+<!-- Laster... (sender mail) -->
+<div class="registrer-box-loading">
+  <img class="opptatt" src="img/opptatt.gif">
+</div>
 
 <!-- REGISTER BOX -->
 <div id="registrer-box">
   <div class="popup-header center">
-    <h2 class="popup-header-text"><span class="popup-header-icon"></span> Registrer deg!</h2>
+    <h2 class="popup-header-text icon-user"> Registrer deg!</h2>
   </div>
 
   <div class="popup-container center">
@@ -109,7 +125,7 @@ if(isset($_POST['registrer-btn'])) {
 
       <div class="popup-divider" >
         <input name="fornavn_reg" type="text" class="popup-input double input-pull-left" placeholder="Fornavn">
-        <input name="etternavn_reg" type="text" class="popup-input double" placeholder="Etternavn">
+        <input name="etternavn_reg" type="text" class="popup-input double pull-right" placeholder="Etternavn">
       </div>
 
       <div class="popup-divider" style="clear: both;">
@@ -123,9 +139,7 @@ if(isset($_POST['registrer-btn'])) {
       <div class="popup-divider">
         <input name="pass_two_reg" type="password" class="popup-input" placeholder="Gjenta passord">
       </div>
-      <input type="submit" value="Kjør på!" name="registrer-btn" class="popup-registrer-button pull-left"><span class=""></span>
-    </form>
-    <button form="registrer" name="button-avbryt" type="submit" class="popup-registrer-button-avbryt pull-right"><span class=""></span> Avbryt...</button>
+      <input type="submit" value="Fullfør" name="registrer-btn" class="popup-registrer-button pull-left">
+      <input form="registrer" value="Abvryt"name="button-avbryt" type="submit" class="popup-registrer-button-avbryt pull-right">
   </div>
-
 </div>
