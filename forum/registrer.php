@@ -2,15 +2,6 @@
 require_once '/php/functions.php';
 require_once '/php/db_connect.php';
 
-// Fjerner alle elementer som ikke skal vises med en gang
-echo <<<_END
-  <script type='text/javascript'>
-    $(document).ready(function() {
-      $('.registrer-box-mail-sendt').hide();
-    });
-  </script>
-_END;
-
 //setup some variables/arrays
 $action = array();
 $action['result'] = null;
@@ -71,19 +62,15 @@ if(isset($_POST['registrer-btn'])) {
 _END;
         
         } else {
-          $action['result'] = 'error';
-          array_push($text,'Could not send confirm email');
+          echo "Mail ikke sendt!";
         }
       
       } else {
-        $action['result'] = 'error';
-        array_push($text,'Confirm row was not added to the database. Reason: ' . mysql_error());
+
       }
 
     } else {
-      $action['result'] = 'error';
-      array_push($text,'User could not be added to the database. Reason: ' . mysql_error());
-    
+
     }
   }
   $action['text'] = $text;
@@ -92,54 +79,3 @@ _END;
 
 
 
-<!-- Mail sendt -->
-<div class="registrer-box-mail-sendt">
-  <div class="popup-header center">
-    <h2 class="popup-header-text icon-mail"> Mail sendt!</h2>
-  </div>
-
-  <div class="popup-container center">
-    <h1>Takk for din registrering!</h1>
-    <p>Fullfør registreringen ved å sjekke eposten din.</p>
-    <p>Du kan nå trykt lukke dette vinduet.</p>
-    <button form="registrer" name="button-avbryt" type="submit" class="popup-registrer-button-lukk pull-right"><span class=""></span> Lukk</button>
-  </div>
-</div>
-
-<!-- Laster... (sender mail) -->
-<div class="registrer-box-loading">
-  <img class="opptatt" src="img/opptatt.gif">
-</div>
-
-<!-- REGISTER BOX -->
-<div id="registrer-box">
-  <div class="popup-header center">
-    <h2 class="popup-header-text icon-user"> Registrer deg!</h2>
-  </div>
-
-  <div class="popup-container center">
-    <form name="registrer" class="popup-registrer-form" method="post" action="">
-      <div class="popup-divider">
-        <input name="brukernavn_reg" type="text" class="popup-input valid" placeholder="Brukernavn"><span></span>
-      </div>
-
-      <div class="popup-divider" >
-        <input name="fornavn_reg" type="text" class="popup-input double input-pull-left" placeholder="Fornavn">
-        <input name="etternavn_reg" type="text" class="popup-input double pull-right" placeholder="Etternavn">
-      </div>
-
-      <div class="popup-divider" style="clear: both;">
-        <input name="epost_reg" type="text" class="popup-input" placeholder="Epost-adresse">
-      </div>
-
-      <div class="popup-divider">
-        <input name="pass_reg" type="password" class="popup-input" placeholder="Passord">
-      </div>
-
-      <div class="popup-divider">
-        <input name="pass_two_reg" type="password" class="popup-input" placeholder="Gjenta passord">
-      </div>
-      <input type="submit" value="Fullfør" name="registrer-btn" class="popup-registrer-button pull-left">
-      <input form="registrer" value="Abvryt"name="button-avbryt" type="submit" class="popup-registrer-button-avbryt pull-right">
-  </div>
-</div>

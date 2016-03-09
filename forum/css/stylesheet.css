@@ -58,6 +58,8 @@ html {
 
 /* LOG INN / REGISTRER */
 .registrer-box-success, .registrer-box-mail-sendt, .registrer-box-loading, #registrer-box {
+	display: none;
+
 	position: fixed;
 	margin: auto;
 	left: 0;
@@ -209,7 +211,7 @@ html {
 	cursor: pointer;
 }
 
-.popup-registrer-button-avbryt, .popup-registrer-button-lukk {
+#registrer-avbryt, .popup-registrer-button-lukk {
 	color: white;
 	font-size: 1em;
 	width: 50%;
@@ -225,7 +227,7 @@ html {
 	background: #c92024;
 }
 
-.popup-registrer-button-avbryt:hover {
+#registrer-avbryt:hover {
 	background: #b7080c;
 	transition: background 0.2s;
 	cursor: pointer;
@@ -237,6 +239,10 @@ html {
 
 .popup-registrer-button-lukk:hover {
 	
+}
+
+#bnavnErr, #navnErr, #epostErr {
+	display: none;
 }
 
 /* MAIN */
