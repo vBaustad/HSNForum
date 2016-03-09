@@ -58,7 +58,6 @@ function send_email($info) {
     $headers .= 'From: <post@hsn.no>' . "\r\n";
 
     mail($epost, "Velkommen til HSN forum, " . $fornavn . "!", $melding, $headers);
-
     $result = "Mail sendt!";
     return $result;
 }

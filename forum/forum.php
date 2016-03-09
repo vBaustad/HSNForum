@@ -40,11 +40,10 @@
 		$("#registrer-box").hide();
 		$("#registrer").click(function() {
 			$("#registrer-box").show();
-			$(".popup-registrer-button").css("cursor", "not-allowed"); // TEMPORARY TEST
 		});
 
 		// Lukk registrer-box med knapp
-		$(".popup-registrer-button-avbryt").click(function() {
+		$("#registrer-avbryt").click(function() {
 			$("#registrer-box").hide();
 		});
 	});

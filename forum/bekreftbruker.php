@@ -4,19 +4,6 @@ require_once 'php/functions.php';
 require_once 'forum.php';
 require_once 'header.php';
 
-// Skjul alle elementer vi ikke trenger
-echo <<<_END
-<script type='text/javascript'>
-$(document).ready(function() {
-	$('.registrer-box-success').hide();
-	$('.registrer-box-fail').hide();
-	$('.registrer-box-mail-sendt').hide();
-	$('.registrer-box-loading').hide();
-	$('#registrer-box').hide();
-});
-</script>
-_END;
-
 //setup some variables
 $action = array();
 $action['result'] = null;
@@ -65,7 +52,7 @@ _END;
         	echo <<<_END
 			<script type='text/javascript'>
 			  $(document).ready(function() {
-			    $('.registrer-box-fail').hide();
+			    $('.registrer-box-fail').show();
 			  });
 			</script>
 _END;
@@ -76,23 +63,6 @@ _END;
     // Nokkelen og/eller eposten stemmer ikke 
 	else{
 		echo "INGEN INFO!";
-		$action['result'] = 'error';
-		$action['text'] = 'The key and email is not in our database.';
 	}
 } 
-else {
-}
 ?>
-<!-- Bruker laget -->
-<div class="registrer-box-success">
-  <div class="popup-header">
-    <h2 class="popup-header-text icon-success"> Registrering fullført!</h2>
-  </div>
-
-  <div class="popup-container center">
-    <h1>Bruker aktivert</h1>
-    <p>Velkommen til HSN forum!</p>
-    <p>Du kan nå logge deg inn.</p>
-    <button form="registrer" name="button-avbryt" type="submit" class="popup-registrer-button-lukk pull-right"><span class=""></span> Lukk</button>
-  </div>
-</div>
