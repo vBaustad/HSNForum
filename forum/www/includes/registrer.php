@@ -1,6 +1,6 @@
 <?php
-require_once '/php/functions.php';
-require_once '/php/db_connect.php';
+require_once 'functions.php';
+require_once 'db_connect.php';
 
 //setup some variables/arrays
 $action = array();
