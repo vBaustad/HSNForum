@@ -1,7 +1,7 @@
 <?php // bekreftbruker.php
-require_once 'php/db_connect.php';
-require_once 'php/functions.php';
-require_once 'forum.php';
+require_once 'db_connect.php';
+require_once 'functions.php';
+require_once '../index.php';
 require_once 'header.php';
 
 //setup some variables

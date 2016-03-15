@@ -2,7 +2,7 @@
 
 <div class="container">
   <div class="page-header">
-    <h1 class="pull-left"><a href="forum.php">FORUM FOR HSN STUDENTER</a></h1>
+    <h1 class="pull-left"><a href="">FORUM FOR HSN STUDENTER</a></h1>
     <ol class="breadcrumb pull-right">
       <li><a id="log_inn" href="#" data-rel="popup">Log inn</a></li>
       <li><a id="registrer" href="#" data-rel="popup">Registrer deg</a></li>
@@ -89,10 +89,7 @@
 
 <?php
   echo "Dato og tid: " . date("Y-d-m G:i:s");
-  require_once '/php/functions.php';
-  require_once '/php/db_connect.php';
-//  require_once 'registrer.php';
-//  require_once 'loginn.php';
-//  require_once 'bekreftbruker.php';
+  require_once 'functions.php';
+  require_once 'db_connect.php';
   require_once 'chatbox.php';
 ?>
