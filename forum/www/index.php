@@ -9,8 +9,10 @@
 		<link rel="icon" href="#">
 
 		<title>Forum for studenter på HSN avdeling Bø</title>
-
+		<!-- CSS, FONTS AND OTHER LIBS-->
+		<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700,800,400italic' rel='stylesheet' type='text/css'>
 		<link rel="stylesheet" type="text/css" href="css/stylesheet.css">
+		<link rel="stylesheet" type="text/css" href="css/stylesheet-m.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 	</head>
 <body>

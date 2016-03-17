@@ -2,7 +2,6 @@
 require_once 'includes/db_connect.php';
 require_once 'includes/functions.php';
 require_once 'index.php';
-require_once 'header.php';
 
 //setup some variables
 $action = array();

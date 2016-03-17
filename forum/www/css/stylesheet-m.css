@@ -1,0 +1,79 @@
+/* MEDIA */
+@media (min-width: 768px){
+	.container {
+		width: 750px
+	}
+}
+
+@media (min-width: 992px){
+	.container {
+		width: 970px
+	}
+}
+
+@media (min-width: 1200px){
+	.container{
+		width: 1170px
+	}
+}
+
+/* Veldig små enheter */
+@media (max-width: 767px) {
+	.hidden-xs {
+		display: none !important;
+	}
+	.chatbox-container {
+		width: 100% !important;
+	}
+}
+
+@media (max-width: 400px) {
+	#registrer-box, .registrer-box-mail-sendt, .registrer-box-success{
+		width: 90% !important;
+	}
+
+	#registrer-box {
+		height: 450px !important;
+	}
+
+	.popup-divider:first-child {
+		margin-top: 15px !important;
+	}
+
+	.popup-divider {
+		padding-top: 0px !important;
+	}
+
+	.popup-divider-clear {
+		padding-top: 0px !important;
+	}
+
+	.popup-input-double {
+		width: 93% !important;
+		float: none !important;
+		margin-bottom: 18px !important;
+	}
+
+	.popup-input {
+		margin-bottom: 18px !important;
+		float: none !important;
+	}
+
+	#bnavnErr, #fnavnErr, #enavnErr, #epostErr, #passErr, #passTwoErr {
+		margin-top: -17px !important;
+	}
+
+	.registrer-box-mail-sendt {
+		height: 280px !important;
+	}
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+	.hidden-sm {
+		display: none !important;
+	}
+
+	.chatbox-container {
+		width: 100% !important;
+	}
+}
