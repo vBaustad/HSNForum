@@ -1,6 +1,6 @@
 /* GLOBALS */
 html {
-	font-family:sans-serif;
+	font-family: 'Open Sans', sans-serif;
 }
 
 /* CHATBOX */
@@ -67,7 +67,7 @@ html {
 	bottom: 0;
 	top: 0;
 	width: 400px;
-	height: 390px;
+	height: 450px;
 	border-radius: 3px;
 	box-shadow: 0px 0px  5px #11a5ae;
   	-mox-box-shadow: 0px 0px  5px #11a5ae;
@@ -125,46 +125,13 @@ html {
 	display: inline;
 }
 
-.icon-mail::before {
-	content: url(http://localhost/forum/img/icons/icon_mail_alt.png);
-	vertical-align: middle;
-}
-
-.icon-user::before {
-	content: url(http://localhost/forum/img/icons/icon_id.png);
-	display: inline-block;
-	vertical-align: middle;
-}
-
-.icon-success::before {
-	content: url(http://localhost/forum/img/icons/icon_check_alt2.png);
-	vertical-align: middle;
-	display: inline-block;
-}
-
-.icon-error {
-	content: url(http://localhost/forum/img/icons/icon_error-oct_alt.png);
-	vertical-align: middle;
-	margin-top: 10px;
-}
-
-.icon-time {
-	content: url(http://localhost/forum/img/icons/icon_clock_alt.png);
-	width: 12px;
-	height: 12px;
-	display: inline-block;
-}
-
 .popup-container {
-	width: 95%;
+	width: 90%;
 }
 
-.popup-registrer-form {
-
-}
-
-.double {
-	width: 40% !important;
+.popup-input-double:focus {
+	outline: none;
+	border: solid 3px #60bb80;
 }
 
 .popup-input {
@@ -184,11 +151,29 @@ html {
 	border: solid 3px #60bb80;
 }
 
-.popup-divider {
-	padding-top: 15px;
+.popup-divider, .popup-divider-half {
+	padding-top: 25px;
 }
 
-.popup-registrer-button {
+.popup-divider-half {
+	width: 44%;
+	position: inherit;
+}
+
+#bnavnErr, #fnavnErr, #enavnErr, #epostErr, #passErr, #passTwoErr {
+	font-size: 0.7em;
+	margin: 0;
+	padding-top: 8px;
+	line-height: 0;
+	display: none;
+	position: fixed;
+}
+
+#fnavnErr, #enavnErr {
+	margin-top: 40px;
+}
+
+#registrer-submitt {
 	color: white;
 	font-size: 1em;
 	width: 50%;
@@ -198,6 +183,7 @@ html {
 	text-decoration: none;
 	text-align: center;
 	border: none;
+	outline: none;
 	border-radius: 0px 0px 0px 3px;
 	position: absolute;
 	bottom: 0;
@@ -205,7 +191,7 @@ html {
 	background: #14b933;
 }
 
-.popup-registrer-button:hover {
+#registrer-submitt:hover {
 	background: #059620;
 	transition: background 0.2s;
 	cursor: pointer;
@@ -220,6 +206,7 @@ html {
 	text-decoration: none;
 	text-align: center;
 	border: none;
+	outline: none;
 	border-radius: 0px 0px 3px 0px;
 	position: absolute;
 	bottom: 0;
@@ -239,10 +226,6 @@ html {
 
 .popup-registrer-button-lukk:hover {
 	
-}
-
-#bnavnErr, #navnErr, #epostErr {
-	display: none;
 }
 
 /* MAIN */
@@ -293,21 +276,44 @@ html {
 	padding-top: 5px;
 }
 
+/* ICONS */
+.icon-mail::before {
+	content: url(http://localhost/forum/www/img/icons/icon_mail_alt.png);
+	vertical-align: middle;
+}
+
+.icon-user::before {
+	content: url(http://localhost/forum/www/img/icons/icon_id.png);
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.icon-success::before {
+	content: url(http://localhost/forum/www/img/icons/icon_check_alt2.png);
+	vertical-align: middle;
+	display: inline-block;
+}
+
+.icon-error {
+	content: url(http://localhost/forum/www/img/icons/icon_error-oct_alt.png);
+	vertical-align: middle;
+	margin-top: 10px;
+}
+
+.icon-time {
+	content: url(http://localhost/forum/www/img/icons/icon_clock_alt.png);
+	width: 12px;
+	height: 12px;
+	display: inline-block;
+}
+
 /* TEXT */
-.lead{
-	margin-bottom:20px;
-	font-size:16px;
-	font-weight:300;
-	line-height:1.4
+#logo-text {
+	text-decoration: none;
+	color: #262626;
 }
 
-@media (min-width:768px){
-	.lead{
-		font-size:21px;
-	}
-}
-
-.text-center{
+.text-center {
 	text-align:center;
 }
 
@@ -434,72 +440,15 @@ tbody > tr > td > a:hover {
 	width: 14em;
 }
 
-/* MEDIA */
-@media (min-width: 768px){
-	.container {
-		width: 750px
-	}
-}
-
-@media (min-width: 992px){
-	.container {
-		width: 970px
-	}
-}
-
-@media (min-width: 1200px){
-	.container{
-		width: 1170px
-	}
-}
-
-/* Veldig små enheter */
-@media (max-width: 767px) {
-	.hidden-xs {
-		display: none !important;
-	}
-	.chatbox-container {
-		width: 100% !important;
-	}
-}
-
-@media (max-width: 400px) {
-	#registrer-box, .registrer-box-mail-sendt, .registrer-box-success{
-		width: 90% !important;
-	}
-
-	#registrer-box {
-		height: 360px !important;
-	}
-
-	.registrer-box-mail-sendt {
-		height: 280px !important;
-	}
-
-	.double {
-		margin-right: 5px !important;
-	}
-
-	.popup-divider {
-		padding-top: 10px !important;
-	}
-}
-
-@media (min-width: 768px) and (max-width: 991px) {
-	.hidden-sm {
-		display: none !important;
-	}
-
-	.chatbox-container {
-		width: 100% !important;
-	}
-}
-
 /* POSITIONING ELEMENTS */
 .center {
 	margin-right: auto;
 	margin-left: auto;
 	text-align: center;
+}
+
+.clear {
+	clear: both;
 }
 
 .input-pull-left {

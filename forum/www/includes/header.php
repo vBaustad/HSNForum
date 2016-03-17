@@ -2,7 +2,7 @@
 
 <div class="container">
   <div class="page-header">
-    <h1 class="pull-left"><a href="">FORUM FOR HSN STUDENTER</a></h1>
+    <h1 class="pull-left"><a id="logo-text" href="http://localhost/forum/www/"><b>FORUM</b> FOR <i>HSN</i> STUDENTER</a></h1>
     <ol class="breadcrumb pull-right">
       <li><a id="log_inn" href="#" data-rel="popup">Log inn</a></li>
       <li><a id="registrer" href="#" data-rel="popup">Registrer deg</a></li>
@@ -37,34 +37,39 @@
     </div>
   
     <div class="popup-container center">
-      <form id="registrerForm" name="registrer" class="popup-registrer-form" method="post" action="registrer.php" onsubmit="return sjekkSkjema()">
+      <form id="registrerForm" name="registrer" method="post" action="registrer.php" onsubmit="return sjekkSkjema()">
         <div class="popup-divider">
           <input type="text" name="brukernavn_reg" id="brukernavn_reg" class="popup-input valid" placeholder="Brukernavn" onblur="sjekkBNavn(id)">
           <span id="bnavnErr">Brukernavnet stemmer ikke</span>
         </div>
   
-        <div class="popup-divider" >
-          <input type="text" name="fornavn_reg" id="fornavn_reg" class="popup-input double input-pull-left" placeholder="Fornavn" onblur="sjekkNavn(id)">
-          <input type="text" name="etternavn_reg" id="etternavn_reg" class="popup-input double pull-right" placeholder="Etternavn" onblur="sjekkNavn(id)">
-          <span id="navnErr">Navnet stemmer ikke</span>
+        <div class="popup-divider-half pull-left">
+          <input type="text" name="fornavn_reg" id="fornavn_reg" class="popup-input input-pull-left" placeholder="Fornavn" onblur="sjekkFNavn(id)">
+          <span id="fnavnErr">Fornavnet stemmer ikke</span>
+        </div>
+
+        <div class="popup-divider-half pull-right">
+          <input type="text" name="etternavn_reg" id="etternavn_reg" class="popup-input pull-right" placeholder="Etternavn" onblur="sjekkENavn(id)">
+          <span id="enavnErr" class="pull-right">Etternavnet stemmer ikke</span>
         </div>
   
-        <div class="popup-divider" style="clear: both;">
+        <div class="popup-divider clearfix" >
           <input type="text" name="epost_reg" id="epost_reg" class="popup-input" placeholder="Epost-adresse" onblur="sjekkEpost(id)">
           <span id="epostErr">Eposten stemmer ikke</span>
         </div>
   
         <div class="popup-divider">
           <input type="password" name="pass_reg" id="pass_reg" class="popup-input" placeholder="Passord" onblur="sjekkPass(id)">
-          <span id="epostErr">Passer ikke kriteriene!</span>
+          <span id="passErr">Passer ikke kriteriene!</span>
         </div>
   
         <div class="popup-divider">
-          <input type="password" name="pass_two_reg" id="pass_two_reg" class="popup-input" placeholder="Gjenta passord" onblur="sjekkPass(id)">
-          <span id="epostErr">Samsvarer ikke med passordet over!</span>
+          <input type="password" name="pass_two_reg" id="pass_two_reg" class="popup-input" placeholder="Gjenta passord" onblur="sjekkPassTo(id)">
+          <span id="passTwoErr">Samsvarer ikke med passordet over!</span>
         </div>
-        <input type="submit" name="registrer-btn" id="registrer-btn" value="Fullfør" class="popup-registrer-button pull-left">
-        <input name="button-avbryt" id="registrer-avbryt" value="Abvryt" class="pull-right">
+
+        <input type="submit" name="registrer-btn" id="registrer-submitt" value="Fullfør" class="pull-left">
+        <input type="button" name="button-avbryt" id="registrer-avbryt" value="Abvryt" class="pull-right">
       </form>
     </div>
   </div>
