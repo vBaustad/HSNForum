@@ -11,29 +11,49 @@
   </div> 
 
   <!-- REGISTRER.php -->
+
+  <!-- Feilkoder -->
+  <div id="registrer-feil">
+    <div class="popup-header center">
+      <h2 class="popup-header-text icon-error"> Uff da...</h2>
+      <hr class="hr-popup">
+    </div>
+
+    <div class="popup-container center">
+      <p class="white">Det oppstod en feil under registreringen.<br>Venligst prøv igjen...</p>
+      <p class="white">Skulle problemet fortsette, ta <a class="link-light" href="#">kontakt</a> med administrator og oppgi denne feilkoden:</p>
+      <h2 style="display: none" class="feilkode1">Feilkode 1</h2>
+      <h2 style="display: none" class="feilkode2">Feilkode 2</h2>
+      <h2 style="display: none" class="feilkode3">Feilkode 3</h2>
+      <h2 style="display: none" class="feilkode4">Feilkode 4</h2>
+
+      <button form="registrer" name="button-avbryt" type="submit" class="registrer-button-lukk"><span class=""></span> Lukk</button>
+    </div>
+  </div>
+  
   <!-- Mail sendt -->
-  <div class="registrer-box-mail-sendt">
+  <div class="registrer-mail-sendt">
     <div class="popup-header center">
       <h2 class="popup-header-text icon-mail"> Mail sendt!</h2>
+      <hr class="hr-popup">
     </div>
   
     <div class="popup-container center">
-      <h1>Takk for din registrering!</h1>
-      <p>Fullfør registreringen ved å sjekke eposten din.</p>
-      <p>Du kan nå trykt lukke dette vinduet.</p>
-      <button form="registrer" name="button-avbryt" type="submit" class="popup-registrer-button-lukk pull-right"><span class=""></span> Lukk</button>
+      <h1 class="white">Takk for din registrering!</h1>
+      <p class="white">Fullfør registreringen ved å sjekke eposten din.<br>Du kan nå lukke dette vinduet.</p>
+      <button form="registrer" type="submit" class="registrer-button-lukk">Lukk</button>
     </div>
   </div>
   
   <!-- Laster... (sender mail)  -->
   <div class="registrer-box-loading">
-    <img class="opptatt" src="img/opptatt.gif">
+    <img class="opptatt" src="http://localhost/forum/www/img/opptatt.gif">
   </div>
       
   <!-- REGISTER BOX -->
   <div id="registrer-box">
     <div class="popup-header center">
-      <h2 class="popup-header-text icon-user"> Registrer deg!</h2>
+      <h2 class="white icon-user icon-close"> Registrer deg!</h2>
     </div>
   
     <div class="popup-container center">
@@ -68,8 +88,8 @@
           <span id="passTwoErr">Samsvarer ikke med passordet over!</span>
         </div>
 
-        <input type="submit" name="registrer-btn" id="registrer-submitt" value="Fullfør" class="pull-left">
-        <input type="button" name="button-avbryt" id="registrer-avbryt" value="Abvryt" class="pull-right">
+        <input type="submit" name="registrer-btn" id="registrer-submitt" value="Fullfør">
+
       </form>
     </div>
   </div>
@@ -80,15 +100,15 @@
   <!-- BEKREFTBRUKER.php -->
   <!-- Bruker laget -->
   <div class="registrer-box-success">
-    <div class="popup-header">
+    <div class="popup-header center">
       <h2 class="popup-header-text icon-success"> Registrering fullført!</h2>
+      <hr class="hr-popup">
     </div>
   
     <div class="popup-container center">
-      <h1>Bruker aktivert</h1>
-      <p>Velkommen til HSN forum!</p>
-      <p>Du kan nå logge deg inn.</p>
-      <button form="registrer" name="button-avbryt" type="submit" class="popup-registrer-button-lukk pull-right"><span class=""></span> Lukk</button>
+      <h1 class="white">Bruker aktivert</h1>
+      <p class="white">Velkommen til HSN forum!<br>Du kan nå logge deg inn.</p>
+      <button form="registrer" name="button-avbryt" type="submit" class="registrer-button-lukk"><span class=""></span> Lukk</button>
     </div>
   </div>
 
@@ -96,5 +116,5 @@
   echo "Dato og tid: " . date("Y-d-m G:i:s");
   require_once 'functions.php';
   require_once 'db_connect.php';
-  require_once 'chatbox.php';
+  require_once (__DIR__.'/../chatbox.php');
 ?>

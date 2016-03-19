@@ -1,37 +1,42 @@
 <!DOCTYPE html>
 <html lang="no">
-<head>	
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta name="description" content="">
-		<meta name="author" content="">
-		<link rel="icon" href="#">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<link rel="icon" href="#">
 
-		<title>Forum for studenter på HSN avdeling Bø</title>
-		<!-- CSS, FONTS AND OTHER LIBS-->
-		<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700,800,400italic' rel='stylesheet' type='text/css'>
-		<link rel="stylesheet" type="text/css" href="css/stylesheet.css">
-		<link rel="stylesheet" type="text/css" href="css/stylesheet-m.css">
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-	</head>
+	<title>Forum for studenter på HSN avdeling Bø</title>
+	<!-- CSS, FONTS AND OTHER LIBS-->
+	<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700,800,400italic' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" type="text/css" href="css/stylesheet.css">
+	<link rel="stylesheet" type="text/css" href="css/stylesheet-m.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+</head>
 <body>
 
 <script type="text/javascript">
 	$(document).ready(function() {
-		// Lukk succes vindu
-		$(".popup-registrer-button-lukk").click(function() {
+		// Lukk success og mail sendt vindu
+		$(".registrer-button-lukk").click(function() {
 			$(".registrer-box-success").hide();
+            $(".registrer-mail-sendt").hide();
 		});
 
-		// Lukk mail sendt vindu
-		$(".popup-registrer-button-lukk").click(function() {
-			$(".registrer-box-mail-sendt").hide();
+		// Lukk feilmelding vindu
+		$(".registrer-button-lukk").click(function() {
+			$("#registrer-feil").hide();
 		});
+
+        // Lukk icon
+        $(".icon-close").click(function () {
+           $("#registrer-box") .hide();
+        });
 
 		// Loading...
-		$(".registrer-box-loading").hide();
-		$(".popup-registrer-button").click(function() {
+		$(".registrer-button").click(function() {
 			$(".registrer-box-loading").show();
 			$(window).load(function() {
 				$(".registrer-box-loading").hide();
@@ -39,7 +44,6 @@
 		});
 
 		// Skjul/vis registrer-box
-		$("#registrer-box").hide();
 		$("#registrer").click(function() {
 			$("#registrer-box").show();
 		});
@@ -173,6 +177,5 @@
 			</tr>
 		</tbody>
 	</table>
-</div>
 </body>
 </html>

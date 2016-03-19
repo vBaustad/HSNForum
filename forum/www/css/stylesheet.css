@@ -31,7 +31,6 @@ html {
 }
 
 .chatbox-bottom input {
-	-ms-box-sizing: content-box;
 	-moz-box-sizing: content-box;
 	-webkit-box-sizing: content-box; 
 	box-sizing: content-box;
@@ -47,7 +46,6 @@ html {
 }
 
 #chatbox-send {
-	
 }
 
 /* TEXTAREA */
@@ -55,11 +53,17 @@ html {
 	width: 34%;
 }
 
-
 /* LOG INN / REGISTRER */
-.registrer-box-success, .registrer-box-mail-sendt, .registrer-box-loading, #registrer-box {
-	display: none;
+.popup-header {
+    height: 45px;
+    line-height: 60px;
+    width: 93%;
+    border-radius: 3px 3px 0 0;
+    background: #24313c;
+}
 
+.registrer-box-success, .registrer-mail-sendt, .registrer-box-loading, #registrer-box, #registrer-feil {
+	display: none;
 	position: fixed;
 	margin: auto;
 	left: 0;
@@ -67,30 +71,39 @@ html {
 	bottom: 0;
 	top: 0;
 	width: 400px;
-	height: 450px;
 	border-radius: 3px;
-	box-shadow: 0px 0px  5px #11a5ae;
-  	-mox-box-shadow: 0px 0px  5px #11a5ae;
-  	-webkit-box-shadow: 0px 0px  5px #11a5ae;
-  	background: white;
+	box-shadow: 0 4px 10px 4px rgba(19, 35, 47, .3);
+  	-moz-box-shadow: 0 4px 10px 4px rgba(19, 35, 47, .3);
+  	-webkit-box-shadow: 0 4px 10px 4px rgba(19, 35, 47, .3);
+  	background: #24313c;
+}
+
+#registrer-box {
+    z-index: 50 !important;
+    height: 465px;
+}
+
+#registrer-feil {
+    height: 240px;
 }
 
 .registrer-box-success {
-	height: 250px !important;
+	height: 250px;
 }
 
-.registrer-box-mail-sendt {
+.registrer-mail-sendt {
 	z-index: 51 !important;
-	height: 240px !important;
+	height: 240px;
 }
 
 .registrer-box-loading {
 	z-index: 51 !important;
 	background: rgba(236, 240, 241,0.5) !important;
+    height: 450px;
 }
 
 .opptatt {
-	display: block;
+	display: block; /* Skal denne være display block??? */
 	margin-left: auto;
 	margin-right: auto;
 	position: absolute;
@@ -99,30 +112,6 @@ html {
 	top: 50%;
 	transform: translateY(-50%);
 	opacity: 1;
-}
-
-#registrer-box {
-	z-index: 50 !important;
-}
-
-.popup-header {
-	text-align: center;
-	margin: 0;
-	top: 50%;
-	height: 45px;
-	line-height: 50px;
-	width: 100%;
-	border-radius: 3px 3px 0px 0px;
-	background: #11a5ae;
-}
-
-.popup-header-text {
-	font-family: 'Segoe UI', Arial, sans-serif;
-	font-size: 1.5em;
-	line-height: 35px;
-	text-align: horizontal;
-	color: white;
-	display: inline;
 }
 
 .popup-container {
@@ -137,10 +126,7 @@ html {
 .popup-input {
 	width: 93%;
 	display: block;
-	font-family: sans-serif;
-	font-family: 18px;
 	box-shadow: none;
-	border-radius: none;
 	padding: 10px;
 	border: solid 3px #b1b1b1;
 	transition: border 0.3s;
@@ -149,6 +135,10 @@ html {
 .popup-input:focus {
 	outline: none;
 	border: solid 3px #60bb80;
+}
+
+.popup-divider:first-child {
+    padding-top: 10px;
 }
 
 .popup-divider, .popup-divider-half {
@@ -162,11 +152,13 @@ html {
 
 #bnavnErr, #fnavnErr, #enavnErr, #epostErr, #passErr, #passTwoErr {
 	font-size: 0.7em;
+    color: #f5f5f5;
 	margin: 0;
 	padding-top: 8px;
 	line-height: 0;
 	display: none;
 	position: fixed;
+    float: left;
 }
 
 #fnavnErr, #enavnErr {
@@ -175,57 +167,46 @@ html {
 
 #registrer-submitt {
 	color: white;
-	font-size: 1em;
-	width: 50%;
+	font-size: 1.3em;
+	width: 100%;
 	height: 40px;
-	display: inline-block;
-	font-size: 16px;
+	display: block;
 	text-decoration: none;
 	text-align: center;
 	border: none;
 	outline: none;
-	border-radius: 0px 0px 0px 3px;
-	position: absolute;
-	bottom: 0;
-	left: 0;
-	background: #14b933;
+	background: #1ab188;
+    margin-top: 25px;
 }
 
 #registrer-submitt:hover {
-	background: #059620;
-	transition: background 0.2s;
+	background: #179b77;
+	transition: background 0.3s;
 	cursor: pointer;
 }
 
-#registrer-avbryt, .popup-registrer-button-lukk {
+#registrer-avbryt, .registrer-button-lukk {
 	color: white;
-	font-size: 1em;
-	width: 50%;
+	font-size: 1.3em;
+	width: 93%;
 	height: 40px;
-	display: inline-block;
 	text-decoration: none;
 	text-align: center;
 	border: none;
 	outline: none;
-	border-radius: 0px 0px 3px 0px;
-	position: absolute;
-	bottom: 0;
-	right: 0;
 	background: #c92024;
 }
 
 #registrer-avbryt:hover {
 	background: #b7080c;
-	transition: background 0.2s;
+	transition: background 0.3s;
 	cursor: pointer;
 }
 
-.popup-registrer-button-lukk {
-	width: 100% !important;
-}
-
-.popup-registrer-button-lukk:hover {
-	
+.registrer-button-lukk:hover {
+    background: #b7080c;
+    transition: background 0.3s;
+    cursor: pointer;
 }
 
 /* MAIN */
@@ -236,8 +217,10 @@ html {
 	margin-left:auto
 }
 
-.page-header{
-    padding-bottom:9px;margin:40px 0 20px;border-bottom:1px solid #eee
+.page-header {
+    padding-bottom: 10px;
+    margin: 40px 0 20px;
+    border-bottom: 1px solid #dbdbdb;
 }
 
 .breadcrumb{
@@ -277,6 +260,17 @@ html {
 }
 
 /* ICONS */
+.icon-close::after {
+    content: url(http://localhost/forum/www/img/icons/icon_close.png);
+    background-color: rgba(242, 81, 75, 1);
+    height: 33px;
+    widows: 33px;
+    margin-right: 5px;
+    vertical-align: middle;
+    float: right;
+    cursor: pointer;
+}
+
 .icon-mail::before {
 	content: url(http://localhost/forum/www/img/icons/icon_mail_alt.png);
 	vertical-align: middle;
@@ -294,7 +288,7 @@ html {
 	display: inline-block;
 }
 
-.icon-error {
+.icon-error::before {
 	content: url(http://localhost/forum/www/img/icons/icon_error-oct_alt.png);
 	vertical-align: middle;
 	margin-top: 10px;
@@ -302,12 +296,16 @@ html {
 
 .icon-time {
 	content: url(http://localhost/forum/www/img/icons/icon_clock_alt.png);
-	width: 12px;
-	height: 12px;
-	display: inline-block;
+    width: 12px;
+    height: 12px;
+    display: inline-block;
 }
 
 /* TEXT */
+.link-light {
+    color: #99bcff;
+}
+
 #logo-text {
 	text-decoration: none;
 	color: #262626;
@@ -317,9 +315,13 @@ html {
 	text-align:center;
 }
 
+.white {
+    color: #f5f5f5;
+}
+
 h1 {
 	margin: .67em 0;
-	font-size: 2em;
+	font-size: 1.9em;
 }
 
 .h1,.h2,.h3,.h4,.h5,.h6,h1,h2,h3,h4,h5,h6{
@@ -352,10 +354,22 @@ h1 {
 	font-size:75%;
 }
 
+/* HR */
+.hr-popup  {
+    background: rgba(127, 160, 224, 0.5);
+    border: 0;
+    height: 1px;
+    width: 93%;
+    margin-top: 0;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+
 /* FORUM */
 table {
 	background-color:transparent;
-	border-spacing: 0px;
+	border-spacing: 0;
 }
 
 th {
@@ -363,10 +377,10 @@ th {
 }
 
 th:nth-child(1) {
-	border-radius: 3px 0px 0px 0px;
+	border-radius: 3px 0 0 0;
 }
 th:nth-last-child(1) {
-	border-radius: 0px 3px 0px 0px;
+	border-radius: 0 3px 0 0;
 }
 
 th {

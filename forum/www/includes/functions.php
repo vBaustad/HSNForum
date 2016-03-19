@@ -62,6 +62,7 @@ function send_email($info) {
     return $result;
 }
 
+/* IKKE I BRUK! */
 function show_errors($action){
  
     $error = false;
@@ -91,6 +92,14 @@ function show_errors($action){
  
     return $error;
  
+}
+
+function lesParam($param) {
+  $input = "";
+  if (isset($_POST[$param])) {
+    $input = htmlentities(stripslashes($_POST[$param]));
+    return $input;
+  }
 }
 
 ?>

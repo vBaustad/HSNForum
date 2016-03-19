@@ -2,10 +2,6 @@
 require_once 'includes/db_connect.php';
 require_once 'includes/functions.php';
 require_once 'index.php';
-
-//setup some variables
-$action = array();
-$action['result'] = null;
  
 // Enkel skekk for tom GET
 if(empty($_GET['epost']) || empty($_GET['nokkel'])) {
@@ -23,9 +19,7 @@ if(!empty($_GET['epost']) || !empty($_GET['nokkel'])) {
 	$row_count = $sjekk_entry->num_rows;
      
 	// Hvis vi fikk ett treff på nokkel og email
-	if($row_count > 0 && $row_count < 2){
-		//get the confirm info
-		// $bekreft_info = mysqli_fetch_assoc($sjekk_entry);
+	if($row_count === 1){
 
 		$bekreft_info = $sjekk_entry->fetch_assoc();
 
@@ -44,7 +38,7 @@ if(!empty($_GET['epost']) || !empty($_GET['nokkel'])) {
 				});
 			</script>
 _END;
-        }
+		}
 
         // Feil. Bruker kunne ikke oppdateres
         else {
