@@ -157,5 +157,4 @@ function sjekkSkjema() {
 	else {
 		return false;
 	}
-
 }
