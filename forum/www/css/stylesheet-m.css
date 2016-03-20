@@ -1,85 +1,86 @@
 /* MEDIA */
-@media (min-width: 768px){
-	.container {
-		width: 750px
-	}
+@media (min-width: 768px) {
+    .container {
+        width: 750px
+    }
 }
 
-@media (min-width: 992px){
-	.container {
-		width: 970px
-	}
+@media (min-width: 992px) {
+    .container {
+        width: 970px
+    }
 }
 
-@media (min-width: 1200px){
-	.container{
-		width: 1170px
-	}
+@media (min-width: 1200px) {
+    .container {
+        width: 1170px
+    }
 }
 
 /* Veldig små enheter */
 @media (max-width: 767px) {
-	.hidden-xs {
-		display: none !important;
-	}
-	.chatbox-container {
-		width: 100% !important;
-	}
+    .hidden-xs {
+        display: none !important;
+    }
+
+    .chatbox-container {
+        width: 100% !important;
+    }
 }
 
 @media (max-width: 400px) {
-	#registrer-box, .registrer-mail-sendt, .registrer-box-success, #registrer-feil{
-		width: 90% !important;
-	}
+    #registrer-box, .registrer-mail-sendt, .registrer-box-success, #registrer-feil {
+        width: 90% !important;
+    }
 
-	#registrer-feil {
-		height: 310px !important;
-	}
+    #registrer-feil {
+        height: 310px !important;
+    }
 
-	.registrer-mail-sendt {
-		height: 290px !important;
-	}
+    .registrer-mail-sendt {
+        height: 290px !important;
+    }
 
-	#registrer-box {
-		height: 495px !important;
-	}
+    #registrer-box {
+        height: 495px !important;
+    }
 
-	.popup-divider:first-child {
-		margin-top: 15px !important;
-	}
+    .popup-divider:first-child {
+        margin-top: 15px !important;
+    }
 
-	.popup-divider {
-		padding-top: 0 !important;
-		width: 98%;
-	}
+    .popup-divider {
+        padding-top: 0 !important;
+        width: 98%;
+    }
 
-	.popup-divider-clear {
-		padding-top: 0 !important;
-	}
+    .popup-divider-clear {
+        padding-top: 0 !important;
+    }
 
-	.popup-divider-half {
-		padding-top: 0 !important;
-		width: 98% !important;
-		float: left !important;
-		position: inherit !important
-	}
+    .popup-divider-half {
+        padding-top: 0 !important;
+        width: 98% !important;
+        float: left !important;
+        position: inherit !important
+    }
 
-	.popup-input {
-		margin-bottom: 18px !important;
-		float: none !important;
-	}
+    .popup-input {
+        margin-bottom: 18px !important;
+        float: none !important;
+    }
 
-	#bnavnErr, #fnavnErr, #enavnErr, #epostErr, #passErr, #passTwoErr {
-		margin-top: -17px !important;
-	}
+    #bnavnErr, #fnavnErr, #enavnErr, #epostErr, #passErr, #passTwoErr {
+        margin-top: -17px !important;
+    }
 }
 
 @media (min-width: 768px) and (max-width: 991px) {
-	.hidden-sm {
-		display: none !important;
-	}
+    .hidden-sm {
+        display: none !important;
+    }
 
-	.chatbox-container {
-		width: 100% !important;
-	}
+    .chatbox-container {
+        width: 100% !important;
+    }
 }
