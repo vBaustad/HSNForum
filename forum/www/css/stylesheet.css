@@ -1,39 +1,39 @@
 /* GLOBALS */
 html {
-	font-family: 'Open Sans', sans-serif;
+    font-family: 'Open Sans', sans-serif;
 }
 
 /* CHATBOX */
 .chatbox-container {
-	width: 64%;
-	height: 200px;
+    width: 64%;
+    height: 200px;
 }
 
 .chatbox-messages {
-	width: 99%;
-	height: 80%;
-	background: gray;
+    width: 99%;
+    height: 80%;
+    background: gray;
 }
 
 .chatbox-bottom {
-	width: 100%;
+    width: 100%;
 }
 
 .chatbox-msg {
-	width: 79%;
-	height: 20%;
-	resize: none;
+    width: 79%;
+    height: 20%;
+    resize: none;
 }
 
 .chat-box-username {
-	float: left;
-	padding-right: 5px;
+    float: left;
+    padding-right: 5px;
 }
 
 .chatbox-bottom input {
-	-moz-box-sizing: content-box;
-	-webkit-box-sizing: content-box; 
-	box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    -webkit-box-sizing: content-box;
+    box-sizing: content-box;
 }
 
 #chatbox-msg {
@@ -41,8 +41,8 @@ html {
 }
 
 #chatbox-msg:focus {
-	border: 2px solid green;
-	transition: border 0.3s;
+    border: 2px solid green;
+    transition: border 0.3s;
 }
 
 #chatbox-send {
@@ -50,91 +50,97 @@ html {
 
 /* TEXTAREA */
 .textarea {
-	width: 34%;
+    width: 34%;
 }
 
-/* LOG INN / REGISTRER */
+/* LOGG INN / REGISTRER */
 .popup-header {
-    height: 45px;
+    height: 30px;
     line-height: 60px;
     width: 93%;
     border-radius: 3px 3px 0 0;
     background: #24313c;
+    vertical-align: middle;
 }
 
-.registrer-box-success, .registrer-mail-sendt, .registrer-box-loading, #registrer-box, #registrer-feil {
-	display: none;
-	position: fixed;
-	margin: auto;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	top: 0;
-	width: 400px;
-	border-radius: 3px;
-	box-shadow: 0 4px 10px 4px rgba(19, 35, 47, .3);
-  	-moz-box-shadow: 0 4px 10px 4px rgba(19, 35, 47, .3);
-  	-webkit-box-shadow: 0 4px 10px 4px rgba(19, 35, 47, .3);
-  	background: #24313c;
+.registrer-box-success, .registrer-mail-sendt, .registrer-box-loading, #registrer-box, #logginn-box, #registrer-feil {
+    display: none;
+    position: fixed;
+    margin: auto;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    width: 400px;
+    border-radius: 3px;
+    box-shadow: 0 4px 10px 4px rgba(19, 35, 47, .3);
+    -moz-box-shadow: 0 4px 10px 4px rgba(19, 35, 47, .3);
+    -webkit-box-shadow: 0 4px 10px 4px rgba(19, 35, 47, .3);
+    background: #24313c;
+}
+
+#logginn-box {
+    z-index: 50 !important;
+    height: 250px;
 }
 
 #registrer-box {
     z-index: 50 !important;
-    height: 465px;
+    height: 450px;
 }
 
 #registrer-feil {
-    height: 240px;
+    height: 260px;
 }
 
 .registrer-box-success {
-	height: 250px;
+    height: 250px;
 }
 
 .registrer-mail-sendt {
-	z-index: 51 !important;
-	height: 240px;
+    z-index: 51 !important;
+    height: 240px;
 }
 
 .registrer-box-loading {
-	z-index: 51 !important;
-	background: rgba(236, 240, 241,0.5) !important;
+    z-index: 51 !important;
+    background: rgba(236, 240, 241, 0.5) !important;
     height: 450px;
 }
 
 .opptatt {
-	display: block; /* Skal denne være display block??? */
-	margin-left: auto;
-	margin-right: auto;
-	position: absolute;
-	right: 0;
-	left: 0;
-	top: 50%;
-	transform: translateY(-50%);
-	opacity: 1;
+    display: block; /* Skal denne være display block??? */
+    margin-left: auto;
+    margin-right: auto;
+    position: absolute;
+    right: 0;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 1;
 }
 
 .popup-container {
-	width: 90%;
+    width: 90%;
 }
 
 .popup-input-double:focus {
-	outline: none;
-	border: solid 3px #60bb80;
+    outline: none;
+    border: solid 3px #60bb80;
 }
 
 .popup-input {
-	width: 93%;
-	display: block;
-	box-shadow: none;
-	padding: 10px;
-	border: solid 3px #b1b1b1;
-	transition: border 0.3s;
+    width: 93%;
+    display: block;
+    box-shadow: none;
+    padding: 10px;
+    border: solid 3px #b1b1b1;
+    transition: border 0.3s;
 }
 
 .popup-input:focus {
-	outline: none;
-	border: solid 3px #60bb80;
+    outline: none;
+    border: solid 3px #60bb80;
 }
 
 .popup-divider:first-child {
@@ -142,65 +148,65 @@ html {
 }
 
 .popup-divider, .popup-divider-half {
-	padding-top: 25px;
+    padding-top: 25px;
 }
 
 .popup-divider-half {
-	width: 44%;
-	position: inherit;
+    width: 44%;
+    position: inherit;
 }
 
 #bnavnErr, #fnavnErr, #enavnErr, #epostErr, #passErr, #passTwoErr {
-	font-size: 0.7em;
+    font-size: 0.7em;
     color: #f5f5f5;
-	margin: 0;
-	padding-top: 8px;
-	line-height: 0;
-	display: none;
-	position: fixed;
+    margin: 0;
+    padding-top: 8px;
+    line-height: 0;
+    display: none;
+    position: fixed;
     float: left;
 }
 
 #fnavnErr, #enavnErr {
-	margin-top: 40px;
+    margin-top: 40px;
 }
 
-#registrer-submitt {
-	color: white;
-	font-size: 1.3em;
-	width: 100%;
-	height: 40px;
-	display: block;
-	text-decoration: none;
-	text-align: center;
-	border: none;
-	outline: none;
-	background: #1ab188;
+#registrer-submitt, #logginn-submitt {
+    color: white;
+    font-size: 1.3em;
+    width: 100%;
+    height: 40px;
+    display: block;
+    text-decoration: none;
+    text-align: center;
+    border: none;
+    outline: none;
+    background: #1ab188;
     margin-top: 25px;
 }
 
-#registrer-submitt:hover {
-	background: #179b77;
-	transition: background 0.3s;
-	cursor: pointer;
+#registrer-submitt:hover, #logginn-submitt:hover {
+    background: #179b77;
+    transition: background 0.3s;
+    cursor: pointer;
 }
 
 #registrer-avbryt, .registrer-button-lukk {
-	color: white;
-	font-size: 1.3em;
-	width: 93%;
-	height: 40px;
-	text-decoration: none;
-	text-align: center;
-	border: none;
-	outline: none;
-	background: #c92024;
+    color: white;
+    font-size: 1.3em;
+    width: 93%;
+    height: 40px;
+    text-decoration: none;
+    text-align: center;
+    border: none;
+    outline: none;
+    background: #c92024;
 }
 
 #registrer-avbryt:hover {
-	background: #b7080c;
-	transition: background 0.3s;
-	cursor: pointer;
+    background: #b7080c;
+    transition: background 0.3s;
+    cursor: pointer;
 }
 
 .registrer-button-lukk:hover {
@@ -210,11 +216,11 @@ html {
 }
 
 /* MAIN */
-.container{
-	padding-right:15px;
-	padding-left:15px;
-	margin-right:auto;
-	margin-left:auto
+.container {
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto
 }
 
 .page-header {
@@ -223,82 +229,59 @@ html {
     border-bottom: 1px solid #dbdbdb;
 }
 
-.breadcrumb{
-	padding:8px 15px;
-	margin-bottom:20px;
-	list-style:none;
-	background-color:#f5f5f5;
-	border-radius:4px;
+.breadcrumb {
+    padding: 8px 15px;
+    margin-bottom: 20px;
+    list-style: none;
+    background-color: #f5f5f5;
+    border-radius: 4px;
 }
 
-.breadcrumb>li{
-	display:inline-block;
+.breadcrumb > li {
+    display: inline-block;
 }
 
-.breadcrumb>li+li:before{
-	padding:0 5px;
-	color:#ccc;
-	content:"/\00a0";
+.breadcrumb > li + li:before {
+    padding: 0 5px;
+    color: #ccc;
+    content: "/\00a0";
 }
 
 .breadcrumb a {
-	text-decoration: none;
-	color: #aad;
-	font-size: .85em;
+    text-decoration: none;
+    color: #aad;
+    font-size: .85em;
 }
 
 .breadcrumb a:hover {
-	text-decoration: underline;
+    text-decoration: underline;
 }
 
 .clearfix {
-	clear: both;
+    clear: both;
 }
 
 .seperator {
-	padding-top: 5px;
+    padding-top: 5px;
 }
 
 /* ICONS */
-.icon-close::after {
-    content: url(http://localhost/forum/www/img/icons/icon_close.png);
-    background-color: rgba(242, 81, 75, 1);
-    height: 33px;
-    widows: 33px;
-    margin-right: 5px;
-    vertical-align: middle;
-    float: right;
+
+.main-table tbody tr td i { /* Forum kategori icons */
+    padding-top: 10px;
+}
+.fa-times {
+    padding-top: 15px;
+    padding-right: 5px;
     cursor: pointer;
 }
 
-.icon-mail::before {
-	content: url(http://localhost/forum/www/img/icons/icon_mail_alt.png);
-	vertical-align: middle;
+.cyan {
+    color: #1ab188;
 }
 
-.icon-user::before {
-	content: url(http://localhost/forum/www/img/icons/icon_id.png);
-	display: inline-block;
-	vertical-align: middle;
-}
-
-.icon-success::before {
-	content: url(http://localhost/forum/www/img/icons/icon_check_alt2.png);
-	vertical-align: middle;
-	display: inline-block;
-}
-
-.icon-error::before {
-	content: url(http://localhost/forum/www/img/icons/icon_error-oct_alt.png);
-	vertical-align: middle;
-	margin-top: 10px;
-}
-
-.icon-time {
-	content: url(http://localhost/forum/www/img/icons/icon_clock_alt.png);
-    width: 12px;
-    height: 12px;
-    display: inline-block;
+.red {
+    color: #d1080c;
 }
 
 /* TEXT */
@@ -307,12 +290,12 @@ html {
 }
 
 #logo-text {
-	text-decoration: none;
-	color: #262626;
+    text-decoration: none;
+    color: #262626;
 }
 
 .text-center {
-	text-align:center;
+    text-align: center;
 }
 
 .white {
@@ -320,42 +303,43 @@ html {
 }
 
 h1 {
-	margin: .67em 0;
-	font-size: 1.9em;
+    margin: .67em 0;
+    font-size: 1.9em;
 }
 
-.h1,.h2,.h3,.h4,.h5,.h6,h1,h2,h3,h4,h5,h6{
-	font-family:inherit;
-	font-weight:500;
-	line-height:1.1;
-	color:inherit
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+    font-family: inherit;
+    font-weight: 500;
+    line-height: 1.1;
+    color: inherit
 }
 
-.h1 .small,.h1 small,.h2 .small,.h2 small,.h3 .small,.h3 small,.h4 .small,.h4 small,.h5 .small,.h5 small,.h6 .small,.h6 small,h1 .small,h1 small,h2 .small,h2 small,h3 .small,h3 small,h4 .small,h4 small,h5 .small,h5 small,h6 .small,h6 small{
-	font-weight:400;
-	line-height:1;
-	color:#777;
+.h1 .small, .h1 small, .h2 .small, .h2 small, .h3 .small, .h3 small, .h4 .small, .h4 small, .h5 .small, .h5 small, .h6 .small, .h6 small, h1 .small, h1 small, h2 .small, h2 small, h3 .small, h3 small, h4 .small, h4 small, h5 .small, h5 small, h6 .small, h6 small {
+    font-weight: 400;
+    line-height: 1;
+    color: #777;
 }
 
-.h1,.h2,.h3,h1,h2,h3{
-	margin-top:20px;
-	margin-bottom:10px;
+.h1, .h2, .h3, h1, h2, h3 {
+    margin-top: 20px;
+    margin-bottom: 10px;
 }
 
-.h1 .small,.h1 small,.h2 .small,.h2 small,.h3 .small,.h3 small,h1 .small,h1 small,h2 .small,h2 small,h3 .small,h3 small{
-	font-size:65%;
+.h1 .small, .h1 small, .h2 .small, .h2 small, .h3 .small, .h3 small, h1 .small, h1 small, h2 .small, h2 small, h3 .small, h3 small {
+    font-size: 65%;
 }
 
-.h4,.h5,.h6,h4,h5,h6{
-	margin-top:10px;
-	margin-bottom:10px;
+.h4, .h5, .h6, h4, h5, h6 {
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
-.h4 .small,.h4 small,.h5 .small,.h5 small,.h6 .small,.h6 small,h4 .small,h4 small,h5 .small,h5 small,h6 .small,h6 small{
-	font-size:75%;
+
+.h4 .small, .h4 small, .h5 .small, .h5 small, .h6 .small, .h6 small, h4 .small, h4 small, h5 .small, h5 small, h6 .small, h6 small {
+    font-size: 75%;
 }
 
 /* HR */
-.hr-popup  {
+.hr-popup {
     background: rgba(127, 160, 224, 0.5);
     border: 0;
     height: 1px;
@@ -365,114 +349,127 @@ h1 {
     margin-left: auto;
 }
 
-
 /* FORUM */
 table {
-	background-color:transparent;
-	border-spacing: 0;
+    background-color: transparent;
+    border-spacing: 0;
 }
 
 th {
-	background: #bfbfbf;
+    background: #bfbfbf;
 }
 
 th:nth-child(1) {
-	border-radius: 3px 0 0 0;
+    border-radius: 3px 0 0 0;
 }
+
 th:nth-last-child(1) {
-	border-radius: 0 3px 0 0;
+    border-radius: 0 3px 0 0;
 }
 
 th {
-	text-align:left
+    text-align: left
 }
 
 thead > tr > th > h3 {
-	color: #262626;
+    color: #262626;
 }
 
 thead > tr > th {
-	color: #262626;
-	font-size: .85em;
+    color: #262626;
+    font-size: .85em;
 }
 
 tbody > tr > td > a {
-	text-decoration: none;
-	color: #4d4d4d;
-	font-size: .8em;
+    text-decoration: none;
+    color: #4d4d4d;
+    font-size: .8em;
 }
 
 tbody > tr > td > a:hover {
-	text-decoration: underline;
-	color: #333333;
+    text-decoration: underline;
+    color: #333333;
 }
 
 .table {
-	width:100%;
-	max-width:100%;
-	margin-bottom:20px
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 20px
 }
 
-.table>tbody>tr>td,.table>tbody>tr>th,.table>tfoot>tr>td,.table>tfoot>tr>th,.table>thead>tr>td,.table>thead>tr>th {
-	padding: 8px;
-	line-height: 1.4;
-	vertical-align: top;
-	border-top: 1px solid #ddd
+.table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
+    padding: 8px;
+    line-height: 1.4;
+    vertical-align: top;
+    border-top: 1px solid #ddd
 }
 
-.table>thead>tr>th {
-	vertical-align: bottom;
-	border-bottom: 2px solid #ddd
+.table > thead > tr > th {
+    vertical-align: bottom;
+    border-bottom: 2px solid #ddd
 }
 
-.table>caption+thead>tr:first-child>td,.table>caption+thead>tr:first-child>th,.table>colgroup+thead>tr:first-child>td,.table>colgroup+thead>tr:first-child>th,.table>thead:first-child>tr:first-child>td,.table>thead:first-child>tr:first-child>th{
-    border-top:0
+.table > caption + thead > tr:first-child > td, .table > caption + thead > tr:first-child > th, .table > colgroup + thead > tr:first-child > td, .table > colgroup + thead > tr:first-child > th, .table > thead:first-child > tr:first-child > td, .table > thead:first-child > tr:first-child > th {
+    border-top: 0
 }
 
 .table-striped > tbody > tr:nth-of-type(odd) {
-	background-color:#f9f9f9
+    background-color: #f9f9f9
 }
 
 .table-striped > tbody > tr:nth-of-type(even) {
-	background-color:#ddd;
+    background-color: #ddd;
 }
 
-.table-striped>tbody>tr:hover {
-	background-color:#eee;
+.table-striped > tbody > tr:hover {
+    background-color: #eee;
 }
 
 .forum .fa {
-	width: 1em;
-	text-align: center;
+    width: 1em;
+    text-align: center;
 }
 
 .forum.table th.cell-stat {
-	width: 6em;
+    width: 6em;
 }
 
 .forum.table th.cell-stat-2x {
-	width: 14em;
+    width: 14em;
+}
+
+/* FOOTER */
+footer {
+    background: #7fa0e0;
+    height: 50px;
+    padding-right: 15px;
+    padding-left: 15px;
 }
 
 /* POSITIONING ELEMENTS */
+.half {
+    width: 50%;
+}
+
 .center {
-	margin-right: auto;
-	margin-left: auto;
-	text-align: center;
+    margin-right: auto;
+    margin-left: auto;
+    text-align: center;
 }
 
 .clear {
-	clear: both;
+    clear: both;
 }
 
 .input-pull-left {
-	float: left;
-	margin-right: 15px;
+    float: left;
+    margin-right: 15px;
 }
 
 .pull-right {
-	float: right !important;
+    float: right !important;
 }
+
 .pull-left {
-	float: left !important;
+    float: left !important;
 }
