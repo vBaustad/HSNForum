@@ -17,6 +17,7 @@ require_once 'db_connect.php';
             $("#logginn-box").hide();
             $("#ny_kat").hide();
             $("#ny_ukat").hide();
+            $("#slett_kat").hide();
         });
         /* Loading...
          $("#registrer-submitt").click(function () {
@@ -49,6 +50,10 @@ require_once 'db_connect.php';
             
                         $("#ny_kat_btn").click(function () {
                             $("#ny_kat").show();
+                        });
+                        
+                        $("#slett_kat_btn").click(function () {
+                            $("#slett_kat").show();
                         });
                     });
                 </script>
@@ -211,9 +216,7 @@ _END;
         <div class="popup-container center">
             <h1 class="white">Bruker aktivert</h1>
             <p class="white">Velkommen til HSN forum!<br>Du kan nå logge deg inn.</p>
-            <button form="registrer" name="button-avbryt" type="submit" class="registrer-button-lukk"><span
-                    class=""></span> Lukk
-            </button>
+            <button form="registrer" name="button-avbryt" type="submit" class="registrer-button-lukk"> Lukk</button>
         </div>
     </div>
     
@@ -229,7 +232,7 @@ _END;
         </div>
 
         <div class="popup-container center">
-            <form id="ny_kat_form" name="ny_kat_form" method="post" action="http://localhost/forum/www/includes/nykat.php">
+            <form id="ny_kat_form" name="ny_kat_form" method="post" action="http://localhost/forum/www/includes/endringer.php">
                 <div class="popup-divider">
                     <input type="text" name="ny_kat_navn" id="ny_kat_navn" placeholder="Kategori navn" class="popup-input">
                 </div>
@@ -250,7 +253,7 @@ _END;
         </div>
 
         <div class="popup-container center">
-            <form id="ny_ukat_form" name="ny_ukat_form" method="post" action="http://localhost/forum/www/includes/nyukat.php">
+            <form id="ny_ukat_form" name="ny_ukat_form" method="post" action="http://localhost/forum/www/includes/endringer.php">
                 <div class="popup-divider">
                     <input type="text" name="ny_ukat_navn" id="ny_kat_navn" placeholder="Kategori navn" class="popup-input">
                 </div>
@@ -260,7 +263,26 @@ _END;
                 <div class="popup-divider">
                     <select name="ny_ukat_img" class="popup-select">
                         <option value="fa fa-th-list fa-2x">Velg bilde</option>
-                        <option value="fa fa-exclamation-triangle fa-2x">Feil</option>
+                        <option value="fa fa-exclamation-triangle fa-2x">Trekantvarsel</option>
+                        <option value="fa fa-info fa-2x">Info</option>
+                        <option value="fa fa-archive fa-2x">Arkiv</option>
+                        <option value="fa fa-comment-o fa-2x">Komentar</option>
+            <!--        <option value=" fa-2x"></option>
+                        <option value=" fa-2x"></option>
+                        <option value=" fa-2x"></option>
+                        <option value=" fa-2x"></option>
+                        <option value=" fa-2x"></option>
+                        <option value=" fa-2x"></option>
+                        <option value=" fa-2x"></option>
+                        <option value=" fa-2x"></option>
+                        <option value=" fa-2x"></option>
+                        <option value=" fa-2x"></option>
+                        <option value=" fa-2x"></option>
+                        <option value=" fa-2x"></option>
+                        <option value=" fa-2x"></option>
+                        <option value=" fa-2x"></option>
+                        Legg til mange bilder her!! -->
+
                     </select>
                 </div>
                 <input type="submit" name="ny_ukat_btn" id="ny_ukat_submit" value="LEGG TIL">

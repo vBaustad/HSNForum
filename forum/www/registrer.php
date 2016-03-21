@@ -114,9 +114,7 @@ _END;
         $salt1 = 'dkn?';
         $salt2 = '$l3*!';
         $passordhash = hash('ripemd160', "$salt1$passord$salt2");
-
-        // Setter riktig charset for
-        $conn->set_charset("utf8");
+        
         // Legg til bruker i databasen
         $sql = mysqli_query($conn, "INSERT INTO bruker (bruker_id, bruker_navn, bruker_pass, bruker_mail, bruker_dato, bruker_level, bruker_aktiv, bruker_fornavn, bruker_etternavn)
             VALUES(NULL, '$brukernavn', '$passordhash', '$epost', '$dato', '$level', '$aktiv', '$fornavn', '$etternavn')");

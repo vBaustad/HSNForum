@@ -63,7 +63,7 @@ html {
     vertical-align: middle;
 }
 
-.registrer-box-success, .registrer-mail-sendt, .registrer-box-loading, #registrer-box, #logginn-box, #registrer-feil, #ny_kat, #ny_ukat {
+.registrer-box-success, .registrer-mail-sendt, .registrer-box-loading, #registrer-box, #logginn-box, #registrer-feil, #ny_kat, #slett_kat, #ny_ukat {
     display: none;
     position: fixed;
     margin: auto;
@@ -85,6 +85,10 @@ html {
 
 #ny_kat {
     height: 185px;
+}
+
+#slett_kat {
+    height: 160px;
 }
 
 #logginn-box {
@@ -223,7 +227,7 @@ html {
     cursor: pointer;
 }
 
-#registrer-avbryt, .registrer-button-lukk {
+#registrer-avbryt, .registrer-button-lukk, .button-lukk {
     color: white;
     font-size: 1.3em;
     width: 93%;
@@ -508,6 +512,7 @@ tbody > tr > td > a:hover {
 
 /* FOOTER */
 footer {
+    clear: both;
     background: #7fa0e0;
     height: 50px;
     padding-right: 15px;
@@ -517,6 +522,10 @@ footer {
 /* POSITIONING ELEMENTS */
 .pad-right {
     padding-right: 7px;
+}
+
+.mar-right {
+    margin-right: 7px;
 }
 
 .mar-bot {
