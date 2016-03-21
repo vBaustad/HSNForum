@@ -49,7 +49,7 @@ function sjekkFNavn(verdi) {
         return true;
     }
     else {
-        document.getElementById(verdi).style.border = 'solid 3px #e35152';
+        document.getElementById(verdi).style .border = 'solid 3px #e35152';
         document.getElementById('fnavnErr').style.display = "block";
     }
 }

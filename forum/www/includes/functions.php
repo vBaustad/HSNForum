@@ -37,7 +37,7 @@ function send_email($info)
     $melding .= '                            <p>Venligst bekreft eposten din ved å trykke på lenken under</p>';
     $melding .= '                            <center>';
     $melding .= '                                <h2>';
-    $melding .= '                                    <a href="' . $root . 'bekreftbruker.php?epost=' . $epost . '&nokkel=' . $nokkel . '">BEKREFT BRUKER</a>';
+    $melding .= '                                    <a href="' . $root . 'includes/bekreftbruker.php?epost=' . $epost . '&nokkel=' . $nokkel . '">BEKREFT BRUKER</a>';
     $melding .= '                                </h2>';
     $melding .= '                            </center>';
     $melding .= '                        </td>';
@@ -61,39 +61,6 @@ function send_email($info)
     mail($epost, "Velkommen til HSN forum, " . $fornavn . "!", $melding, $headers);
     $result = "Mail sendt!";
     return $result;
-}
-
-/* IKKE I BRUK! */
-function show_errors($action)
-{
-
-    $error = false;
-
-    if (!empty($action['result'])) {
-
-        $error = "<ul class=\"alert $action[result]\">" . "\n";
-
-        if (is_array($action['text'])) {
-
-            //loop out each error
-            foreach ($action['text'] as $text) {
-
-                $error .= "<li><p>$text</p></li>" . "\n";
-
-            }
-
-        } else {
-
-            //single error
-            $error .= "<li><p>$action[text]</p></li>";
-
-        }
-
-        $error .= "</ul>" . "\n";
-    }
-
-    return $error;
-
 }
 
 function lesParam($param)
