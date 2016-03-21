@@ -4,37 +4,80 @@ require_once 'db_connect.php';
 // error_reporting(0);
 ?>
 <script src="js/validate.js"></script>
+<script src="js/sjekkbruker.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        // Lukker vindues
+        $(".registrer-button-lukk, .registrer-icon-lukk, .logginn-icon-lukk, #registrer-avbryt").click(function () {
+            $(".registrer-box-success").hide();
+            $(".registrer-mail-sendt").hide();
+            $("#registrer-feil").hide();
+            $("#registrer-box").hide();
+            $("#logginn-box").hide();
+            $("#ny_kat").hide();
+            $("#ny_ukat").hide();
+        });
+        /* Loading...
+         $("#registrer-submitt").click(function () {
+         $(".registrer-box-loading").show();
+         $(window).load(function () {
+         $(".registrer-box-loading").hide();
+         });
+         }); */
+
+        // Skjul/vis bokser
+        $("#registrer").click(function () {
+            $("#registrer-box").show();
+        });
+        $("#logg_inn").click(function () {
+            $("#logginn-box").show();
+        });
+
+
+    });
+</script>
+
+<?php
+    if ($_SESSION['bruker_level'] == '2') {
+        echo <<<_END
+                <script type="text/javascript">
+                    $(document).ready(function() {
+                        $("#ny_ukat_btn").click(function () {
+                            $("#ny_ukat").show();
+                        })
+            
+                        $("#ny_kat_btn").click(function () {
+                            $("#ny_kat").show();
+                        });
+                    });
+                </script>
+_END;
+    }
+?>
 
 <div class="container">
     <div class="page-header">
-        <h1 class="pull-left"><a id="logo-text" href="http://localhost/forum/www/"><b>FORUM</b> FOR <i>HSN</i> STUDENTER</a>
-        </h1>
+        <h1 class="pull-left"><a id="logo-text" href="http://localhost/forum/www/"><b>FORUM</b> FOR <i>HSN</i> STUDENTER</a></h1>
         
         <?php
         if ($_SESSION['innlogget']) {
-            echo "Velkommen, " . $_SESSION['bruker_navn'];
-            echo    "<ol class=\"breadcrumb pull-right\">";
-            echo        "<li><a id=\"profil\" href=\"#\" data-rel=\"popup\">Profil</a></li>";
-            echo        "<li><a id=\"logg_ut\" href=\"includes/loggut.php\" data-rel=\"popup\">Logg ut</a></li>";
-            echo     "</ol>";
+            echo    '<ol class="breadcrumb pull-right">';
+            echo        '<li><i class="fa fa-user pad-right"></i><a id="profil-img" href="min_profil.php">' . $_SESSION['bruker_navn'] . "</a></li> ";
+            echo        '<li><a id="logg_ut" href="includes/loggut.php">Logg ut</a></li>';
+            echo     '</ol>';
         }
         else {
-            echo    "<ol class=\"breadcrumb pull-right\">";
-            echo        "<li><a id=\"logg_inn\" href=\"#\" data-rel=\"popup\">Logg inn</a></li>";
-            echo        "<li><a id=\"registrer\" href=\"#\" data-rel=\"popup\">Registrer deg</a></li>";
-            echo     "</ol>";
+            echo    '<ol class="breadcrumb pull-right">';
+            echo        '<li><a id="logg_inn" href="#" data-rel="popup">Logg inn</a></li>';
+            echo        '<li><a id="registrer" href="#" data-rel="popup">Registrer deg</a></li>';
+            echo     '</ol>';
         }
         ?>
         <div class="clearfix"></div>
     </div>
 
-    <div class="popup-container center">
-      <p class="white">Det oppstod en feil under registreringen.<br>Venligst prøv igjen...</p>
-      <p class="white">Skulle problemet fortsette, ta <a class="link-light" href="#">kontakt</a> med administrator og oppgi denne feilkoden:</p>
-      <h2 style="display: none" class="feilkode1">Feilkode 1</h2>
-      <h2 style="display: none" class="feilkode2">Feilkode 2</h2>
-      <h2 style="display: none" class="feilkode3">Feilkode 3</h2>
-      <h2 style="display: none" class="feilkode4">Feilkode 4</h2>
+    <!-- REGISTRER.php -->
 
     <!-- Feilkoder -->
     <div id="registrer-feil">
@@ -125,7 +168,7 @@ require_once 'db_connect.php';
                            placeholder="Gjenta passord" onblur="sjekkPassTo(id)">
                     <span id="passTwoErr">Samsvarer ikke med passordet over!</span>
                 </div>
-                <input type="submit" name="registrer-btn" id="registrer-submitt" value="Fullfør">
+                <input type="submit" name="registrer-btn" id="registrer_submitt" value="Fullfør">
             </form>
         </div>
     </div>
@@ -134,7 +177,7 @@ require_once 'db_connect.php';
     <div id="logginn-box">
         <div class="popup-header center">
             <div class="pull-left" style="width: 70%">
-                <h2 class="white icon-user pull-right"><i class="fa fa-sign-in"></i> Logg inn</h2>
+                <h2 class="white pull-right"><i class="fa fa-sign-in"></i> Logg inn</h2>
             </div>
             <div class="pull-right half" style="width: 30%;">
                 <i class="logginn-icon-lukk fa fa-times fa-2x red pull-right"></i>
@@ -152,7 +195,7 @@ require_once 'db_connect.php';
                     <input type="password" name="passord_logginn" id="passord_logginn" class="popup-input"
                            placeholder="Passord">
                 </div>
-                <input type="submit" name="logginn-btn" id="logginn-submitt" value="LOGG INN">
+                <input type="submit" name="logginn-btn" id="logginn_submitt" value="LOGG INN">
             </form>
         </div>
     </div>
@@ -171,6 +214,57 @@ require_once 'db_connect.php';
             <button form="registrer" name="button-avbryt" type="submit" class="registrer-button-lukk"><span
                     class=""></span> Lukk
             </button>
+        </div>
+    </div>
+    
+    <!-- NY KATEGORI -->
+    <div id="ny_kat">
+        <div class="popup-header center">
+            <div class="pull-left" style="width: 70%">
+                <h2 class="white icon-user pull-right"><i class="fa fa-plus-square-o"></i> Legg til kategori</h2>
+            </div>
+            <div class="pull-right half" style="width: 30%;">
+                <i class="logginn-icon-lukk fa fa-times fa-2x red pull-right"></i>
+            </div>
+        </div>
+
+        <div class="popup-container center">
+            <form id="ny_kat_form" name="ny_kat_form" method="post" action="http://localhost/forum/www/includes/nykat.php">
+                <div class="popup-divider">
+                    <input type="text" name="ny_kat_navn" id="ny_kat_navn" placeholder="Kategori navn" class="popup-input">
+                </div>
+                <input type="submit" name="ny_kat_btn" id="ny_kat_submit" value="LEGG TIL">
+            </form>
+        </div>
+    </div>
+
+    <!-- NY UNDERKATEGORI -->
+    <div id="ny_ukat">
+        <div class="popup-header center">
+            <div class="pull-left" style="width: 80%">
+                <h2 class="white icon-user pull-right"><i class="fa fa-plus-square-o"></i> Legg til underkategori</h2>
+            </div>
+            <div class="pull-right half" style="width: 20%;">
+                <i class="logginn-icon-lukk fa fa-times fa-2x red pull-right"></i>
+            </div>
+        </div>
+
+        <div class="popup-container center">
+            <form id="ny_ukat_form" name="ny_ukat_form" method="post" action="http://localhost/forum/www/includes/nyukat.php">
+                <div class="popup-divider">
+                    <input type="text" name="ny_ukat_navn" id="ny_kat_navn" placeholder="Kategori navn" class="popup-input">
+                </div>
+                <div class="popup-divider">
+                    <input type="text" name="ny_ukat_besk" id="ny_kat_besk" placeholder="Kategori beskrivelse" class="popup-input">
+                </div>
+                <div class="popup-divider">
+                    <select name="ny_ukat_img" class="popup-select">
+                        <option value="fa fa-th-list fa-2x">Velg bilde</option>
+                        <option value="fa fa-exclamation-triangle fa-2x">Feil</option>
+                    </select>
+                </div>
+                <input type="submit" name="ny_ukat_btn" id="ny_ukat_submit" value="LEGG TIL">
+            </form>
         </div>
     </div>
 <?php

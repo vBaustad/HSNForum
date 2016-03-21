@@ -118,10 +118,10 @@ _END;
         // Setter riktig charset for
         $conn->set_charset("utf8");
         // Legg til bruker i databasen
-        $leggtil_bruker = mysqli_query($conn, "INSERT INTO bruker (bruker_id, bruker_navn, bruker_pass, bruker_mail, bruker_dato, bruker_level, bruker_aktiv, bruker_fornavn, bruker_etternavn)
+        $sql = mysqli_query($conn, "INSERT INTO bruker (bruker_id, bruker_navn, bruker_pass, bruker_mail, bruker_dato, bruker_level, bruker_aktiv, bruker_fornavn, bruker_etternavn)
             VALUES(NULL, '$brukernavn', '$passordhash', '$epost', '$dato', '$level', '$aktiv', '$fornavn', '$etternavn')");
 
-        if ($leggtil_bruker) {
+        if ($sql) {
             // Henter den nye IDen som nettopp ble laget i databasen
             $bruker_id = mysqli_insert_id($conn);
 

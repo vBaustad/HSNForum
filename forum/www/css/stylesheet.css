@@ -53,7 +53,7 @@ html {
     width: 34%;
 }
 
-/* LOGG INN / REGISTRER */
+/* ALLE TYPER POPUP-BOKSER */
 .popup-header {
     height: 30px;
     line-height: 60px;
@@ -63,7 +63,7 @@ html {
     vertical-align: middle;
 }
 
-.registrer-box-success, .registrer-mail-sendt, .registrer-box-loading, #registrer-box, #logginn-box, #registrer-feil {
+.registrer-box-success, .registrer-mail-sendt, .registrer-box-loading, #registrer-box, #logginn-box, #registrer-feil, #ny_kat, #ny_ukat {
     display: none;
     position: fixed;
     margin: auto;
@@ -77,6 +77,14 @@ html {
     -moz-box-shadow: 0 4px 10px 4px rgba(19, 35, 47, .3);
     -webkit-box-shadow: 0 4px 10px 4px rgba(19, 35, 47, .3);
     background: #24313c;
+}
+
+#ny_ukat {
+    height: 320px;
+}
+
+#ny_kat {
+    height: 185px;
 }
 
 #logginn-box {
@@ -122,6 +130,30 @@ html {
 
 .popup-container {
     width: 90%;
+}
+
+.popup-select {
+    color: white;
+    font-size: 1em;
+    width: 100%;
+    height: 40px;
+    display: block;
+    text-decoration: none;
+    text-align: center;
+    border: none;
+    outline: none;
+    padding-left: 7px;
+    background: #7fa0e0;
+}
+
+.popup-select:hover {
+    transition: 0.3s;
+    background: #5b78b5;
+}
+
+.popup-select option {
+    font-size: 0.85em;
+    background: #6599ff;
 }
 
 .popup-input-double:focus {
@@ -171,7 +203,7 @@ html {
     margin-top: 40px;
 }
 
-#registrer-submitt, #logginn-submitt {
+#registrer_submitt, #logginn_submitt, #ny_kat_submit, #ny_ukat_submit {
     color: white;
     font-size: 1.3em;
     width: 100%;
@@ -185,7 +217,7 @@ html {
     margin-top: 25px;
 }
 
-#registrer-submitt:hover, #logginn-submitt:hover {
+#registrer_submitt:hover, #logginn_submitt:hover, #ny_kat_submit:hover, #ny_kat_submit:hover {
     background: #179b77;
     transition: background 0.3s;
     cursor: pointer;
@@ -284,6 +316,19 @@ html {
     color: #d1080c;
 }
 
+/* BUTTONS */
+.button-std {
+    display: inline-block;
+    padding: 7px 14px;
+    background-color: #7fa0e0;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+}
+
 /* TEXT */
 .link-light {
     color: #99bcff;
@@ -300,6 +345,11 @@ html {
 
 .white {
     color: #f5f5f5;
+}
+
+th h2 a {
+    text-decoration: underline;
+    color: #3f45c6;
 }
 
 h1 {
@@ -438,6 +488,24 @@ tbody > tr > td > a:hover {
     width: 14em;
 }
 
+.kat_delete {
+    margin-bottom: 35px;
+    color: rgba(177, 25, 22, 0.5);
+}
+
+.kat_delete:hover {
+    color: rgba(233, 71, 71, 1);
+}
+
+.ny_ukat {
+    color: rgba(23, 169, 0, 0.78);
+}
+
+.ny_ukat:hover {
+    color: rgb(32, 189, 22);
+    cursor: pointer;
+}
+
 /* FOOTER */
 footer {
     background: #7fa0e0;
@@ -447,6 +515,14 @@ footer {
 }
 
 /* POSITIONING ELEMENTS */
+.pad-right {
+    padding-right: 7px;
+}
+
+.mar-bot {
+    margin-bottom: 7px;
+}
+
 .half {
     width: 50%;
 }
