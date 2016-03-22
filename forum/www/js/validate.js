@@ -26,23 +26,71 @@ function valPassord(verdi) {
 }
 
 
+function bnavnLedig(bnavn) {
+    if (bnavn.length == 0) {
+        document.getElementById("status").innerHTML = "";
+        return;
+    } else {
+        document.getElementById("status").innerHTML = 'Sjekker...';
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                document.getElementById("status").innerHTML = xmlhttp.responseText;
+            }
+        }
+        xmlhttp.open("GET", "http://localhost/forum/www/includes/sjekkbruker.php?bnavn="+bnavn, true);
+        xmlhttp.send();
+    }
+}
+
 /* Funksjoner for visuel validering */
 function sjekkBNavn(verdi) {
     var ptn = /^[A-Za-z0-9]+$/;
 
-    if (ptn.test(document.getElementById(verdi).value)) {
+    // CALL finn_bruker ('brukernavn')
+    // if return 1 opptatt, 0 ledig
+
+    // https://www.youtube.com/watch?v=woNQ2MA_0XU
+
+    var bnavn = document.getElementById("brukernavn_reg").value;
+
+    if (ptn.test(document.getElementById(verdi).value) && bnavn != "") {
+
+        var hr = new XMLHttpRequest();
+        var url = "sjekkbruker.php";
+        var data = "bnavn="+bnavn;
+
+        hr.open("POST", url, true);
+        hr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        hr.onreadystatechange = function () {
+            if (hr.readyState == 4 && hr.status == 200) {
+                var return_data = hr.responseText;
+                document.getElementById("bnavnErr").innerHTML = return_data;
+            }
+        }
+        hr.send(data);
+        document.getElementById("bnavnErr").innerHTML = 'Sjekker...';
+
+
         document.getElementById('bnavnErr').style.display = "none";
         document.getElementById(verdi).style.border = 'solid 3px #60bb80';
     }
-    else {
+    else if (bnavn == "") {
         document.getElementById(verdi).style.border = 'solid 3px #e35152';
         document.getElementById('bnavnErr').style.display = "block";
+        document.getElementById("bnavnErr").innerHTML = 'Brukernavn kan ikke vær blankt';
     }
+    else if (!ptn.test(document.getElementById(verdi).value) && bnavn != "") {
+        document.getElementById(verdi).style.border = 'solid 3px #e35152';
+        document.getElementById('bnavnErr').style.display = "block";
+        document.getElementById("bnavnErr").innerHTML = 'Feil brukernavn';
+    }
+
 }
 
+// Dårlig regEx (! er lov)!
 function sjekkFNavn(verdi) {
     var ptn = /^[A-Za-z -']+$/;
-
     if (ptn.test(document.getElementById(verdi).value)) {
         document.getElementById('fnavnErr').style.display = "none";
         document.getElementById(verdi).style.border = 'solid 3px #60bb80';
@@ -54,6 +102,7 @@ function sjekkFNavn(verdi) {
     }
 }
 
+// Dårlig regEx (! er lov)!
 function sjekkENavn(verdi) {
     var ptn = /^[A-Za-z -']+$/;
 
@@ -126,6 +175,7 @@ function sjekkSkjema() {
 
     var ok = 0;
 
+    // Brukernavn regEx er OK
     if (valBNavn(bnavn)) {
         ok += 1;
     }

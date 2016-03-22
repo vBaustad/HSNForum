@@ -19,6 +19,7 @@ require_once 'db_connect.php';
             $("#ny_ukat").hide();
             $("#slett_kat").hide();
         });
+        
         /* Loading...
          $("#registrer-submitt").click(function () {
          $(".registrer-box-loading").show();
@@ -83,11 +84,10 @@ _END;
     </div>
 
     <!-- REGISTRER.php -->
-
     <!-- Feilkoder -->
     <div id="registrer-feil">
         <div class="popup-header center">
-            <h2 class="popup-header-text icon-error"> Uff da...</h2>
+            <h2 class="popup-header-text icon-error white"><i class="fa fa-exclamation-triangle"></i> Uff da...</h2>
             <hr class="hr-popup">
         </div>
 
@@ -95,14 +95,12 @@ _END;
             <p class="white">Det oppstod en feil under registreringen.<br>Venligst prøv igjen...</p>
             <p class="white">Skulle problemet fortsette, ta <a class="link-light" href="#">kontakt</a> med administrator
                 og oppgi denne feilkoden:</p>
-            <h2 style="display: none" class="feilkode1">Feilkode 1</h2>
-            <h2 style="display: none" class="feilkode2">Feilkode 2</h2>
-            <h2 style="display: none" class="feilkode3">Feilkode 3</h2>
-            <h2 style="display: none" class="feilkode4">Feilkode 4</h2>
+            <h2 style="display: none" id="feilkode1" class="feilkode white">Feilkode 1</h2>
+            <h2 style="display: none" id="feilkode2" class="feilkode white">Feilkode 2</h2>
+            <h2 style="display: none" id="feilkode3" class="feilkode white">Feilkode 3</h2>
+            <h2 style="display: none" id="feilkode4" class="feilkode white">Feilkode 4</h2>
 
-            <button form="registrer" name="button-avbryt" type="submit" class="registrer-button-lukk"><span
-                    class=""></span> Lukk
-            </button>
+            <button form="registrer" name="button-avbryt" type="submit" class="registrer-button-lukk"> Lukk</button>
         </div>
     </div>
 
@@ -140,38 +138,39 @@ _END;
             <form id="registrerForm" name="registrer" method="post" action="http://localhost/forum/www/registrer.php" onsubmit="return sjekkSkjema()">
                 <div class="popup-divider">
                     <input type="text" name="brukernavn_reg" id="brukernavn_reg" class="popup-input valid"
-                           placeholder="Brukernavn" onblur="sjekkBNavn(id)">
-                    <span id="bnavnErr">Brukernavnet stemmer ikke</span>
+                           placeholder="Brukernavn" onkeyup="bnavnLedig(this.value)" onblur="sjekkBNavn(id)">
+                    <span id="bnavnErr"></span>
+                    <span id="status"></span>
                 </div>
 
                 <div class="popup-divider-half pull-left">
                     <input type="text" name="fornavn_reg" id="fornavn_reg" class="popup-input input-pull-left"
                            placeholder="Fornavn" onblur="sjekkFNavn(id)">
-                    <span id="fnavnErr">Fornavnet stemmer ikke</span>
+                    <p id="fnavnErr">Fornavnet stemmer ikke</p>
                 </div>
 
                 <div class="popup-divider-half pull-right">
                     <input type="text" name="etternavn_reg" id="etternavn_reg" class="popup-input pull-right"
                            placeholder="Etternavn" onblur="sjekkENavn(id)">
-                    <span id="enavnErr" class="pull-right">Etternavnet stemmer ikke</span>
+                    <p id="enavnErr" class="pull-right">Etternavnet stemmer ikke</p>
                 </div>
 
                 <div class="popup-divider clearfix">
                     <input type="text" name="epost_reg" id="epost_reg" class="popup-input" placeholder="Epost-adresse"
                            onblur="sjekkEpost(id)">
-                    <span id="epostErr">Eposten stemmer ikke</span>
+                    <p id="epostErr">Eposten stemmer ikke</p>
                 </div>
 
                 <div class="popup-divider">
                     <input type="password" name="pass_reg" id="pass_reg" class="popup-input" placeholder="Passord"
                            onblur="sjekkPass(id)">
-                    <span id="passErr">Passer ikke kriteriene!</span>
+                    <p id="passErr">Passer ikke kriteriene!</p>
                 </div>
 
                 <div class="popup-divider">
                     <input type="password" name="pass_two_reg" id="pass_two_reg" class="popup-input"
                            placeholder="Gjenta passord" onblur="sjekkPassTo(id)">
-                    <span id="passTwoErr">Samsvarer ikke med passordet over!</span>
+                    <p id="passTwoErr">Samsvarer ikke med passordet over!</p>
                 </div>
                 <input type="submit" name="registrer-btn" id="registrer_submitt" value="Fullfør">
             </form>

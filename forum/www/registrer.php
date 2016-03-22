@@ -42,79 +42,85 @@ if (isset($_POST['registrer-btn'])) {
 
     $err = 0;
 
+    if (!valBNavn($brukernavn) || !valNavn($fornavn) || !valNavn($etternavn) || !valEpost($epost) || !valPass($passord) || $passord !== $passordTo ) {
+        echo <<<_END
+        <script type='text/javascript'>
+            $(document).ready(function() {
+                $("#registrer-box").show();
+                $(".feilkode").css("color", "red");
+            });
+        </script>
+_END;
+    }
+
     if (!valBNavn($brukernavn)) {
         $err .= 1;
         echo <<<_END
-      <script type='text/javascript'>
-        $(document).ready(function() {
-          $('#bnavnErr').show();
-        });
-      </script>
+        <script type='text/javascript'>
+            document.getElementById('bnavnErr').style.display = "block";
+            document.getElementById('brukernavn_reg').style.border = 'solid 3px #e35152';
+        </script>
 _END;
     }
 
     if (!valNavn($fornavn)) {
         $err .= 1;
         echo <<<_END
-      <script type='text/javascript'>
-        $(document).ready(function() {
-          $('#fnavnErr').show();
-        });
-      </script>
+        <script type='text/javascript'>
+            document.getElementById('fnavnErr').style.display = "block";
+            document.getElementById('fornavn_reg').style.border = 'solid 3px #e35152';
+              
+        </script>
 _END;
     }
 
     if (!valNavn($etternavn)) {
         $err .= 1;
         echo <<<_END
-      <script type='text/javascript'>
-        $(document).ready(function() {
-          $('#enavnErr').show();
-        });
-      </script>
+        <script type='text/javascript'>
+            document.getElementById('enavnErr').style.display = "block";
+            document.getElementById('etternavn_reg').style.border = 'solid 3px #e35152';
+        </script>
 _END;
     }
 
     if (!valEpost($epost)) {
         $err .= 1;
         echo <<<_END
-      <script type='text/javascript'>
-        $(document).ready(function() {
-          $('#epostErr').show();
-        });
-      </script>
+        <script type='text/javascript'>
+            document.getElementById('epostErr').style.display = "block";
+            document.getElementById('epost_reg').style.border = 'solid 3px #e35152';
+        </script>
 _END;
     }
 
     if (!valPass($passord)) {
         $err .= 1;
         echo <<<_END
-      <script type='text/javascript'>
-        $(document).ready(function() {
-          $('#passErr').show();
-        });
-      </script>
+        <script type='text/javascript'>
+            document.getElementById('passErr').style.display = "block";
+            document.getElementById('pass_reg').style.border = 'solid 3px #e35152';
+        </script>
 _END;
     }
 
     if ($passord !== $passordTo) {
         $err .= 1;
         echo <<<_END
-      <script type='text/javascript'>
-        $(document).ready(function() {
-          $('#passTwoErr').show();
-        });
-      </script>
+        <script type='text/javascript'>
+            document.getElementById('passTwoErr').style.display = "block";
+            document.getElementById('pass_two_reg').style.border = 'solid 3px #e35152';
+        </script>
 _END;
     }
 
-    /* Sjekekr om alt er OK og deretter legger til ny bruker */
-    if ($err === 0) {
+    /* Sjekker om alt er OK og deretter legger til ny bruker */
+    if ($err == 0) {
         // Genererer passord
         $salt1 = 'dkn?';
         $salt2 = '$l3*!';
         $passordhash = hash('ripemd160', "$salt1$passord$salt2");
-        
+
         // Legg til bruker i databasen
         $sql = mysqli_query($conn, "INSERT INTO bruker (bruker_id, bruker_navn, bruker_pass, bruker_mail, bruker_dato, bruker_level, bruker_aktiv, bruker_fornavn, bruker_etternavn)
             VALUES(NULL, '$brukernavn', '$passordhash', '$epost', '$dato', '$level', '$aktiv', '$fornavn', '$etternavn')");
@@ -142,27 +148,33 @@ _END;
                 // Hvis alt er OK -> Send epost
                 if (send_email($info)) {
                     echo <<<_END
-              <script type='text/javascript'>
-                $(document).ready(function() {
-                  $('.registrer-box-mail-sendt').show();
-                });
-              </script>
+                        <script type='text/javascript'>
+                          $(document).ready(function() {
+                            $('.registrer-box-mail-sendt').show();
+                          });
+                        </script>
 _END;
 
                 } // Feilkode 1
                 else {
                     echo <<<_END
-                <script type='text/javascript'>
-                    document.getElementById("feilkode1").style.display = "block";
-                </script>
+                        <script type='text/javascript'>
+                            $(document).ready(function() {
+                                $("#registrer-feil").show();
+                                $("#feilkode1").css("display", "block");
+                            })
+                        </script>
 _END;
                 }
             } // Feilkode 2
             else {
                 echo <<<_END
-                <script type='text/javascript'>
-                    document.getElementById("feilkode2").style.display = "block";
-                </script>
+                    <script type='text/javascript'>
+                        $(document).ready(function() {
+                            $("#registrer-feil").show();
+                            $("#feilkode2").css("display", "block");
+                        })
+                    </script>
 _END;
 
             }
@@ -170,28 +182,22 @@ _END;
         else {
             echo <<<_END
                 <script type='text/javascript'>
-                    document.getElementById("feilkode2").style.display = "block";
+                    $(document).ready(function() {
+                        $("#registrer-feil").show();
+                        $("#feilkode3").css("display", "block");
+                    })
                 </script>
 _END;
 
         }
-    } // Feilkode 4
-    else {
-        echo <<<_END
-                <script type='text/javascript'>
-                    document.getElementById("feilkode2").style.display = "block";
-                </script>
-_END;
-
     }
 }
 
 /*
-    -- Feilkoder --
+    -- Feilkoder -- STEMMER IKKE??!!
     1: Eposten ble ikke sendt - Mest sansynlig feil på klient side.
-    2: Informasjon ble ikke sendt ordentlig til funksjonen send_email
-    3: Klarte ikke legge til bruker i tabellen "bekreft"
-    4: Klarte ikke legge til bruker i tabellen "bruker"
+    2: Klarte ikke legge til bruker i tabellen "bekreft"
+    3: Klarte ikke legge til bruker i tabellen "bruker"
 */
 ?>
 
