@@ -12,7 +12,36 @@ html {
 .chatbox-messages {
     width: 99%;
     height: 80%;
-    background: gray;
+    background: #899eff;
+    padding: 5px 5px 5px 5px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.melding_rad {
+    clear: both;
+}
+
+.melding_rad > p {
+    font-size: 0.85em;
+    margin: 5px 0 0 0;
+}
+
+.chat_bnavn {
+    float: left;
+    background-color: #5b78b5;
+    border: 1px solid #3847ff;
+    border-radius: 3px;
+    padding: 0 5px 3px 5px;
+}
+
+.chat_msg {
+    float: left;
+    padding: 0 3px 3px 3px;
+}
+
+.chat_dato {
+    float: right !important;
 }
 
 .chatbox-bottom {
@@ -80,7 +109,7 @@ html {
 }
 
 #ny_ukat {
-    height: 320px;
+    height: 370px;
 }
 
 #ny_kat {
@@ -192,7 +221,7 @@ html {
     position: inherit;
 }
 
-#bnavnErr, #fnavnErr, #enavnErr, #epostErr, #passErr, #passTwoErr {
+#sjekkBnavn, #sjekkEpost, #bnavnErr, #fnavnErr, #enavnErr, #epostErr, #passErr, #passTwoErr {
     font-size: 0.7em;
     color: #f5f5f5;
     margin: 0;
@@ -201,6 +230,10 @@ html {
     display: none;
     position: fixed;
     float: left;
+}
+
+#sjekkBnavn, #sjekkEpost {
+    display: inline-block;
 }
 
 #fnavnErr, #enavnErr {
@@ -312,12 +345,36 @@ html {
     cursor: pointer;
 }
 
+.black {
+    color: #111111;
+}
+
+.green {
+    color: #00FF00;
+}
+
+.white {
+    color: #f5f5f5;
+}
+
+.blue {
+    color: #3847ff;
+}
+
 .cyan {
     color: #1ab188;
 }
 
 .red {
     color: #d1080c;
+}
+
+.orange {
+    color: #FFA500;
+}
+
+.purple {
+    color: #800080;
 }
 
 /* BUTTONS */
@@ -345,10 +402,6 @@ html {
 
 .text-center {
     text-align: center;
-}
-
-.white {
-    color: #f5f5f5;
 }
 
 th h2 a {

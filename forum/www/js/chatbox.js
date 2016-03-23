@@ -1,16 +1,20 @@
-$(function(){
-	$(document).on('submit', '#chatForm', function(){
-		var text = $.trim($("#text").val());
-		var name = $.trim($("#name").val());
+function chat() {
 
-		if(text != "" && name != ""){
-			$.post('chatPoster.php',{text: text, name: name}, function(data){
-				$(".chatMessages").append(data);
-		});
+    var melding = document.getElementById('chat_msg').value;
 
-		}else{
-			alert("data missing");
-		}
+    if (melding == "") {
+        alert ("Du må nesten skrive noe først...");
+        return;
+    }
+    else {
+        var xmlhttp = new XMLHttpRequest();
 
-	});
-});
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                    document.getElementById("meldinger").innerHTML = xmlhttp.responseText;
+                }
+            }
+        xmlhttp.open("GET", "http://localhost/forum/www/includes/chatinn.php?melding="+melding, true);
+        xmlhttp.send();
+    }
+}

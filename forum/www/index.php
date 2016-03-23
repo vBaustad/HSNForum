@@ -24,7 +24,7 @@
 require_once 'includes/db_connect.php';
 require_once 'includes/header.php';
 
-if ($_SESSION['bruker_level'] == '2') {
+if ($_SESSION && $_SESSION['bruker_level'] == '2') {
     echo "Du er admin! og kan se ekstra knapper! :D";
     echo '<a class="pull-right button-std mar-bot" id="ny_kat_btn" href="#"><i class="fa fa-plus-square-o"></i> Ny kategori</a>';
 }
@@ -53,13 +53,13 @@ if ($kat) {
                 $ukat_teller = $row_kat['kat_id'];
             }
 
-            $ukat = mysqli_query($conn, "SELECT kat_id, ukat_navn, ukat_beskrivelse, ukat_img FROM underkategori WHERE kat_id = '$ukat_teller'");
+            $ukat = mysqli_query($conn, "SELECT kat_id, ukat_navn, ukat_beskrivelse, ukat_img, ukat_img_farge FROM underkategori WHERE kat_id = '$ukat_teller'");
 
             if ($ukat) {
                 if (mysqli_num_rows($ukat) > 0) {
                     while ($row_ukat = mysqli_fetch_assoc($ukat)) {
                         echo '      <tr>';
-                        echo '          <td class="center"><i class="' . $row_ukat['ukat_img'] . '"></i></span></td>';
+                        echo '          <td class="center"><i class="' . $row_ukat['ukat_img'] . $row_ukat['ukat_img_farge'] . '"></i></span></td>';
                         echo '          <td><h4><a href="#">' . $row_ukat['ukat_navn'] . '</a><br><small>' . $row_ukat['ukat_beskrivelse'] . '</small></h4></td>';
                         echo '          <td class="text-center hidden-xs hidden-sm"><a href="#">1 234</a></td>';
                         echo '          <td class="text-center hidden-xs hidden-sm"><a href="#">4 321</a></td>';
@@ -67,8 +67,6 @@ if ($kat) {
                         echo '      </tr>';
                     }
                 }
-
-
             }
             echo '  </tbody>';
             echo '</table>';

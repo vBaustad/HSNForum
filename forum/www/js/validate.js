@@ -25,80 +25,80 @@ function valPassord(verdi) {
     return lengde(verdi, 6, 10) && ptn1.test(verdi) && ptn2.test(verdi) && ptn3.test(verdi);
 }
 
-
-function bnavnLedig(bnavn) {
-    if (bnavn.length == 0) {
-        document.getElementById("status").innerHTML = "";
-        return;
-    } else {
-        document.getElementById("status").innerHTML = 'Sjekker...';
-        var xmlhttp = new XMLHttpRequest();
-        xmlhttp.onreadystatechange = function() {
-            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                document.getElementById("status").innerHTML = xmlhttp.responseText;
-            }
-        }
-        xmlhttp.open("GET", "http://localhost/forum/www/includes/sjekkbruker.php?bnavn="+bnavn, true);
-        xmlhttp.send();
-    }
-}
-
 /* Funksjoner for visuel validering */
 function sjekkBNavn(verdi) {
     var ptn = /^[A-Za-z0-9]+$/;
 
-    // CALL finn_bruker ('brukernavn')
-    // if return 1 opptatt, 0 ledig
+    // Forklart -> https://www.youtube.com/watch?v=woNQ2MA_0XU
 
-    // https://www.youtube.com/watch?v=woNQ2MA_0XU
+    // Erstatt mange linjer(document.getelementbyid med var bnavn ?
 
     var bnavn = document.getElementById("brukernavn_reg").value;
 
-    if (ptn.test(document.getElementById(verdi).value) && bnavn != "") {
+    if (bnavn == 0) {
+        document.getElementById("sjekkBnavn").innerHTML = "";
+    } else {
 
-        var hr = new XMLHttpRequest();
-        var url = "sjekkbruker.php";
-        var data = "bnavn="+bnavn;
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                document.getElementById("sjekkBnavn").innerHTML = xmlhttp.responseText;
+            }
+        };
+        xmlhttp.open("GET", "http://localhost/forum/www/includes/sjekkinfo.php?bnavn="+bnavn, true);
+        xmlhttp.send();
 
-        hr.open("POST", url, true);
-        hr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        hr.onreadystatechange = function () {
-            if (hr.readyState == 4 && hr.status == 200) {
-                var return_data = hr.responseText;
-                document.getElementById("bnavnErr").innerHTML = return_data;
+        var resultat = document.getElementById("sjekkBnavn").innerHTML;
+
+        if (resultat.indexOf("er tatt!") >= 0) {
+            document.getElementById('bnavnErr').style.display = "none";
+            document.getElementById('sjekkBnavn').style.display = "block";
+            document.getElementById(verdi).style.border = 'solid 3px #e35152';
+        }
+        else {
+            if (resultat.indexOf("er ledig") >= 0) {
+                document.getElementById('sjekkBnavn').style.display = "none";
+            }
+
+            if (ptn.test(document.getElementById(verdi).value) && bnavn != "") {
+                document.getElementById('bnavnErr').style.display = "none";
+                document.getElementById(verdi).style.border = 'solid 3px #60bb80';
+            }
+            else if (bnavn == "") {
+                document.getElementById(verdi).style.border = 'solid 3px #e35152';
+                document.getElementById('bnavnErr').style.display = "block";
+                document.getElementById("bnavnErr").innerHTML = 'Brukernavn kan ikke vær blankt';
+            }
+            else if (!ptn.test(document.getElementById(verdi).value) && bnavn != "") {
+                document.getElementById(verdi).style.border = 'solid 3px #e35152';
+                document.getElementById('bnavnErr').style.display = "block";
+                document.getElementById("bnavnErr").innerHTML = 'Feil brukernavn';
             }
         }
-        hr.send(data);
-        document.getElementById("bnavnErr").innerHTML = 'Sjekker...';
-
-
-        document.getElementById('bnavnErr').style.display = "none";
-        document.getElementById(verdi).style.border = 'solid 3px #60bb80';
     }
-    else if (bnavn == "") {
-        document.getElementById(verdi).style.border = 'solid 3px #e35152';
-        document.getElementById('bnavnErr').style.display = "block";
-        document.getElementById("bnavnErr").innerHTML = 'Brukernavn kan ikke vær blankt';
-    }
-    else if (!ptn.test(document.getElementById(verdi).value) && bnavn != "") {
-        document.getElementById(verdi).style.border = 'solid 3px #e35152';
-        document.getElementById('bnavnErr').style.display = "block";
-        document.getElementById("bnavnErr").innerHTML = 'Feil brukernavn';
-    }
-
 }
 
 // Dårlig regEx (! er lov)!
 function sjekkFNavn(verdi) {
     var ptn = /^[A-Za-z -']+$/;
-    if (ptn.test(document.getElementById(verdi).value)) {
-        document.getElementById('fnavnErr').style.display = "none";
-        document.getElementById(verdi).style.border = 'solid 3px #60bb80';
-        return true;
+    var fnavn = document.getElementById(verdi).value;
+
+    if (fnavn == "") {
+        document.getElementById("fnavnErr").innerHTML = "Fornavn kan ikke være blank";
+        document.getElementById(verdi).style.border = 'solid 3px #e35152';
+        document.getElementById('fnavnErr').style.display = "block";
     }
     else {
-        document.getElementById(verdi).style .border = 'solid 3px #e35152';
-        document.getElementById('fnavnErr').style.display = "block";
+        if (ptn.test(fnavn)) {
+            document.getElementById('fnavnErr').style.display = "none";
+            document.getElementById(verdi).style.border = 'solid 3px #60bb80';
+            return true;
+        }
+        else {
+            document.getElementById("fnavnErr").innerHTML = "Fornavnet har ugyldige karakterer";
+            document.getElementById(verdi).style.border = 'solid 3px #e35152';
+            document.getElementById('fnavnErr').style.display = "block";
+        }
     }
 }
 
@@ -120,14 +120,43 @@ function sjekkENavn(verdi) {
 function sjekkEpost(verdi) {
     var ptn = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-    if (ptn.test(document.getElementById(verdi).value)) {
-        document.getElementById('epostErr').style.display = "none";
-        document.getElementById(verdi).style.border = 'solid 3px #60bb80';
-        return true;
-    }
-    else {
-        document.getElementById(verdi).style.border = 'solid 3px #e35152';
-        document.getElementById('epostErr').style.display = "block";
+    var epost = document.getElementById("epost_reg").value;
+
+    if (epost == 0) {
+        document.getElementById("sjekkEpost").innerHTML = "";
+    } else {
+
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                document.getElementById("sjekkEpost").innerHTML = xmlhttp.responseText;
+            }
+        };
+        xmlhttp.open("GET", "http://localhost/forum/www/includes/sjekkinfo.php?epost=" +epost, true);
+        xmlhttp.send();
+
+        var resultat = document.getElementById("sjekkEpost").innerHTML;
+
+        if (resultat.indexOf("er tatt!") >= 0) {
+            document.getElementById('epostErr').style.display = "none";
+            document.getElementById('sjekkEpost').style.display = "block";
+            document.getElementById(verdi).style.border = 'solid 3px #e35152';
+        }
+        else {
+            if (resultat.indexOf("er ledig") >= 0) {
+                document.getElementById('sjekkEpost').style.display = "none";
+            }
+
+            if (ptn.test(document.getElementById(verdi).value)) {
+                document.getElementById('epostErr').style.display = "none";
+                document.getElementById(verdi).style.border = 'solid 3px #60bb80';
+                return true;
+            }
+            else {
+                document.getElementById(verdi).style.border = 'solid 3px #e35152';
+                document.getElementById('epostErr').style.display = "block";
+            }
+        }
     }
 }
 

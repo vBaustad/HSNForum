@@ -1,48 +1,36 @@
 <?php
 require_once 'includes/db_connect.php';
 require_once 'includes/functions.php';
-
-// Get username
-$user = $_GET['u'];
-
-//lagre chatten
-if (isset($_POST['text']) && isset($_POST['name'])) {
-    $text = strip_tags(stripslashes($_POST['text']));
-    $name = strip_tags(stripslashes($_POST['name']));
-
-    // må byttes ut med mysqli
-    if (!empty($text) && !empty($name)) {
-        $sql = "INSERT INTO chatbox (msg_id, msg_navn, msg_melding) VALUES(NULL, '$name', '$text')";
-
-        if ($conn->query($sql) === TRUE) {
-            echo "New record created successfully";
-        } else {
-            echo "Error: " . $sql . "<br>" . $conn->error;
-        }
-
-        echo "<li class='cn><b>" . ucwords($name) . "</b> - " . $text . "</li>";
-    }
-}
 ?>
+<script src="js/chatbox.js" xmlns="http://www.w3.org/1999/html"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $.ajaxSetup({cache:false});
+        setInterval(function () {
+            $("#meldinger").load('http://localhost/forum/www/includes/chatut.php');
+        }, 1000);
+    });
+</script>
 
 <div id="chatbox">
     <div class="chatbox-container pull-left">
-        <div class='chatbox-messages'>
+        <div id="meldinger" class='chatbox-messages'>
+        <!--    <div class="melding_rad"><p class="chat_bnavn">Jogex:</p><p class="chat_msg">Hey hva skjer a?</p><p class="chat_dato">@ 12/12 24:00</p><br></div>
+            <div class="melding_rad"><p class="chat_bnavn">Jogex:</p><p class="chat_msg">Hey hva skjer a?</p><p class="chat_dato">@ 12/12 24:00</p><br></div>
+            <div class="melding_rad"><p class="chat_bnavn">Jogex:</p><p class="chat_msg">Hey hva skjer a?</p><p class="chat_dato">@ 12/12 24:00</p><br></div>
+            <div class="melding_rad"><p class="chat_bnavn">Jogex:</p><p class="chat_msg">Hey hva skjer a?</p><p class="chat_dato">@ 12/12 24:00</p><br></div>
+            <div class="melding_rad"><p class="chat_bnavn">Jogex:</p><p class="chat_msg">Hey hva skjer a?</p><p class="chat_dato">@ 12/12 24:00</p><br></div>
+    -->    </div>
 
-        </div>
         <div class='chatbox-bottom'>
-            <form action='#' onSubmit='return false;' id='chatForm'>
-                <input type='hidden' name='name' id='name' value='<?php echo $user; ?>'/>
-                <input type='text' name='text' id='chatbox-msg' value=''
-                       placeholder='Skriv en melding til alle sammen!'/>
-                <input type='submit' name='submit' id="chatbox-send" value='Send'/>
-            </form>
+            <input type='text' name='chat_msg' id='chat_msg' placeholder='Skriv en melding til alle sammen!'/>
+            <button class="button-std"><a href="#" onclick="chat()">SEND</a></button>
         </div>
     </div>
-</div>
 
 <div class="textarea pull-right hidden-xs hidden-sm">
     <h1>TESTING</h1>
     <p>Mer test her om test og anndre ikke test reaterte tester </p>
 </div>
 <div class="clearfix seperator"></div>
+

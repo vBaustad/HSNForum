@@ -41,7 +41,7 @@ require_once 'db_connect.php';
 </script>
 
 <?php
-    if ($_SESSION['bruker_level'] == '2') {
+    if ($_SESSION && $_SESSION['bruker_level'] == '2') {
         echo <<<_END
                 <script type="text/javascript">
                     $(document).ready(function() {
@@ -67,7 +67,7 @@ _END;
         <h1 class="pull-left"><a id="logo-text" href="http://localhost/forum/www/"><b>FORUM</b> FOR <i>HSN</i> STUDENTER</a></h1>
         
         <?php
-        if ($_SESSION['innlogget']) {
+        if ($_SESSION && $_SESSION['innlogget']) {
             echo    '<ol class="breadcrumb pull-right">';
             echo        '<li><i class="fa fa-user pad-right"></i><a id="profil-img" href="min_profil.php">' . $_SESSION['bruker_navn'] . "</a></li> ";
             echo        '<li><a id="logg_ut" href="includes/loggut.php">Logg ut</a></li>';
@@ -138,39 +138,38 @@ _END;
             <form id="registrerForm" name="registrer" method="post" action="http://localhost/forum/www/registrer.php" onsubmit="return sjekkSkjema()">
                 <div class="popup-divider">
                     <input type="text" name="brukernavn_reg" id="brukernavn_reg" class="popup-input valid"
-                           placeholder="Brukernavn" onkeyup="bnavnLedig(this.value)" onblur="sjekkBNavn(id)">
-                    <span id="bnavnErr"></span>
-                    <span id="status"></span>
+                           placeholder="Brukernavn" onkeyup="sjekkBNavn()" onblur="sjekkBNavn(id)">
+                    <span id="bnavnErr"></span> <span id="sjekkBnavn"></span>
                 </div>
 
                 <div class="popup-divider-half pull-left">
                     <input type="text" name="fornavn_reg" id="fornavn_reg" class="popup-input input-pull-left"
                            placeholder="Fornavn" onblur="sjekkFNavn(id)">
-                    <p id="fnavnErr">Fornavnet stemmer ikke</p>
+                    <span id="fnavnErr">Fornavnet stemmer ikke</span>
                 </div>
 
                 <div class="popup-divider-half pull-right">
                     <input type="text" name="etternavn_reg" id="etternavn_reg" class="popup-input pull-right"
                            placeholder="Etternavn" onblur="sjekkENavn(id)">
-                    <p id="enavnErr" class="pull-right">Etternavnet stemmer ikke</p>
+                    <span id="enavnErr" class="pull-right">Etternavnet stemmer ikke</span>
                 </div>
 
                 <div class="popup-divider clearfix">
                     <input type="text" name="epost_reg" id="epost_reg" class="popup-input" placeholder="Epost-adresse"
-                           onblur="sjekkEpost(id)">
-                    <p id="epostErr">Eposten stemmer ikke</p>
+                           onkeyup="sjekkEpost()" onblur="sjekkEpost(id)">
+                    <span id="epostErr">Eposten stemmer ikke</span> <span id="sjekkEpost"></span>
                 </div>
 
                 <div class="popup-divider">
                     <input type="password" name="pass_reg" id="pass_reg" class="popup-input" placeholder="Passord"
                            onblur="sjekkPass(id)">
-                    <p id="passErr">Passer ikke kriteriene!</p>
+                    <span id="passErr">Passer ikke kriteriene!</span>
                 </div>
 
                 <div class="popup-divider">
                     <input type="password" name="pass_two_reg" id="pass_two_reg" class="popup-input"
                            placeholder="Gjenta passord" onblur="sjekkPassTo(id)">
-                    <p id="passTwoErr">Samsvarer ikke med passordet over!</p>
+                    <span id="passTwoErr">Samsvarer ikke med passordet over!</span>
                 </div>
                 <input type="submit" name="registrer-btn" id="registrer_submitt" value="Fullfør">
             </form>
@@ -239,56 +238,7 @@ _END;
             </form>
         </div>
     </div>
-
-    <!-- NY UNDERKATEGORI -->
-    <div id="ny_ukat">
-        <div class="popup-header center">
-            <div class="pull-left" style="width: 80%">
-                <h2 class="white icon-user pull-right"><i class="fa fa-plus-square-o"></i> Legg til underkategori</h2>
-            </div>
-            <div class="pull-right half" style="width: 20%;">
-                <i class="logginn-icon-lukk fa fa-times fa-2x red pull-right"></i>
-            </div>
-        </div>
-
-        <div class="popup-container center">
-            <form id="ny_ukat_form" name="ny_ukat_form" method="post" action="http://localhost/forum/www/includes/endringer.php">
-                <div class="popup-divider">
-                    <input type="text" name="ny_ukat_navn" id="ny_kat_navn" placeholder="Kategori navn" class="popup-input">
-                </div>
-                <div class="popup-divider">
-                    <input type="text" name="ny_ukat_besk" id="ny_kat_besk" placeholder="Kategori beskrivelse" class="popup-input">
-                </div>
-                <div class="popup-divider">
-                    <select name="ny_ukat_img" class="popup-select">
-                        <option value="fa fa-th-list fa-2x">Velg bilde</option>
-                        <option value="fa fa-exclamation-triangle fa-2x">Trekantvarsel</option>
-                        <option value="fa fa-info fa-2x">Info</option>
-                        <option value="fa fa-archive fa-2x">Arkiv</option>
-                        <option value="fa fa-comment-o fa-2x">Komentar</option>
-            <!--        <option value=" fa-2x"></option>
-                        <option value=" fa-2x"></option>
-                        <option value=" fa-2x"></option>
-                        <option value=" fa-2x"></option>
-                        <option value=" fa-2x"></option>
-                        <option value=" fa-2x"></option>
-                        <option value=" fa-2x"></option>
-                        <option value=" fa-2x"></option>
-                        <option value=" fa-2x"></option>
-                        <option value=" fa-2x"></option>
-                        <option value=" fa-2x"></option>
-                        <option value=" fa-2x"></option>
-                        <option value=" fa-2x"></option>
-                        <option value=" fa-2x"></option>
-                        Legg til mange bilder her!! -->
-
-                    </select>
-                </div>
-                <input type="submit" name="ny_ukat_btn" id="ny_ukat_submit" value="LEGG TIL">
-            </form>
-        </div>
-    </div>
 <?php
-echo "Dato og tid: " . date("Y-d-m G:i:s");
+echo "Dato og tid: " . date("Y - d/m G:i:s");
 require_once(__DIR__ . '/../chatbox.php');
 ?>
