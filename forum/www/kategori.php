@@ -28,9 +28,13 @@ require_once 'includes/db_connect.php';
 require_once 'includes/header.php';
 
 
+
 $kat_id = mysqli_real_escape_string($conn, $_GET['kat_id']);
 $finnkatnavn = mysqli_query($conn, "SELECT kat_navn FROM kategori WHERE kategori.kat_id = '$kat_id'");
 $katnavn = mysqli_fetch_assoc($finnkatnavn);
+
+$_SESSION['kat_id'] = $kat_id;
+
 
 echo '<h1>' . $katnavn['kat_navn'] . '</h1>';
 if ($_SESSION['bruker_level'] == '2') {
@@ -87,6 +91,61 @@ if ($ukat) {
                 <?php echo '<p class="white">Er du vikker på at du vil slette kategorien ' . $katnavn['kat_navn'] .  '?</p>' ?>
             </div>
             <button type="submit" name="slett_kat_btn" class="button-lukk">Slett den</button>
+        </form>
+    </div>
+</div>
+
+<!-- NY UNDERKATEGORI -->
+<div id="ny_ukat">
+    <div class="popup-header center">
+        <div class="pull-left" style="width: 80%">
+            <h2 class="white icon-user pull-right"><i class="fa fa-plus-square-o"></i> Legg til underkategori</h2>
+        </div>
+        <div class="pull-right half" style="width: 20%;">
+            <i class="logginn-icon-lukk fa fa-times fa-2x red pull-right"></i>
+        </div>
+    </div>
+
+    <div class="popup-container center">
+        <form id="ny_ukat_form" name="ny_ukat_form" method="post" action="http://localhost/forum/www/includes/endringer.php">
+            <div class="popup-divider">
+                <input type="text" name="ny_ukat_navn" id="ny_kat_navn" placeholder="Kategori navn" class="popup-input">
+            </div>
+            <div class="popup-divider">
+                <input type="text" name="ny_ukat_besk" id="ny_kat_besk" placeholder="Kategori beskrivelse" class="popup-input">
+            </div>
+            <div class="popup-divider">
+                <select name="ny_ukat_img" class="popup-select">
+                    <option value="fa fa-th-list fa-2x ">Velg bilde</option>
+                    <option value="fa fa-exclamation-triangle fa-2x ">Trekantvarsel</option>
+                    <option value="fa fa-info fa-2x ">Info</option>
+                    <option value="fa fa-archive fa-2x ">Arkiv</option>
+                    <option value="fa fa-comment-o fa-2x ">Kommentar</option>
+                    <option value="fa fa-question fa-2x ">Hjelp</option>
+                    <option value="fa fa-book fa-2x ">Bok</option>
+                    <option value="fa fa-calendar-o fa-2x ">Kalender</option>
+                    <option value="fa fa-thumbs-up fa-2x ">Tommel opp</option>
+                    <option value="fa fa-thumbs-down fa-2x ">Tommel ned</option>
+                    <option value="fa fa-heart-o fa-2x ">Hjerte</option>
+                    <option value="fa fa-file fa-2x ">Ark/Papir</option>
+                    <option value="fa fa-bar-chart fa-2x ">Diagram</option>
+                </select>
+            </div>
+            <div class="popup-divider">
+                <select name="ny_ukat_img_farge" class="popup-select">
+                    <option value="black">Velg farge</option>
+
+                    <option value="black ">Sort</option>
+                    <option value="red ">Rød</option>
+                    <option value="blue ">Blå</option>
+                    <option value="green ">Grønn</option>
+
+                    <option value="cyan ">Cyan</option>
+                    <option value="orange ">Oransje</option>
+                    <option value="purple ">Lilla</option>
+                </select>
+            </div>
+            <input type="submit" name="ny_ukat_btn" id="ny_ukat_submit" value="LEGG TIL">
         </form>
     </div>
 </div>

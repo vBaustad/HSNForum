@@ -20,10 +20,11 @@ require_once 'db_connect.php';
         $ukat_navn = mysqli_real_escape_string($conn, $_POST['ny_ukat_navn']);
         $ukat_besk = mysqli_real_escape_string($conn, $_POST['ny_ukat_besk']);
         $ukat_img = mysqli_real_escape_string($conn, $_POST['ny_ukat_img']);
-        $kat_id = mysqli_real_escape_string($conn, $_GET['kat_id']);
+        $ukat_img_farge = mysqli_real_escape_string($conn, $_POST['ny_ukat_img_farge']);
+        $kat_id = $_SESSION['kat_id'];
         
-        $sql = mysqli_query($conn, "INSERT INTO underkategori(kat_id, ukat_navn, ukat_beskrivelse, ukat_img) 
-                                    VALUES ('$kat_id', '$ukat_navn', '$ukat_besk', '$ukat_img')");
+        $sql = mysqli_query($conn, "INSERT INTO underkategori(kat_id, ukat_navn, ukat_beskrivelse, ukat_img, ukat_img_farge) 
+                                    VALUES ('$kat_id', '$ukat_navn', '$ukat_besk', '$ukat_img', '$ukat_img_farge')");
        if ($sql) {
            header("Location: http://localhost/forum/www/", true, 301);
            exit;
