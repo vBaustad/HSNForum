@@ -13,19 +13,18 @@
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700,800,400italic' rel='stylesheet'
           type='text/css'>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="http://localhost/forum/www/css/stylesheet.css">
+    <link rel="stylesheet" type="text/css" href="http://localhost/forum/www/css/stylesheet-m.css">
 
-    <link rel="stylesheet" type="text/css" href="css/stylesheet.css">
-    <link rel="stylesheet" type="text/css" href="css/stylesheet-m.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 </head>
 <body>
 
 <?php
-require_once 'includes/db_connect.php';
-require_once 'includes/header.php';
+require_once(__DIR__ . '/includes/db_connect.php');
+require_once(__DIR__ . '/includes/header.php');
 
 if ($_SESSION && $_SESSION['bruker_level'] == '2') {
-    echo "Du er admin! og kan se ekstra knapper! :D";
     echo '<a class="pull-right button-std mar-bot" id="ny_kat_btn" href="#"><i class="fa fa-plus-square-o"></i> Ny kategori</a>';
 }
 
@@ -73,38 +72,6 @@ if ($kat) {
         }
     }
 }
-?>
 
-<br><br><br><br><br><br><br><br><br>
-<table class="main-table table forum table-striped">
-    <thead>
-        <tr>
-            <?php
-            if ($_SESSION['bruker_level'] == '2') {
-                echo '<th class="cell-stat"><a href="#" title="Slett kategori"><i class="pad-right kat_delete fa fa-trash"></i></a><a href="#" title="Ny underkategori"><i class="ny_ukat fa fa-plus-square-o"></i></a></th>';
-            }
-            else {
-                echo '<th class="cell-stat"></th>';
-            }
-            ?>
-            <th><h2>Informatikk</h2></th>
-            <th class="cell-stat text-center hidden-xs hidden-sm">Emner</th>
-            <th class="cell-stat text-center hidden-xs hidden-sm">Innlegg</th>
-            <th class="cell-stat-2x hidden-xs hidden-sm">Siste innlegg</th>
-        </tr>
-    </thead>
-
-    <tbody>
-    <tr>
-        <td class="center"><i class="fa fa-internet-explorer fa-2x"></i></span></td>
-        <td><h4><a href="#">Databaser og Web</a><br><small>Alle spørsmål angående Databaser og Web</small></h4></td>
-        <td class="text-center hidden-xs hidden-sm"><a href="#">1 234</a></td>
-        <td class="text-center hidden-xs hidden-sm"><a href="#">4 321</a></td>
-        <td class="hidden-xs hidden-sm">av <a href="#">Bruker:1</a><br><small><i class="fa fa-clock-o"></i> 1 dag siden</small></td>
-    </tr>
-    </tbody>
-</table>
-
-<?php
-    require_once 'includes/footer.php';
+require_once(__DIR__ . '/includes/footer.php');
 ?>

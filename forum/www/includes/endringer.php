@@ -1,5 +1,5 @@
 <?php
-require_once 'db_connect.php';
+require_once(__DIR__ . '/db_connect.php');
 
     /* LEGGE TIL KATEGORIER */
     if (isset($_POST['ny_kat_btn']) && $_SESSION['bruker_level'] == '2') {
@@ -48,4 +48,3 @@ require_once 'db_connect.php';
             echo "kunne ikke slette kat.";
         }
     }
-?>

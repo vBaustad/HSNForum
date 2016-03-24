@@ -22,6 +22,7 @@ if (isset($_POST['logginn-btn'])) {
     if ($finn_bruker) {
         // Hvis bruker_aktiv = 1
         if ($row_count = 1) {
+
             $_SESSION['innlogget'] = true;
 
             while ($row = $finn_bruker->fetch_assoc()) {

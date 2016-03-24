@@ -1,36 +1,46 @@
 <?php
-require_once 'includes/db_connect.php';
-require_once 'includes/functions.php';
+require_once(__DIR__ . '/includes/functions.php');
+require_once(__DIR__ . '/includes/db_connect.php');
 ?>
 <script src="js/chatbox.js" xmlns="http://www.w3.org/1999/html"></script>
 <script type="text/javascript">
     $(document).ready(function () {
         $.ajaxSetup({cache:false});
         setInterval(function () {
-            $("#meldinger").load('http://localhost/forum/www/includes/chatut.php');
-        }, 1000);
+            $("#meldinger").load('http://localhost/forum/www/includes/chat.php');
+        }, 2000);
     });
 </script>
 
 <div id="chatbox">
     <div class="chatbox-container pull-left">
-        <div id="meldinger" class='chatbox-messages'>
-        <!--    <div class="melding_rad"><p class="chat_bnavn">Jogex:</p><p class="chat_msg">Hey hva skjer a?</p><p class="chat_dato">@ 12/12 24:00</p><br></div>
-            <div class="melding_rad"><p class="chat_bnavn">Jogex:</p><p class="chat_msg">Hey hva skjer a?</p><p class="chat_dato">@ 12/12 24:00</p><br></div>
-            <div class="melding_rad"><p class="chat_bnavn">Jogex:</p><p class="chat_msg">Hey hva skjer a?</p><p class="chat_dato">@ 12/12 24:00</p><br></div>
-            <div class="melding_rad"><p class="chat_bnavn">Jogex:</p><p class="chat_msg">Hey hva skjer a?</p><p class="chat_dato">@ 12/12 24:00</p><br></div>
-            <div class="melding_rad"><p class="chat_bnavn">Jogex:</p><p class="chat_msg">Hey hva skjer a?</p><p class="chat_dato">@ 12/12 24:00</p><br></div>
-    -->    </div>
+        <div id="meldinger">
+            <span id="chat_laster" class="center">
+                <i class="fa fa-circle-o-notch fa-spin fa-3x"></i>
+            </span>
+        </div>
 
         <div class='chatbox-bottom'>
-            <input type='text' name='chat_msg' id='chat_msg' placeholder='Skriv en melding til alle sammen!'/>
-            <button class="button-std"><a href="#" onclick="chat()">SEND</a></button>
+            <script type="text/javascript">
+                // Aktiverer funksjonen_chat_ved trykk på ENTER
+                $(document).ready(function () {
+                    $("#chat_msg").keyup(function(event){
+                        if(event.keyCode == 13){
+                            $("#chat_send").click();
+                            // clear form!
+                        }
+                    });
+                })
+
+            </script>
+            <div class="chat_footer">
+                <input type='text' name='chat_msg' id='chat_msg' class="pull-left" placeholder='Si hei...'/>
+                <input type="button" id="chat_send" class="button-std pull-right" value="SEND" onclick="chat()" />
+            </div>
         </div>
     </div>
-
 <div class="textarea pull-right hidden-xs hidden-sm">
     <h1>TESTING</h1>
     <p>Mer test her om test og anndre ikke test reaterte tester </p>
 </div>
 <div class="clearfix seperator"></div>
-
