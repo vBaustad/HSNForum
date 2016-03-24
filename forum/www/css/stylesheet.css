@@ -3,19 +3,28 @@ html {
     font-family: 'Open Sans', sans-serif;
 }
 
+
 /* CHATBOX */
 .chatbox-container {
     width: 64%;
-    height: 200px;
+    height: 300px;
 }
 
-.chatbox-messages {
+#meldinger {
     width: 99%;
     height: 80%;
-    background: #899eff;
+    background: #b9b9b9;
     padding: 5px 5px 5px 5px;
     overflow-x: hidden;
     overflow-y: auto;
+}
+
+#chat_laster {
+    position: relative;
+    display: block;
+    top: 100px;
+    color: rgba(0, 0, 0, 0.50);
+
 }
 
 .melding_rad {
@@ -29,15 +38,56 @@ html {
 
 .chat_bnavn {
     float: left;
-    background-color: #5b78b5;
-    border: 1px solid #3847ff;
-    border-radius: 3px;
-    padding: 0 5px 3px 5px;
+    padding-left: 3px;
+    margin: 0;
+}
+
+.regular {
+    color: #168212;
+    text-shadow: 0 0 2px rgba(29, 255, 19, 1);
+}
+
+.admin {
+    font-weight: bold;
+    color: rgb(147, 25, 26);
+    text-shadow: 0 0 2px #f71822;
 }
 
 .chat_msg {
+    clear: both;
     float: left;
+    width: 80%;
     padding: 0 3px 3px 3px;
+}
+
+#chat_msg {
+    box-sizing:border-box;
+    width: 89%;
+    display: block;
+    box-shadow: none;
+    padding: 10px;
+    border: solid 3px #b1b1b1;
+    transition: border 0.3s;
+}
+
+#chat_send {
+    box-sizing:border-box;
+    position: relative;
+    width: 10%;
+    float: right;
+    height: 41px;
+    padding: 7px 14px;
+    background-color: #7fa0e0;
+    color: white;
+    border: none;
+    border-radius: 0;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.chat_footer {
+    padding-top: 5px;
 }
 
 .chat_dato {
@@ -63,10 +113,6 @@ html {
     -moz-box-sizing: content-box;
     -webkit-box-sizing: content-box;
     box-sizing: content-box;
-}
-
-#chatbox-msg {
-
 }
 
 #chatbox-msg:focus {
@@ -195,7 +241,8 @@ html {
 }
 
 .popup-input {
-    width: 93%;
+    box-sizing: border-box;
+    width: 100%;
     display: block;
     box-shadow: none;
     padding: 10px;
@@ -454,6 +501,14 @@ h1 {
     margin-top: 0;
     margin-right: auto;
     margin-left: auto;
+}
+
+.hr-chat {
+    width: 100%;
+    padding: 0;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    border-bottom: 1px solid #dbdbdb;
 }
 
 /* FORUM */

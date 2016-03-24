@@ -1,10 +1,10 @@
-<?php // bekreftbruker.php
-require_once 'db_connect.php';
-require_once 'functions.php';
-require_once 'header.php';
-require_once 'localhost/forum/www/index.php';
+<?php
+require_once(__DIR__ . '/db_connect.php');
+require_once(__DIR__ . '/functions.php');
+require_once(__DIR__ . '/../index.php');
+require_once(__DIR__ . '/header.php');
 
-// Enkel skekk for tom GET
+// Enkel sjekk for tom GET
 if (empty($_GET['epost']) || empty($_GET['nokkel'])) {
     // Mangler ?= informasjon
 }
@@ -52,4 +52,5 @@ _END;
         echo "INGEN INFO!";
     }
 }
-?>
+
+require_once(__DIR__ . '/footer.php');

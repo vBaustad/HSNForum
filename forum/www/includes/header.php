@@ -1,6 +1,6 @@
 <?php
-require_once 'functions.php';
-require_once 'db_connect.php';
+require_once(__DIR__ . '/functions.php');
+require_once(__DIR__ . '/db_connect.php');
 // error_reporting(0);
 ?>
 <script src="js/validate.js"></script>
@@ -41,6 +41,7 @@ require_once 'db_connect.php';
 </script>
 
 <?php
+
     if ($_SESSION && $_SESSION['bruker_level'] == '2') {
         echo <<<_END
                 <script type="text/javascript">
@@ -239,6 +240,5 @@ _END;
         </div>
     </div>
 <?php
-echo "Dato og tid: " . date("Y - d/m G:i:s");
 require_once(__DIR__ . '/../chatbox.php');
 ?>

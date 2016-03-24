@@ -1,14 +1,15 @@
 <?php
 require_once 'db_connect.php';
+
 //send the welcome letter
 function send_email($info)
 {
     // Henter infor fra array
-    $bruker = $info['brukernavn'];
     $fornavn = $info['fornavn'];
     $epost = $info['epost'];
     $nokkel = $info['nokkel'];
-    $root = 'localhost/forum/www/';
+    $curpath = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+    $bekreftbruker = str_replace("functions", "bekreftbruker", $curpath);
 
     // Creating the message
     $melding = '<!DOCTYPE html PUBLIC>';
@@ -37,7 +38,7 @@ function send_email($info)
     $melding .= '                            <p>Venligst bekreft eposten din ved å trykke på lenken under</p>';
     $melding .= '                            <center>';
     $melding .= '                                <h2>';
-    $melding .= '                                    <a href="' . $root . 'includes/bekreftbruker.php?epost=' . $epost . '&nokkel=' . $nokkel . '">BEKREFT BRUKER</a>';
+    $melding .= '                                    <a href="' . $bekreftbruker . '?epost=' . $epost . '&nokkel=' . $nokkel . '">BEKREFT BRUKER</a>';
     $melding .= '                                </h2>';
     $melding .= '                            </center>';
     $melding .= '                        </td>';

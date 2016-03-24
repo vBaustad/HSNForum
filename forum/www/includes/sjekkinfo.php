@@ -37,6 +37,3 @@ if (isset($_GET['epost']) && $_GET['epost'] != "") {
 
 }
 
-
-?>
-
