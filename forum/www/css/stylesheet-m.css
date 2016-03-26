@@ -1,25 +1,25 @@
 /* MEDIA */
 @media (min-width: 768px) {
     .container {
-        width: 750px
+        width: 720px
     }
 }
 
 @media (min-width: 992px) {
     .container {
-        width: 970px
+        width: 940px
     }
 }
 
 @media (min-width: 1200px) {
     .container {
-        width: 1170px
+        width: 1140px
     }
 }
 
 /* Veldig små enheter */
 @media (max-width: 767px) {
-    .hidden-xs {
+    .skjul-liten {
         display: none !important;
     }
 
@@ -29,25 +29,14 @@
 }
 
 @media (max-width: 400px) {
-    #registrer-box, .registrer-mail-sendt, .registrer-box-success, #registrer-feil {
+    .registrer-box-success, .registrer-mail-sendt, .registrer-box-loading, #registrer-box, #logginn-box, #registrer-feil, #ny_kat, #slett_kat, #ny_ukat {
         width: 90% !important;
-    }
-
-    #registrer-feil {
-        height: 310px !important;
-    }
-
-    .registrer-mail-sendt {
-        height: 290px !important;
-    }
-
-    #registrer-box {
-        height: 495px !important;
     }
 
     .popup-divider:first-child {
         margin-top: 15px !important;
     }
+
 
     .popup-divider {
         padding-top: 0 !important;
@@ -67,16 +56,17 @@
 
     .popup-input {
         margin-bottom: 18px !important;
-        float: none !important;
     }
 
     #bnavnErr, #fnavnErr, #enavnErr, #epostErr, #passErr, #passTwoErr {
         margin-top: -17px !important;
+        clear: both;
+        float: none;
     }
 }
 
 @media (min-width: 768px) and (max-width: 991px) {
-    .hidden-sm {
+    .skjul-medium {
         display: none !important;
     }
 

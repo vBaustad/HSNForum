@@ -3,15 +3,21 @@ html {
     font-family: 'Open Sans', sans-serif;
 }
 
-
 /* CHATBOX */
 .chatbox-container {
     width: 64%;
     height: 300px;
+    overflow: hidden;
+}
+
+#inline_fix {
+    display: block;
+    overflow: hidden;
+    padding: 0 5px;
 }
 
 #meldinger {
-    width: 99%;
+    width: 100%;
     height: 80%;
     background: #b9b9b9;
     padding: 5px 5px 5px 5px;
@@ -19,12 +25,35 @@ html {
     overflow-y: auto;
 }
 
+#chat_msg_text {
+    width: 100%;
+    display: block;
+    box-shadow: none;
+    padding: 10px;
+    margin-left: -5px;
+    border: solid 3px #b1b1b1;
+    transition: border 0.3s;
+}
+
+#chat_send {
+    display: block;
+    overflow: hidden;
+    padding: 0 15px;
+    height: 41px;
+    background-color: #7fa0e0;
+    color: white;
+    border: none;
+    border-radius: 0;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+}
+
 #chat_laster {
     position: relative;
     display: block;
     top: 100px;
     color: rgba(0, 0, 0, 0.50);
-
 }
 
 .melding_rad {
@@ -60,32 +89,6 @@ html {
     padding: 0 3px 3px 3px;
 }
 
-#chat_msg {
-    box-sizing:border-box;
-    width: 89%;
-    display: block;
-    box-shadow: none;
-    padding: 10px;
-    border: solid 3px #b1b1b1;
-    transition: border 0.3s;
-}
-
-#chat_send {
-    box-sizing:border-box;
-    position: relative;
-    width: 10%;
-    float: right;
-    height: 41px;
-    padding: 7px 14px;
-    background-color: #7fa0e0;
-    color: white;
-    border: none;
-    border-radius: 0;
-    text-align: center;
-    text-decoration: none;
-    cursor: pointer;
-}
-
 .chat_footer {
     padding-top: 5px;
 }
@@ -107,12 +110,6 @@ html {
 .chat-box-username {
     float: left;
     padding-right: 5px;
-}
-
-.chatbox-bottom input {
-    -moz-box-sizing: content-box;
-    -webkit-box-sizing: content-box;
-    box-sizing: content-box;
 }
 
 #chatbox-msg:focus {
@@ -138,77 +135,32 @@ html {
     vertical-align: middle;
 }
 
-.registrer-box-success, .registrer-mail-sendt, .registrer-box-loading, #registrer-box, #logginn-box, #registrer-feil, #ny_kat, #slett_kat, #ny_ukat {
+.registrer-box-success, #registrer-mail-sendt, .registrer-box-loading, #registrer-box, #logginn-box, #registrer-feil, #ny_kat, #slett_kat, #ny_ukat {
     display: none;
     position: fixed;
-    margin: auto;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    top: 0;
+    margin-right: auto;
+    margin-left: auto;
+    right:0;
+    left:0;
+    top:50%;
+    -webkit-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    -o-transform: translateY(-50%);
+    transform: translateY(-50%);
+    height: auto;
     width: 400px;
+    padding-bottom: 20px;
     border-radius: 3px;
     box-shadow: 0 4px 10px 4px rgba(19, 35, 47, .3);
     -moz-box-shadow: 0 4px 10px 4px rgba(19, 35, 47, .3);
     -webkit-box-shadow: 0 4px 10px 4px rgba(19, 35, 47, .3);
     background: #24313c;
-}
-
-#ny_ukat {
-    height: 370px;
-}
-
-#ny_kat {
-    height: 185px;
-}
-
-#slett_kat {
-    height: 160px;
-}
-
-#logginn-box {
-    z-index: 50 !important;
-    height: 250px;
-}
-
-#registrer-box {
-    z-index: 50 !important;
-    height: 450px;
-}
-
-#registrer-feil {
-    height: 280px;
-}
-
-.registrer-box-success {
-    height: 250px;
-}
-
-.registrer-mail-sendt {
-    z-index: 51 !important;
-    height: 240px;
-}
-
-.registrer-box-loading {
-    z-index: 51 !important;
-    background: rgba(236, 240, 241, 0.5) !important;
-    height: 450px;
-}
-
-.opptatt {
-    display: block; /* Skal denne være display block??? */
-    margin-left: auto;
-    margin-right: auto;
-    position: absolute;
-    right: 0;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    opacity: 1;
+    z-index: 50;
 }
 
 .popup-container {
-    width: 90%;
+    padding: 0 20px 0 20px;
 }
 
 .popup-select {
@@ -235,13 +187,7 @@ html {
     background: #6599ff;
 }
 
-.popup-input-double:focus {
-    outline: none;
-    border: solid 3px #60bb80;
-}
-
 .popup-input {
-    box-sizing: border-box;
     width: 100%;
     display: block;
     box-shadow: none;
@@ -264,17 +210,17 @@ html {
 }
 
 .popup-divider-half {
-    width: 44%;
+    width: 47%;
     position: inherit;
 }
 
-#sjekkBnavn, #sjekkEpost, #bnavnErr, #fnavnErr, #enavnErr, #epostErr, #passErr, #passTwoErr {
+#feilPass, #ikkeAktiv, #sjekkBnavn, #sjekkEpost, #bnavnErr, #fnavnErr, #enavnErr, #epostErr, #passErr, #passTwoErr {
     font-size: 0.7em;
     color: #f5f5f5;
     margin: 0;
     padding-top: 8px;
     line-height: 0;
-    display: none;
+    display: block;
     position: fixed;
     float: left;
 }
@@ -307,7 +253,7 @@ html {
     cursor: pointer;
 }
 
-#registrer-avbryt, .registrer-button-lukk, .button-lukk {
+#registrer-avbryt, .button-lukk {
     color: white;
     font-size: 1.3em;
     width: 93%;
@@ -325,7 +271,7 @@ html {
     cursor: pointer;
 }
 
-.registrer-button-lukk:hover {
+.button-lukk:hover {
     background: #b7080c;
     transition: background 0.3s;
     cursor: pointer;
@@ -445,10 +391,6 @@ html {
 #logo-text {
     text-decoration: none;
     color: #262626;
-}
-
-.text-center {
-    text-align: center;
 }
 
 th h2 a {
@@ -628,6 +570,12 @@ footer {
 }
 
 /* POSITIONING ELEMENTS */
+#meldinger, #chat_msg_text, #chat_send, .popup-input {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+
 .pad-right {
     padding-right: 7px;
 }
@@ -650,13 +598,12 @@ footer {
     text-align: center;
 }
 
-.clear {
-    clear: both;
+.text-center {
+    text-align: center;
 }
 
-.input-pull-left {
-    float: left;
-    margin-right: 15px;
+.clear {
+    clear: both;
 }
 
 .pull-right {

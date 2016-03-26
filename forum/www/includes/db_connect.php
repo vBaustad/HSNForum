@@ -1,5 +1,6 @@
 <?php
 session_start();
+
 // db_connect.php
 $conn = mysqli_connect("localhost", "root", "", "forum");
 $conn->set_charset("utf8");

@@ -29,14 +29,14 @@ function valPassord(verdi) {
 function sjekkBNavn(verdi) {
     var ptn = /^[A-Za-z0-9]+$/;
 
-    // Forklart -> https://www.youtube.com/watch?v=woNQ2MA_0XU
-
     // Erstatt mange linjer(document.getelementbyid med var bnavn ?
 
     var bnavn = document.getElementById("brukernavn_reg").value;
 
     if (bnavn == 0) {
         document.getElementById("sjekkBnavn").innerHTML = "";
+        document.getElementById(verdi).style.border = 'solid 3px #e35152';
+        document.getElementById("bnavnErr").innerHTML = 'Brukernavn kan ikke vær blankt';
     } else {
 
         var xmlhttp = new XMLHttpRequest();
@@ -51,7 +51,6 @@ function sjekkBNavn(verdi) {
         var resultat = document.getElementById("sjekkBnavn").innerHTML;
 
         if (resultat.indexOf("er tatt!") >= 0) {
-            document.getElementById('bnavnErr').style.display = "none";
             document.getElementById('sjekkBnavn').style.display = "block";
             document.getElementById(verdi).style.border = 'solid 3px #e35152';
         }
@@ -61,24 +60,17 @@ function sjekkBNavn(verdi) {
             }
 
             if (ptn.test(document.getElementById(verdi).value) && bnavn != "") {
-                document.getElementById('bnavnErr').style.display = "none";
                 document.getElementById(verdi).style.border = 'solid 3px #60bb80';
-            }
-            else if (bnavn == "") {
-                document.getElementById(verdi).style.border = 'solid 3px #e35152';
-                document.getElementById('bnavnErr').style.display = "block";
-                document.getElementById("bnavnErr").innerHTML = 'Brukernavn kan ikke vær blankt';
             }
             else if (!ptn.test(document.getElementById(verdi).value) && bnavn != "") {
                 document.getElementById(verdi).style.border = 'solid 3px #e35152';
-                document.getElementById('bnavnErr').style.display = "block";
                 document.getElementById("bnavnErr").innerHTML = 'Feil brukernavn';
             }
         }
     }
 }
 
-// Dårlig regEx (! er lov)!
+// Dårlig regEx (f.eks: ! er lov)!
 function sjekkFNavn(verdi) {
     var ptn = /^[A-Za-z -']+$/;
     var fnavn = document.getElementById(verdi).value;
@@ -86,44 +78,51 @@ function sjekkFNavn(verdi) {
     if (fnavn == "") {
         document.getElementById("fnavnErr").innerHTML = "Fornavn kan ikke være blank";
         document.getElementById(verdi).style.border = 'solid 3px #e35152';
-        document.getElementById('fnavnErr').style.display = "block";
     }
     else {
         if (ptn.test(fnavn)) {
-            document.getElementById('fnavnErr').style.display = "none";
+            document.getElementById("fnavnErr").innerHTML = "";
             document.getElementById(verdi).style.border = 'solid 3px #60bb80';
             return true;
         }
         else {
             document.getElementById("fnavnErr").innerHTML = "Fornavnet har ugyldige karakterer";
             document.getElementById(verdi).style.border = 'solid 3px #e35152';
-            document.getElementById('fnavnErr').style.display = "block";
         }
     }
 }
 
-// Dårlig regEx (! er lov)!
+// Dårlig regEx (f.eks: ! er lov)!
 function sjekkENavn(verdi) {
     var ptn = /^[A-Za-z -']+$/;
+    var enavn = document.getElementById(verdi).value;
 
-    if (ptn.test(document.getElementById(verdi).value)) {
-        document.getElementById('enavnErr').style.display = "none";
-        document.getElementById(verdi).style.border = 'solid 3px #60bb80';
-        return true;
+    if (enavn == "") {
+        document.getElementById("enavnErr").innerHTML = "Etternavn kan ikke være blank";
+        document.getElementById(verdi).style.border = 'solid 3px #e35152';
     }
     else {
-        document.getElementById(verdi).style.border = 'solid 3px #e35152';
-        document.getElementById('enavnErr').style.display = "block";
+        if (ptn.test(document.getElementById(verdi).value)) {
+            document.getElementById("enavnErr").innerHTML = "";
+            document.getElementById(verdi).style.border = 'solid 3px #60bb80';
+            return true;
+        }
+        else {
+            document.getElementById("enavnErr").innerHTML = "Etternavn har ugyldige karakterer";
+            document.getElementById(verdi).style.border = 'solid 3px #e35152';
+        }
     }
 }
 
 function sjekkEpost(verdi) {
+    // LAG MIN EGEN REGEX!
     var ptn = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
     var epost = document.getElementById("epost_reg").value;
 
     if (epost == 0) {
-        document.getElementById("sjekkEpost").innerHTML = "";
+        document.getElementById("epostErr").innerHTML = "Epost kan ikke være blank";
+        document.getElementById(verdi).style.border = 'solid 3px #e35152';
     } else {
 
         var xmlhttp = new XMLHttpRequest();
@@ -138,7 +137,7 @@ function sjekkEpost(verdi) {
         var resultat = document.getElementById("sjekkEpost").innerHTML;
 
         if (resultat.indexOf("er tatt!") >= 0) {
-            document.getElementById('epostErr').style.display = "none";
+            document.getElementById("epostErr").innerHTML = "";
             document.getElementById('sjekkEpost').style.display = "block";
             document.getElementById(verdi).style.border = 'solid 3px #e35152';
         }
@@ -148,13 +147,13 @@ function sjekkEpost(verdi) {
             }
 
             if (ptn.test(document.getElementById(verdi).value)) {
-                document.getElementById('epostErr').style.display = "none";
+                document.getElementById("epostErr").innerHTML = "";
                 document.getElementById(verdi).style.border = 'solid 3px #60bb80';
                 return true;
             }
             else {
                 document.getElementById(verdi).style.border = 'solid 3px #e35152';
-                document.getElementById('epostErr').style.display = "block";
+                document.getElementById("epostErr").innerHTML = "Ugyldig epost!";
             }
         }
     }
@@ -230,10 +229,5 @@ function sjekkSkjema() {
     }
 
     // Hvis alle 6 felter er riktige, send skjema!
-    if (ok === 6) {
-        return true;
-    }
-    else {
-        return false;
-    }
+    return ok == 6;
 }
