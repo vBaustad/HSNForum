@@ -1,16 +1,18 @@
 <?php
 require_once(__DIR__ . '/../includes/db_connect.php');
+require_once(__DIR__ . '/../includes/functions.php');
 
-if ($_SESSION && $_SESSION['innlogget'] == 'true') {
+if (innlogget() == true) {
     $bruker_navn = $_SESSION['bruker_navn'];
     $bruker_id = $_SESSION['bruker_id'];
 
     if (isset($_GET['melding']) != "" && !empty($_GET['melding'])) {
-        // BRUK strip_tags!!!
+        // Fjerener bruk av SQL kode
         $msg_melding_get = mysqli_real_escape_string($conn, $_GET['melding']);
-
         // Bruk av smileyface
         $msg_melding = str_replace(":)", "<i class=\"fa fa-smile-o\"></i>", $msg_melding_get);
+        // Fjerner bruk av HTML tags
+        $msg_melding_stripped = strip_tags($msg_melding, '<i><b><u>');
         $dato = date("Y-m-d G:i:s");
 
         $bruker_level = "";
@@ -22,7 +24,7 @@ if ($_SESSION && $_SESSION['innlogget'] == 'true') {
         }
 
         $sendData = mysqli_query($conn, "INSERT INTO chat (`bruker_navn`, `bruker_status`, `bruker_id`, `msg_melding`, `msg_dato`)
-                            VALUES ('$bruker_navn', '$bruker_level', '$bruker_id', '$msg_melding', '$dato')");
+                            VALUES ('$bruker_navn', '$bruker_level', '$bruker_id', '$msg_melding_stripped', '$dato')");
     }
 }
 
@@ -49,5 +51,6 @@ while ($row = mysqli_fetch_assoc($hentData)) {
                 <p class="chat_dato">' . $postdm . ' ' . $postgis . '</p> <br>
                 <p class="chat_msg">' . $row['msg_melding'] . '</p>
             </div><br><hr class="hr-chat">';
+
 }
 

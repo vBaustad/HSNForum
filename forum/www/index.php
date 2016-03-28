@@ -24,7 +24,7 @@
 require_once(__DIR__ . '/includes/db_connect.php');
 require_once(__DIR__ . '/includes/header.php');
 
-if ($_SESSION && $_SESSION['bruker_level'] == '2') {
+if (eradmin() == true) {
     echo '<a class="pull-right button-std mar-bot" id="ny_kat_btn" href="#"><i class="fa fa-plus-square-o"></i> Ny kategori</a>';
 }
 
@@ -42,9 +42,9 @@ if ($kat) {
                 echo '       <tr>';
                 echo '            <th class="cell-stat"></th>';
                 echo '            <th><h2><a href="kategori.php?kat_id=' . $row_kat['kat_id'] .'">' . $row_kat['kat_navn'] . '</a></h2></th>';
-                echo '            <th class="cell-stat text-center hidden-sm">Emner</th>';
-                echo '            <th class="cell-stat text-center hidden-sm">Innlegg</th>';
-                echo '            <th class="cell-stat-2x hidden-xs hidden-sm">Siste Innlegg</th>';
+                echo '            <th class="cell-stat text-center skjul-liten skjul-medium">Emner</th>';
+                echo '            <th class="cell-stat text-center skjul-liten skjul-medium">Innlegg</th>';
+                echo '            <th class="cell-stat-2x skjul-liten skjul-medium">Siste Innlegg</th>';
                 echo '      </tr>';
                 echo '  </thead>';
                 echo '  <tbody>';
@@ -60,9 +60,9 @@ if ($kat) {
                         echo '      <tr>';
                         echo '          <td class="center"><i class="' . $row_ukat['ukat_img'] . $row_ukat['ukat_img_farge'] . '"></i></span></td>';
                         echo '          <td><h4><a href="#">' . $row_ukat['ukat_navn'] . '</a><br><small>' . $row_ukat['ukat_beskrivelse'] . '</small></h4></td>';
-                        echo '          <td class="text-center hidden-xs hidden-sm"><a href="#">1 234</a></td>';
-                        echo '          <td class="text-center hidden-xs hidden-sm"><a href="#">4 321</a></td>';
-                        echo '          <td class="hidden-xs hidden-sm">av <a href="#">Bruker:1</a><br><small><i class="fa fa-clock-o"></i> 1 dag siden</small></td>';
+                        echo '          <td class="text-center skjul-liten skjul-medium"><a href="#">1 234</a></td>';
+                        echo '          <td class="text-center skjul-liten skjul-medium"><a href="#">4 321</a></td>';
+                        echo '          <td class="skjul-liten skjul-medium">av <a href="#">Bruker:1</a><br><small><i class="fa fa-clock-o"></i> 1 dag siden</small></td>';
                         echo '      </tr>';
                     }
                 }

@@ -1,9 +1,9 @@
 <?php
-require_once 'includes/functions.php';
-require_once 'includes/db_connect.php';
+require_once(__DIR__ . '/includes/functions.php');
+require_once(__DIR__ . '/includes/db_connect.php');
 
 if (isset($_POST['logginn-btn'])) {
-    // Forhindrer SQL injection med escape string
+    // Forhindrer SQL injection med escape string -- Bytt til prepared statement!
     $salt1 = 'dkn?';
     $salt2 = '$l3*!';
     $passord = mysqli_real_escape_string($conn, $_POST["passord_logginn"]);
@@ -11,36 +11,75 @@ if (isset($_POST['logginn-btn'])) {
     $brukernavn = mysqli_real_escape_string($conn, $_POST["brukernavn_logginn"]);
     $passordhash = hash('ripemd160', "$salt1$passord$salt2");
 
-    $finn_bruker = mysqli_query($conn, "SELECT bruker_id, bruker_navn, bruker_aktiv, bruker_level FROM bruker
-                                       WHERE `bruker_navn` = '$brukernavn' AND `bruker_pass` = '$passordhash'");
+    $finn_bruker = mysqli_query($conn, "SELECT bruker_id, bruker_pass, bruker_navn, bruker_aktiv, bruker_level FROM bruker
+                                       WHERE `bruker_navn` = '$brukernavn'");
 
-    $aktiv_bruker = mysqli_query($conn, "SELECT bruker_aktiv FROM bruker 
-                                        WHERE `bruker_navn` = '$brukernavn' AND `bruker_pass` = '$passordhash' AND `bruker_aktiv` = 1");
-    $row_count = $aktiv_bruker->num_rows;
+    $info = mysqli_fetch_assoc($finn_bruker);
 
-    // Bruker og passord matcher
-    if ($finn_bruker) {
-        // Hvis bruker_aktiv = 1
-        if ($row_count = 1) {
+    // Bruker finnes
+    if ($finn_bruker->num_rows == 1) {
+        // Passord stemmer med bruker
+        if ($info['bruker_pass'] == $passordhash && $info['bruker_navn'] == $brukernavn) {
 
-            $_SESSION['innlogget'] = true;
+            // Hvis bruker_aktiv = 1
+            if ($info['bruker_aktiv'] == '1') {
+                $_SESSION['innlogget'] = true;
+                $_SESSION["bruker_navn"] = $info["bruker_navn"];
+                $_SESSION["bruker_id"] = $info["bruker_id"];
+                $_SESSION["bruker_level"] = $info["bruker_level"];
 
-            while ($row = $finn_bruker->fetch_assoc()) {
-                $_SESSION["bruker_navn"] = $row["bruker_navn"];
-                $_SESSION["bruker_id"] = $row["bruker_id"];
-                $_SESSION["bruker_level"] = $row["bruker_level"];
+                // Tilbake til index.php
+                header("Location: http://localhost/forum/www/");
+                die();
             }
-            header("Location: http://localhost/forum/www/");
-            die();
         }
-        // Bruker er ikke aktiv. Be bruker sjekke epost
-        else {
-            echo (" Bruker er IKKE aktiv   ");
-        }
-        echo (" bruker eksisterer!   ");
     }
-    // Brukeren ble ikke funnet / Passordet er feil
-    else {
-        echo (" Noe gikk galt...   (");
+
+    require_once(__DIR__ . '/index.php');
+    require_once(__DIR__ . '/includes/header.php');
+
+    // Bruker finnes ikke
+    if ($finnnes = $finn_bruker->num_rows == 0) {
+        echo <<<_END
+            <script type="text/javascript">
+                $(document).ready(function() {
+                    $("#logginn-box").show();
+                    document.getElementById('ikkeAktiv').style.display = "block";
+                    document.getElementById('brukernavn_logginn').value = "$brukernavn";
+                    document.getElementById('ikkeAktiv').innerHTML = "Kunne ikke finne bruker $brukernavn!";
+                    document.getElementById('brukernavn_logginn').style.border = 'solid 3px #e35152';
+                });
+            </script>
+_END;
+    }
+
+    // Feil passord
+    if ($info['bruker_pass'] != $passordhash && $info['bruker_navn'] == $brukernavn) {
+        echo <<<_END
+            <script type="text/javascript">
+                $(document).ready(function() {
+                    $("#logginn-box").show();
+                    document.getElementById('feilPass').style.display = "block";
+                    document.getElementById('brukernavn_logginn').value = "$brukernavn";
+                    document.getElementById('feilPass').innerHTML = "Feil passord. Prøv igjen!";
+                    document.getElementById('passord_logginn').style.border = 'solid 3px #e35152';
+                });
+            </script>
+_END;
+    }
+
+    // Hvis bruker IKKE er aktiv
+    if ($info['bruker_aktiv'] == '0') {
+        echo <<<_END
+            <script type="text/javascript">
+                $(document).ready(function() {
+                    $("#logginn-box").show();
+                    document.getElementById('ikkeAktiv').style.display = "block";
+                    document.getElementById('brukernavn_logginn').value = "$brukernavn";
+                    document.getElementById('ikkeAktiv').innerHTML = "Brukeren $brukernavn er ikke aktivert. Sjekk eposten din!";
+                    document.getElementById('brukernavn_logginn').style.border = 'solid 3px #e35152';
+                });
+            </script>
+_END;
     }
 }

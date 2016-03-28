@@ -29,16 +29,12 @@ function valPass($verdi)
 
 if (isset($_POST['registrer-btn'])) {
 
-    // Forhindrer SQL injection med escape string
-    $brukernavn = mysqli_real_escape_string($conn, $_POST["brukernavn_reg"]);
-    $fornavn = mysqli_real_escape_string($conn, $_POST["fornavn_reg"]);
-    $etternavn = mysqli_real_escape_string($conn, $_POST["etternavn_reg"]);
-    $epost = mysqli_real_escape_string($conn, $_POST["epost_reg"]);
-    $passord = mysqli_real_escape_string($conn, $_POST["pass_reg"]);
-    $passordTo = mysqli_real_escape_string($conn, $_POST["pass_two_reg"]);
-    $dato = date("Y-m-d G:i:s");
-    $level = 1;
-    $aktiv = 0;
+    $brukernavn = $_POST["brukernavn_reg"];
+    $fornavn = $_POST["fornavn_reg"];
+    $etternavn = $_POST["etternavn_reg"];
+    $epost = $_POST["epost_reg"];
+    $passord = $_POST["pass_reg"];
+    $passordTo = $_POST["pass_two_reg"];
 
     $err = 0;
 
@@ -68,8 +64,7 @@ _END;
         echo <<<_END
         <script type='text/javascript'>
             document.getElementById('fnavnErr').style.display = "block";
-            document.getElementById('fornavn_reg').style.border = 'solid 3px #e35152';
-              
+            document.getElementById('fornavn_reg').style.border = 'solid 3px #e35152'; 
         </script>
 _END;
     }
@@ -122,8 +117,12 @@ _END;
         $passordhash = hash('ripemd160', "$salt1$passord$salt2");
 
         // Legg til bruker i databasen
-        $sql = mysqli_query($conn, "INSERT INTO bruker (bruker_id, bruker_navn, bruker_pass, bruker_mail, bruker_dato, bruker_level, bruker_aktiv, bruker_fornavn, bruker_etternavn)
-            VALUES(NULL, '$brukernavn', '$passordhash', '$epost', '$dato', '$level', '$aktiv', '$fornavn', '$etternavn')");
+        $sql = "INSERT INTO bruker (bruker_navn, bruker_pass, bruker_mail, bruker_dato, bruker_level, bruker_aktiv, bruker_fornavn, bruker_etternavn)
+                                    VALUES(?, ?, ?, NOW(), '1', '0', ?, ?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("sssss", $brukernavn, $passordhash, $epost, $fornavn, $etternavn);
+        $stmt->execute();
+
 
         if ($sql) {
             // Henter den nye IDen som nettopp ble laget i databasen
@@ -150,7 +149,7 @@ _END;
                     echo <<<_END
                         <script type='text/javascript'>
                           $(document).ready(function() {
-                            $('.registrer-box-mail-sendt').show();
+                            $('#registrer-mail-sendt').show();
                           });
                         </script>
 _END;
@@ -194,10 +193,8 @@ _END;
 }
 
 /*
-    -- Feilkoder -- STEMMER IKKE??!!
+    -- Feilkoder --
     1: Eposten ble ikke sendt - Mest sansynlig feil på klient side.
     2: Klarte ikke legge til bruker i tabellen "bekreft"
     3: Klarte ikke legge til bruker i tabellen "bruker"
 */
-?>
-

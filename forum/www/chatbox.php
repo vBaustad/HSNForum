@@ -9,6 +9,12 @@ require_once(__DIR__ . '/includes/db_connect.php');
         setInterval(function () {
             $("#meldinger").load('http://localhost/forum/www/includes/chat.php');
         }, 2000);
+
+        $("#chat_msg_text").keyup(function(event){
+            if(event.keyCode == 13){
+                $("#chat_send").click();
+            }
+        });
     });
 </script>
 
@@ -21,25 +27,13 @@ require_once(__DIR__ . '/includes/db_connect.php');
         </div>
 
         <div class='chatbox-bottom'>
-            <script type="text/javascript">
-                // Aktiverer funksjonen_chat_ved trykk på ENTER
-                $(document).ready(function () {
-                    $("#chat_msg").keyup(function(event){
-                        if(event.keyCode == 13){
-                            $("#chat_send").click();
-                            // clear form!
-                        }
-                    });
-                })
-
-            </script>
             <div class="chat_footer">
-                <input type='text' name='chat_msg' id='chat_msg' class="pull-left" placeholder='Si hei...'/>
                 <input type="button" id="chat_send" class="button-std pull-right" value="SEND" onclick="chat()" />
+                <span id="inline_fix"><input type="text" name="chat_msg_text" id="chat_msg_text" class="pull-left" placeholder="Si hei..."/></span>
             </div>
         </div>
     </div>
-<div class="textarea pull-right hidden-xs hidden-sm">
+<div class="textarea pull-right skjul-liten skjul-medium">
     <h1>TESTING</h1>
     <p>Mer test her om test og anndre ikke test reaterte tester </p>
 </div>

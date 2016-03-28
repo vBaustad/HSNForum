@@ -1,6 +1,6 @@
 function chat() {
 
-    var melding = document.getElementById('chat_msg').value;
+    var melding = document.getElementById('chat_msg_text').value;
     if (melding == "") {
         alert ("Du må nesten skrive noe først...");
         return;
@@ -15,4 +15,6 @@ function chat() {
         xmlhttp.open("GET", "http://localhost/forum/www/includes/chat.php?melding="+melding, true);
         xmlhttp.send();
     }
+
+    document.getElementById('chat_msg_text').value = '';
 }
