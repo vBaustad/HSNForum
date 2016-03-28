@@ -197,7 +197,7 @@ _END;
     <!-- Bruker laget -->
     <div class="registrer-box-success">
         <div class="popup-header center">
-            <h2 class="popup-header-text icon-success"> Registrering fullført!</h2>
+            <h2 class="popup-header-text icon-success white"> Registrering fullført!</h2>
             <hr class="hr-popup">
         </div>
 

@@ -2,31 +2,27 @@
 require_once(__DIR__ . '/includes/functions.php');
 require_once(__DIR__ . '/includes/db_connect.php');
 
-/*FINNES KANSKJE EN BEDRE LØSNING PÅ DETTE?*/
+if (isset($_POST['logginn-btn'])) {
+    // Forhindrer SQL injection med escape string -- Bytt til prepared statement!
+    $salt1 = 'dkn?';
+    $salt2 = '$l3*!';
+    $passord = mysqli_real_escape_string($conn, $_POST["passord_logginn"]);
 
-// Forhindrer SQL injection med escape string
-$salt1 = 'dkn?';
-$salt2 = '$l3*!';
-$passord = mysqli_real_escape_string($conn, $_POST["passord_logginn"]);
+    $brukernavn = mysqli_real_escape_string($conn, $_POST["brukernavn_logginn"]);
+    $passordhash = hash('ripemd160', "$salt1$passord$salt2");
 
-$brukernavn = mysqli_real_escape_string($conn, $_POST["brukernavn_logginn"]);
-$passordhash = hash('ripemd160', "$salt1$passord$salt2");
-
-$finn_bruker = mysqli_query($conn, "SELECT bruker_id, bruker_pass, bruker_navn, bruker_aktiv, bruker_level FROM bruker
+    $finn_bruker = mysqli_query($conn, "SELECT bruker_id, bruker_pass, bruker_navn, bruker_aktiv, bruker_level FROM bruker
                                        WHERE `bruker_navn` = '$brukernavn'");
 
-$info = mysqli_fetch_assoc($finn_bruker);
-
-if (isset($_POST['logginn-btn'])) {
+    $info = mysqli_fetch_assoc($finn_bruker);
 
     // Bruker finnes
-    if ($finnnes = $finn_bruker->num_rows == 1) {
+    if ($finn_bruker->num_rows == 1) {
         // Passord stemmer med bruker
         if ($info['bruker_pass'] == $passordhash && $info['bruker_navn'] == $brukernavn) {
 
             // Hvis bruker_aktiv = 1
             if ($info['bruker_aktiv'] == '1') {
-                echo "innlogget!";
                 $_SESSION['innlogget'] = true;
                 $_SESSION["bruker_navn"] = $info["bruker_navn"];
                 $_SESSION["bruker_id"] = $info["bruker_id"];
@@ -38,13 +34,10 @@ if (isset($_POST['logginn-btn'])) {
             }
         }
     }
-}
 
-require_once(__DIR__ . '/index.php');
-require_once(__DIR__ . '/includes/header.php');
+    require_once(__DIR__ . '/index.php');
+    require_once(__DIR__ . '/includes/header.php');
 
-
-if (isset($_POST['logginn-btn'])) {
     // Bruker finnes ikke
     if ($finnnes = $finn_bruker->num_rows == 0) {
         echo <<<_END

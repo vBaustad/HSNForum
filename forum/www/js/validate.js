@@ -1,4 +1,6 @@
-/* Funksjoner for "backend" validering */
+/*                                       */
+/*  Funksjoner for "backend" validering  */
+/*                                       */
 function valBNavn(verdi) {
     var ptn = /^[A-Za-z0-9]+$/;
     return ptn.test(verdi);
@@ -25,7 +27,9 @@ function valPassord(verdi) {
     return lengde(verdi, 6, 10) && ptn1.test(verdi) && ptn2.test(verdi) && ptn3.test(verdi);
 }
 
-/* Funksjoner for visuel validering */
+/*                                    */
+/*  Funksjoner for visuel validering  */
+/*                                    */
 function sjekkBNavn(verdi) {
     var ptn = /^[A-Za-z0-9]+$/;
 

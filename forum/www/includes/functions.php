@@ -16,14 +16,13 @@ function eradmin() {
 }
 
 //send the welcome letter
-function send_email($info)
-{
+function send_email($info) {
     // Henter infor fra array
     $fornavn = $info['fornavn'];
     $epost = $info['epost'];
     $nokkel = $info['nokkel'];
     $curpath = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-    $bekreftbruker = str_replace("functions", "bekreftbruker", $curpath);
+    $bekreftbruker = str_replace("registrer", "includes/bekreftbruker", $curpath);
 
     // Creating the message
     $melding = '<!DOCTYPE html PUBLIC>';
@@ -68,8 +67,7 @@ function send_email($info)
     return $result;
 }
 
-function lesParam($param)
-{
+function lesParam($param) {
     $input = "";
     if (isset($_POST[$param])) {
         $input = htmlentities(stripslashes($_POST[$param]));
