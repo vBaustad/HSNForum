@@ -39,6 +39,8 @@ if (!empty($_GET['epost']) || !empty($_GET['nokkel'])) {
 
         // Bruker er aktivert, vi kan trygt slette bruker i bekref tabellen
         if ($row['bruker_aktiv'] == '1') {
+
+            /* DELETE AFTER TRIGGER i 'forum.bruker' kan ta seg av dette! */
             $sql = mysqli_query($conn, "DELETE FROM bekreft WHERE bruker_id = '$bruker_id'");
 
             if ($sql) {
