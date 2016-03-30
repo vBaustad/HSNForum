@@ -56,7 +56,7 @@ require_once 'includes/db_connect.php';
 require_once 'includes/header.php';
 
 echo '<h1>' . $katnavn['kat_navn'] . '</h1>';
-if (innlogget() == true && eradmin() == true) {
+if (innlogget() == true && bruker_level() == "admin") {
     echo '<a class="pull-right button-std mar-bot" id="ny_ukat_btn" href="#"><i class="fa fa-plus-square-o"></i> Ny underkategori</a>';
     echo '<a class="pull-right button-std mar-bot mar-right" id="slett_kat_btn" href="#"><i class="fa fa-minus-square-o"></i> Slett kategori</a>';
 }

@@ -8,11 +8,11 @@ function innlogget() {
     else return false;
 }
 
-function eradmin() {
+function bruker_level() {
     if (isset($_SESSION['innlogget']) && $_SESSION['bruker_level'] == '2') {
-        return true;
+        return "admin";
     }
-    else return false;
+    else return "regular";
 }
 
 //send the welcome letter

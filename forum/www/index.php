@@ -24,7 +24,7 @@
 require_once(__DIR__ . '/includes/db_connect.php');
 require_once(__DIR__ . '/includes/header.php');
 
-if (eradmin() == true) {
+if (bruker_level() == "admin") {
     echo '<a class="pull-right button-std mar-bot" id="ny_kat_btn" href="#"><i class="fa fa-plus-square-o"></i> Ny kategori</a>';
 }
 

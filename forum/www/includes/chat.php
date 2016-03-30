@@ -13,18 +13,17 @@ if (innlogget() == true) {
         $msg_melding = str_replace(":)", "<i class=\"fa fa-smile-o\"></i>", $msg_melding_get);
         // Fjerner bruk av HTML tags
         $msg_melding_stripped = strip_tags($msg_melding, '<i><b><u>');
-        $dato = date("Y-m-d G:i:s");
 
         $bruker_level = "";
-        if ($_SESSION['bruker_level'] == '2') {
+        if (bruker_level() == "admin") {
             $bruker_level = "admin";
         }
-        else {
+        elseif (bruker_level() == "regular") {
             $bruker_level = "regular";
         }
 
         $sendData = mysqli_query($conn, "INSERT INTO chat (`bruker_navn`, `bruker_status`, `bruker_id`, `msg_melding`, `msg_dato`)
-                            VALUES ('$bruker_navn', '$bruker_level', '$bruker_id', '$msg_melding_stripped', '$dato')");
+                            VALUES ('$bruker_navn', '$bruker_level', '$bruker_id', '$msg_melding_stripped', NOW())");
     }
 }
 
