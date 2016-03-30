@@ -4,57 +4,25 @@ require_once(__DIR__ . '/db_connect.php');
 // error_reporting(0);
 ?>
 <script src="js/validate.js"></script>
+<script src="js/functions.js"></script>
 
 <script type="text/javascript">
-    $(document).ready(function () {
-        // Lukker vindues
-        $(".button-lukk, .registrer-icon-lukk, .logginn-icon-lukk, #registrer-avbryt").click(function () {
-            $(".registrer-box-success").hide();
-            $("#registrer-mail-sendt").hide();
-            $("#registrer-feil").hide();
-            $("#registrer-box").hide();
-            $("#logginn-box").hide();
-            $("#ny_kat").hide();
-            $("#ny_ukat").hide();
-            $("#slett_kat").hide();
-            $("#logginn-box-ikke-aktiv").hide();
-            /*RAMS OPP ALLE PÅ EN LINJE FOR FUCK SAKE!*/
+    if (<?php innlogget() == true && bruker_level() == "admin" ?>) {
+        $(document).ready(function() {
+            $("#ny_ukat_btn").click(function () {
+                $("#ny_ukat").show();
+            })
+
+            $("#ny_kat_btn").click(function () {
+                $("#ny_kat").show();
+            });
+
+            $("#slett_kat_btn").click(function () {
+                $("#slett_kat").show();
+            });
         });
-
-        // Skjul/vis bokser
-        $("#registrer").click(function () {
-            $("#registrer-box").show();
-        });
-        $("#logg_inn").click(function () {
-            $("#logginn-box").show();
-        });
-
-
-    });
-</script>
-
-<?php
-
-    if (innlogget() == true && eradmin() == true) {
-        echo <<<_END
-                <script type="text/javascript">
-                    $(document).ready(function() {
-                        $("#ny_ukat_btn").click(function () {
-                            $("#ny_ukat").show();
-                        })
-            
-                        $("#ny_kat_btn").click(function () {
-                            $("#ny_kat").show();
-                        });
-                        
-                        $("#slett_kat_btn").click(function () {
-                            $("#slett_kat").show();
-                        });
-                    });
-                </script>
-_END;
     }
-?>
+</script>
 
 <div class="container">
     <div class="page-header">
