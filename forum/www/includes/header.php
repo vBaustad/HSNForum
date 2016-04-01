@@ -1,28 +1,34 @@
 <?php
-require_once(__DIR__ . '/functions.php');
-require_once(__DIR__ . '/db_connect.php');
+require_once (__DIR__ . '/functions.php');
+require_once (__DIR__ . '/db_connect.php');
 // error_reporting(0);
 ?>
 <script src="js/validate.js"></script>
 <script src="js/functions.js"></script>
 
 <script type="text/javascript">
-    if (<?php innlogget() == true && bruker_level() == "admin" ?>) {
+    <?php if (innlogget() == true && bruker_level() == "admin")  { ?>
         $(document).ready(function() {
             $("#ny_ukat_btn").click(function () {
                 $("#ny_ukat").show();
             })
+            $("#slett_ukat_btn").click(function () {
+                $("#slett_ukat").show();
+            });
 
             $("#ny_kat_btn").click(function () {
                 $("#ny_kat").show();
             });
-
             $("#slett_kat_btn").click(function () {
                 $("#slett_kat").show();
             });
         });
-    }
+    <?php } ?>
 </script>
+
+<?php
+    
+?>
 
 <div class="container">
     <div class="page-header">
@@ -31,7 +37,7 @@ require_once(__DIR__ . '/db_connect.php');
         <?php
         if (innlogget() == true) {
             echo    '<ol class="breadcrumb pull-right">';
-            echo        '<li><i class="fa fa-user pad-right"></i><a id="profil-img" href="min_profil.php">' . $_SESSION['bruker_navn'] . "</a></li> ";
+            echo        '<li><i class="fa fa-user pad-right"></i><a id="profil-img" href="bruker.php">' . $_SESSION['bruker_navn'] . "</a></li> ";
             echo        '<li><a id="logg_ut" href="includes/loggut.php">Logg ut</a></li>';
             echo     '</ol>';
         }
@@ -57,11 +63,7 @@ require_once(__DIR__ . '/db_connect.php');
             <p class="white">Det oppstod en feil under registreringen.<br>Venligst prøv igjen...</p>
             <p class="white">Skulle problemet fortsette, ta <a class="link-light" href="#">kontakt</a> med administrator
                 og oppgi denne feilkoden:</p>
-            <h2 style="display: none" id="feilkode1" class="feilkode white">Feilkode 1</h2>
-            <h2 style="display: none" id="feilkode2" class="feilkode white">Feilkode 2</h2>
-            <h2 style="display: none" id="feilkode3" class="feilkode white">Feilkode 3</h2>
-            <h2 style="display: none" id="feilkode4" class="feilkode white">Feilkode 4</h2>
-
+            <h2 style="display: none" id="feilkode" class="white"></h2>
             <button form="registrer" name="button-avbryt" type="submit" class="button-lukk"> Lukk</button>
         </div>
     </div>
@@ -262,4 +264,3 @@ require_once(__DIR__ . '/db_connect.php');
     
 <?php
 require_once(__DIR__ . '/../chatbox.php');
-?>

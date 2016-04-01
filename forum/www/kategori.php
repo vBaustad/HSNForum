@@ -25,11 +25,114 @@ require_once 'includes/db_connect.php';
 <body>
 
 <?php
-    $kat_id = mysqli_real_escape_string($conn, $_GET['kat_id']);
-    $finnkatnavn = mysqli_query($conn, "SELECT kat_navn FROM kategori WHERE kategori.kat_id = '$kat_id'");
-    $katnavn = mysqli_fetch_assoc($finnkatnavn);
+$kat_id = mysqli_real_escape_string($conn, $_GET['kat_id']);
+$finnkatnavn = mysqli_query($conn, "SELECT kat_navn FROM kategori WHERE kategori.kat_id = '$kat_id'");
+$katnavn = mysqli_fetch_assoc($finnkatnavn);
+$ukat = mysqli_query($conn, "SELECT kat_id, ukat_id, ukat_navn, ukat_beskrivelse, ukat_img, ukat_img_farge FROM underkategori WHERE `kat_id` = '$kat_id' ");
 
-    $_SESSION['kat_id'] = $kat_id;
+require_once 'includes/header.php';
+
+
+/* Viser alle underkategorier */
+if (isset($_GET['kat_id']) && !isset($_GET['ukat_id'])) {
+
+    if (innlogget() == true && bruker_level() == "admin") {
+        echo '<a class="pull-right button-std mar-bot" id="ny_ukat_btn" href="#"><i class="fa fa-plus-square-o"></i> Ny underkategori</a>';
+        echo '<a class="pull-right button-std mar-bot mar-right" id="slett_kat_btn" href="#"><i class="fa fa-minus-square-o"></i> Slett kategori</a>';
+    }
+
+    if ($ukat) {
+        if (mysqli_num_rows($ukat) > 0) {
+            echo '<table class="main-table table forum table-striped">';
+            echo '  <thead>';
+            echo '       <tr>';
+            echo '            <th class="cell-stat"></th>';
+            echo '            <th><h1>' . $katnavn['kat_navn'] . '</h1></th>';
+            echo '            <th class="cell-stat text-center skjul-liten skjul-medium">Emner</th>';
+            echo '            <th class="cell-stat text-center skjul-liten skjul-medium">Innlegg</th>';
+            echo '            <th class="cell-stat-2x skjul-liten skjul-medium">Siste Innlegg</th>';
+            echo '      </tr>';
+            echo '  </thead>';
+            echo '  <tbody>';
+
+            while ($row_ukat = mysqli_fetch_assoc($ukat)) {
+                $ukat_id = $row_ukat['ukat_id'];
+                $antposts = mysqli_query($conn, "SELECT COUNT(tråd_id) as antPosts FROM tråd WHERE tråd_ukat = '$ukat_id'");
+                $antposts_result = mysqli_fetch_assoc($antposts);
+
+                $siste_innlegg = mysqli_query($conn, "SELECT tråd_dato, tråd_av, tråd_av_id FROM tråd WHERE tråd_ukat = '$ukat_id' ORDER BY tråd_dato DESC LIMIT 1");
+                $siste_innlegg_row = mysqli_fetch_assoc($siste_innlegg);
+
+                echo '      <tr>';
+                echo '          <td class="center"><i class="' . $row_ukat['ukat_img'] . ' ' . $row_ukat['ukat_img_farge'] . '"></i></span></td>';
+                echo '          <td><h4><a href="kategori.php?kat_id=' . $row_ukat['kat_id']  . '&ukat_id=' . $row_ukat['ukat_id'] . '&ukat_navn=' . $row_ukat['ukat_navn'] . '">' . $row_ukat['ukat_navn'] . '</a><br><small>' . $row_ukat['ukat_beskrivelse'] . '</small></h4></td>';
+                echo '          <td class="text-center skjul-liten skjul-medium"><a href="#">1 234</a></td>';
+                echo '          <td class="text-center skjul-liten skjul-medium"><a href="kategori.php?kat_id=' . $row_ukat['kat_id']  . '&ukat_id=' . $row_ukat['ukat_id'] . '&ukat_navn=' . $row_ukat['ukat_navn'] . '">' . $antposts_result['antPosts'] . '</a></td>';
+                echo '          <td class="skjul-liten skjul-medium">av <a href="bruker.php?brukerid=' . $siste_innlegg_row['tråd_av_id'] .  '">' . $siste_innlegg_row['tråd_av'] . '</a><br><small><i class="fa fa-clock-o"></i> 1 dag siden</small></td>';
+                echo '      </tr>';
+            }
+            echo '  </tbody>';
+            echo '</table>';
+        }
+    }
+}
+
+/* Viser alle tråder i en underkateori */
+if (isset($_GET['kat_id']) && isset($_GET['ukat_id'])) {
+    $kat_id = $_GET['kat_id'];
+    $ukat_id = $_GET['ukat_id'];
+    $ukat_navn = $_GET['ukat_navn'];
+
+    $posts = mysqli_query($conn, "SELECT * FROM tråd WHERE `tråd_ukat` = '$ukat_id' ");
+
+    if (innlogget() && bruker_level() == "admin") {
+        echo '<a class="pull-right button-std mar-bot" id="ny_ukat_btn" href="#"><i class="fa fa-plus-square-o"></i> Ny post</a>';
+        echo '<a class="pull-right button-std mar-bot mar-right" id="slett_ukat_btn" href="#"><i class="fa fa-minus-square-o"></i> Slett underkategori</a>';
+    }
+    elseif (innlogget() && bruker_level() == "regular") {
+        echo '<a class="pull-right button-std mar-bot" id="ny_ukat_btn" href="#"><i class="fa fa-plus-square-o"></i> Ny post</a>';
+    }
+
+    echo $ukat_navn;
+
+    if ($posts->num_rows > 0) {
+        echo '<table class="main-table table forum table-striped">';
+        echo '  <thead>';
+        echo '       <tr>';
+        echo '            <th class="cell-stat"></th>';
+        echo '            <th><h2>Tråd navn</h2></th>';
+        echo '            <th class="cell-stat-2x text-center skjul-liten skjul-medium">Antal svar</th>';
+        echo '            <th class="cell-stat-2x skjul-liten skjul-medium">Siste svar</th>';
+        echo '      </tr>';
+        echo '  </thead>';
+        echo '  <tbody>';
+
+        while ($row_posts = mysqli_fetch_assoc($posts)) {
+            echo '<tr>';
+            echo '<td></td>';
+            echo '<td>
+                    <h4><a href="#">
+                        ' . $row_posts['tråd_navn'] . '
+                        </a><br>
+                        <small><a href="#">
+                            ' . $row_posts['tråd_av'] . '</a> @ ' . $row_posts['tråd_dato'] . '
+                        </small>
+                    <h4>
+                  </td>';
+            echo '<td class="center">??</td>';
+            echo '<td> ?? </td>';
+            echo '</tr>';
+        }
+
+        echo '    </tbody>';
+        echo '</table>';
+    }
+
+
+
+}
+
+require_once 'includes/footer.php';
 ?>
 
 <!-- SLETT KATEGORI -->
@@ -52,44 +155,22 @@ require_once 'includes/db_connect.php';
     </div>
 </div>
 
-<?php
-require_once 'includes/header.php';
-
-echo '<h1>' . $katnavn['kat_navn'] . '</h1>';
-if (innlogget() == true && bruker_level() == "admin") {
-    echo '<a class="pull-right button-std mar-bot" id="ny_ukat_btn" href="#"><i class="fa fa-plus-square-o"></i> Ny underkategori</a>';
-    echo '<a class="pull-right button-std mar-bot mar-right" id="slett_kat_btn" href="#"><i class="fa fa-minus-square-o"></i> Slett kategori</a>';
-}
-
-$ukat = mysqli_query($conn, "SELECT kat_id, ukat_navn, ukat_beskrivelse, ukat_img FROM underkategori WHERE `kat_id` = '$kat_id' ");
-
-if ($ukat) {
-    if (mysqli_num_rows($ukat) > 0) {
-        echo '<table class="main-table table forum table-striped">';
-        echo '  <thead>';
-        echo '       <tr>';
-            echo '            <th class="cell-stat"></th>';
-            echo '            <th></th>';
-                echo '            <th class="cell-stat text-center skjul-liten skjul-medium">Emner</th>';
-            echo '            <th class="cell-stat text-center skjul-liten skjul-medium">Innlegg</th>';
-            echo '            <th class="cell-stat-2x skjul-liten skjul-medium">Siste Innlegg</th>';
-            echo '      </tr>';
-        echo '  </thead>';
-        echo '  <tbody>';
-
-        while ($row_ukat = mysqli_fetch_assoc($ukat)) {
-            echo '      <tr>';
-            echo '          <td class="center"><i class="' . $row_ukat['ukat_img'] . '"></i></span></td>';
-            echo '          <td><h4><a href="#">' . $row_ukat['ukat_navn'] . '</a><br><small>' . $row_ukat['ukat_beskrivelse'] . '</small></h4></td>';
-            echo '          <td class="text-center skjul-liten skjul-medium"><a href="#">1 234</a></td>';
-            echo '          <td class="text-center skjul-liten skjul-medium"><a href="#">4 321</a></td>';
-            echo '          <td class="skjul-liten skjul-medium">av <a href="#">Bruker:1</a><br><small><i class="fa fa-clock-o"></i> 1 dag siden</small></td>';
-            echo '      </tr>';
-        }
-
-        echo '  </tbody>';
-        echo '</table>';
-    }
-}
-    require_once 'includes/footer.php';
-?>
+<!-- SLETT UNDERKATEGORI -->
+<div id="slett_ukat">
+    <div class="popup-header center">
+        <div class="pull-left" style="width: 80%">
+            <h2 class="white icon-user pull-right"><i class="fa fa-minus-square-o"></i> Slette underkategori?</h2>
+        </div>
+        <div class="pull-right half" style="width: 20%;">
+            <i class="logginn-icon-lukk fa fa-times fa-2x red pull-right"></i>
+        </div>
+    </div>
+    <div class="popup-container center">
+        <?php echo '<form id="slett_ukat_form" name="slett_ukat_form" method="post" action="http://localhost/forum/www/includes/endringer.php?slett_ukat_id=' . $ukat_id .'&kat_id=' . $kat_id . '">' ?>
+        <div class="popup-divider">
+            <?php echo '<p class="white">Er du vikker på at du vil slette underkategorien ' . $ukat_navn .  '?</p>' ?>
+        </div>
+        <button type="submit" name="slett_ukat_btn" class="button-lukk">Slett den</button>
+        </form>
+    </div>
+</div>

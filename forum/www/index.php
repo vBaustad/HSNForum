@@ -40,26 +40,36 @@ if ($kat) {
                 echo '<table class="main-table table forum table-striped">';
                 echo '  <thead>';
                 echo '       <tr>';
-                echo '            <th class="cell-stat"></th>';
+                echo '            <th id="' . $row_kat['kat_id'] . '" class="center skjul_tbody_btn cell-stat">
+                                   <i class="bildeID' . $row_kat['kat_id'] . ' fa fa-toggle-off fa-2x"></a></th>';
                 echo '            <th><h2><a href="kategori.php?kat_id=' . $row_kat['kat_id'] .'">' . $row_kat['kat_navn'] . '</a></h2></th>';
                 echo '            <th class="cell-stat text-center skjul-liten skjul-medium">Emner</th>';
                 echo '            <th class="cell-stat text-center skjul-liten skjul-medium">Innlegg</th>';
                 echo '            <th class="cell-stat-2x skjul-liten skjul-medium">Siste Innlegg</th>';
                 echo '      </tr>';
                 echo '  </thead>';
-                echo '  <tbody>';
+                echo '  <tbody class=radID' . $row_kat['kat_id'] . '>';
 
                 $ukat_teller = $row_kat['kat_id'];
             }
 
-            $ukat = mysqli_query($conn, "SELECT kat_id, ukat_navn, ukat_beskrivelse, ukat_img, ukat_img_farge FROM underkategori WHERE kat_id = '$ukat_teller'");
+            $ukat = mysqli_query($conn, "SELECT kat_id, ukat_id, ukat_navn, ukat_beskrivelse, ukat_img, ukat_img_farge FROM underkategori WHERE kat_id = '$ukat_teller'");
 
             if ($ukat) {
                 if (mysqli_num_rows($ukat) > 0) {
                     while ($row_ukat = mysqli_fetch_assoc($ukat)) {
                         echo '      <tr>';
                         echo '          <td class="center"><i class="' . $row_ukat['ukat_img'] . $row_ukat['ukat_img_farge'] . '"></i></span></td>';
-                        echo '          <td><h4><a href="#">' . $row_ukat['ukat_navn'] . '</a><br><small>' . $row_ukat['ukat_beskrivelse'] . '</small></h4></td>';
+                        echo '          <td>
+                                            <h4>
+                                                <a href="kategori.php?kat_id=' . $row_kat['kat_id'] . '&ukat_id=' . $row_ukat['ukat_id'] . '&ukat_navn=' . $row_ukat['ukat_navn'] . '">
+                                                    ' . $row_ukat['ukat_navn'] . '
+                                                </a><br>
+                                                <small>
+                                                    ' . $row_ukat['ukat_beskrivelse'] . '
+                                                </small>
+                                            </h4>
+                                        </td>';
                         echo '          <td class="text-center skjul-liten skjul-medium"><a href="#">1 234</a></td>';
                         echo '          <td class="text-center skjul-liten skjul-medium"><a href="#">4 321</a></td>';
                         echo '          <td class="skjul-liten skjul-medium">av <a href="#">Bruker:1</a><br><small><i class="fa fa-clock-o"></i> 1 dag siden</small></td>';
