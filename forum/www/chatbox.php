@@ -8,13 +8,18 @@ require_once(__DIR__ . '/includes/db_connect.php');
         $.ajaxSetup({cache:false});
         setInterval(function () {
             $("#meldinger").load('http://localhost/forum/www/includes/chat.php');
-        }, 2000);
+        }, 1000);
 
         $("#chat_msg_text").keyup(function(event){
             if(event.keyCode == 13){
                 $("#chat_send").click();
             }
         });
+
+        // Funker ikke når man skriver nye meldinger. :(
+        $("#meldinger").animate({
+            scrollTop: $(document).height()
+        }, "slow");
     });
 </script>
 

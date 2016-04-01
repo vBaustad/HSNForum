@@ -137,7 +137,7 @@ _END;
                                 VALUES('$nokkel','$epost', '$bruker_id')");
 
             if ($bekreft) {
-                //Sender informasjon til send_mail
+                //Forbreder informasjon som skal sendes til send_mail
                 $info = array(
                     'brukernavn' => $brukernavn,
                     'epost' => $epost,
@@ -146,47 +146,30 @@ _END;
 
                 // Hvis alt er OK -> Send epost
                 if (send_email($info)) {
-                    echo <<<_END
-                        <script type='text/javascript'>
-                          $(document).ready(function() {
-                            $('#registrer-mail-sendt').show();
-                          });
-                        </script>
-_END;
+                    echo "<script type='text/javascript'>";
+                    echo    "$(document).ready(function() {";
+                    echo        "$('#registrer-mail-sendt').show();";
+                    echo    "})";
+                    echo "</script>";
 
                 } // Feilkode 1
                 else {
-                    echo <<<_END
-                        <script type='text/javascript'>
-                            $(document).ready(function() {
-                                $("#registrer-feil").show();
-                                $("#feilkode1").css("display", "block");
-                            })
-                        </script>
-_END;
+                    echo "<script type='text/javascript'>";
+                    echo    "feilmelding('#registrer-feil', 'Feilkode: 1');";
+                    echo "</script>";
                 }
             } // Feilkode 2
             else {
-                echo <<<_END
-                    <script type='text/javascript'>
-                        $(document).ready(function() {
-                            $("#registrer-feil").show();
-                            $("#feilkode2").css("display", "block");
-                        })
-                    </script>
-_END;
+                echo "<script type='text/javascript'>";
+                echo    "feilmelding('#registrer-feil', 'Feilkode: 2');";
+                echo "</script>";
 
             }
         } // Feilkode 3
         else {
-            echo <<<_END
-                <script type='text/javascript'>
-                    $(document).ready(function() {
-                        $("#registrer-feil").show();
-                        $("#feilkode3").css("display", "block");
-                    })
-                </script>
-_END;
+            echo "<script type='text/javascript'>";
+            echo    "feilmelding('#registrer-feil', 'Feilkode: 3');";
+            echo "</script>";
 
         }
     }

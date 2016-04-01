@@ -12,4 +12,27 @@ $(document).ready(function () {
     $("#logg_inn").click(function () {
         $("#logginn-box").show();
     });
+
+
+    $(".skjul_tbody_btn").click(function () {
+        var getID = $(this).attr('id');
+        var faclass = ".bildeID" + getID;
+        var rowclass = ".radID" + getID;
+        $(rowclass).toggle();
+        $(faclass).toggleClass('fa-toggle-on');
+    });
 });
+
+// bruker til registrer.php
+function feilmelding(box, melding) {
+    $(document).ready(function () {
+        $(box).show();
+        $("#feilkode").css("display", "block").text(melding);
+    })
+}
+
+function visbox(box) {
+    $(document).ready(function () {
+        $(box).show();
+    })
+}

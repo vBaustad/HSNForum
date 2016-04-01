@@ -3,7 +3,7 @@ require_once(__DIR__ . '/includes/functions.php');
 require_once(__DIR__ . '/includes/db_connect.php');
 
 if (isset($_POST['logginn-btn'])) {
-    // Forhindrer SQL injection med escape string -- Bytt til prepared statement!
+    // Forhindrer SQL injection med escape string -- Bytt til prepared statement! - Trenger ikke prepared statement her, da queryen kun er SELECT
     $salt1 = 'dkn?';
     $salt2 = '$l3*!';
     $passord = mysqli_real_escape_string($conn, $_POST["passord_logginn"]);
