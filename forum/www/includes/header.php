@@ -3,6 +3,30 @@ require_once (__DIR__ . '/functions.php');
 require_once (__DIR__ . '/db_connect.php');
 // error_reporting(0);
 ?>
+<!DOCTYPE html>
+<html lang="no" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="#">
+
+    <title>Forum for studenter på HSN avdeling Bø</title>
+    <!-- CSS, FONTS AND OTHER LIBS-->
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700,800,400italic' rel='stylesheet'
+          type='text/css'>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="http://localhost/forum/www/css/stylesheet.css">
+    <link rel="stylesheet" type="text/css" href="http://localhost/forum/www/css/stylesheet-m.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+</head>
+<body>
+
+
+
 <script src="js/validate.js"></script>
 <script src="js/functions.js"></script>
 
@@ -25,10 +49,6 @@ require_once (__DIR__ . '/db_connect.php');
         });
     <?php } ?>
 </script>
-
-<?php
-    
-?>
 
 <div class="container">
     <div class="page-header">
@@ -64,7 +84,7 @@ require_once (__DIR__ . '/db_connect.php');
             <p class="white">Skulle problemet fortsette, ta <a class="link-light" href="#">kontakt</a> med administrator
                 og oppgi denne feilkoden:</p>
             <h2 style="display: none" id="feilkode" class="white"></h2>
-            <button form="registrer" name="button-avbryt" type="submit" class="button-lukk"> Lukk</button>
+            <button name="button-avbryt" type="submit" class="button-lukk"> Lukk</button>
         </div>
     </div>
 
@@ -77,7 +97,7 @@ require_once (__DIR__ . '/db_connect.php');
         <div class="popup-container center">
             <h1 class="white">Takk for din registrering!</h1>
             <p class="white">Fullfør registreringen ved å sjekke eposten din.<br>Du kan nå lukke dette vinduet.</p>
-            <button form="registrer" type="submit" class="button-lukk">Lukk</button>
+            <button type="submit" class="button-lukk">Lukk</button>
         </div>
     </div>
 
@@ -141,7 +161,7 @@ require_once (__DIR__ . '/db_connect.php');
                 <h2 class="white pull-right"><i class="fa fa-sign-in"></i> Logg inn</h2>
             </div>
             <div class="pull-right half" style="width: 30%;">
-                <i class="logginn-icon-lukk fa fa-times fa-2x red pull-right"></i>
+                <i class="box-icon-lukk fa fa-times fa-2x red pull-right"></i>
             </div>
         </div>
 
@@ -174,7 +194,7 @@ require_once (__DIR__ . '/db_connect.php');
         <div class="popup-container center">
             <h1 class="white">Bruker aktivert</h1>
             <p class="white">Velkommen til HSN forum!<br>Du kan nå logge deg inn.</p>
-            <button form="registrer" name="button-avbryt" type="submit" class="button-lukk"> Lukk</button>
+            <button name="button-avbryt" type="submit" class="button-lukk"> Lukk</button>
         </div>
     </div>
     
@@ -185,7 +205,7 @@ require_once (__DIR__ . '/db_connect.php');
                 <h2 class="white icon-user pull-right"><i class="fa fa-plus-square-o"></i> Legg til kategori</h2>
             </div>
             <div class="pull-right half" style="width: 30%;">
-                <i class="logginn-icon-lukk fa fa-times fa-2x red pull-right"></i>
+                <i class="box-icon-lukk fa fa-times fa-2x red pull-right"></i>
             </div>
         </div>
 
@@ -200,7 +220,7 @@ require_once (__DIR__ . '/db_connect.php');
     </div>
 
     <!-- NY UNDERKATEGORI -->
-    <div id="ny_ukat">
+    <!--<div id="ny_ukat">
         <div class="popup-header center">
             <div class="pull-left" style="width: 80%">
                 <h2 class="white icon-user pull-right"><i class="fa fa-plus-square-o"></i> Legg til underkategori</h2>
@@ -259,7 +279,7 @@ require_once (__DIR__ . '/db_connect.php');
                 <input type="submit" name="ny_ukat_btn" id="ny_ukat_submit" value="LEGG TIL">
             </form>
         </div>
-    </div>
+    </div>-->
 
     
 <?php

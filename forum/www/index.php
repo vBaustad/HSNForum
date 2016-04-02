@@ -1,25 +1,3 @@
-<!DOCTYPE html>
-<html lang="no">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="#">
-
-    <title>Forum for studenter på HSN avdeling Bø</title>
-    <!-- CSS, FONTS AND OTHER LIBS-->
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700,800,400italic' rel='stylesheet'
-          type='text/css'>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="http://localhost/forum/www/css/stylesheet.css">
-    <link rel="stylesheet" type="text/css" href="http://localhost/forum/www/css/stylesheet-m.css">
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-</head>
-<body>
-
 <?php
 require_once(__DIR__ . '/includes/db_connect.php');
 require_once(__DIR__ . '/includes/header.php');
@@ -40,9 +18,11 @@ if ($kat) {
                 echo '<table class="main-table table forum table-striped">';
                 echo '  <thead>';
                 echo '       <tr>';
-                echo '            <th id="' . $row_kat['kat_id'] . '" class="center skjul_tbody_btn cell-stat">
-                                   <i class="bildeID' . $row_kat['kat_id'] . ' fa fa-toggle-off fa-2x"></a></th>';
-                echo '            <th><h2><a href="kategori.php?kat_id=' . $row_kat['kat_id'] .'">' . $row_kat['kat_navn'] . '</a></h2></th>';
+                echo '            <th id="' . $row_kat['kat_id'] . '" class="center skjul_tbody_btn cell-stat">';
+                echo '              <i class="bildeID' . $row_kat['kat_id'] . ' fa fa-caret-square-o-up fa-2x"></i></th>';
+                echo '            <th>';
+                echo '              <a class="th_text" href="kategori.php?kat_id=' . $row_kat['kat_id'] .'">' . $row_kat['kat_navn'] . '</a>';
+                echo '            </th>';
                 echo '            <th class="cell-stat text-center skjul-liten skjul-medium">Emner</th>';
                 echo '            <th class="cell-stat text-center skjul-liten skjul-medium">Innlegg</th>';
                 echo '            <th class="cell-stat-2x skjul-liten skjul-medium">Siste Innlegg</th>';
@@ -58,11 +38,45 @@ if ($kat) {
             if ($ukat) {
                 if (mysqli_num_rows($ukat) > 0) {
                     while ($row_ukat = mysqli_fetch_assoc($ukat)) {
+
+                        $ukat_id = $row_ukat['ukat_id'];
+                        // For HTML validering
+                        $ukat_navn = (str_replace(" ", "_", $row_ukat['ukat_navn']));
+
+                        // Teller antall tråder
+                        $anttråd = mysqli_query($conn, "SELECT COUNT(tråd_id) as antPosts FROM tråd WHERE tråd_ukat = '$ukat_id'");
+                        $anttråd_result = mysqli_fetch_assoc($anttråd);
+
+                        // Teller antall svar
+                        $antinnlegg = mysqli_query($conn, "SELECT COUNT(innlegg_id) as antInnlegg FROM innlegg WHERE innlegg_tråd_id = '$ukat_id'");
+                        $antinnlegg_result = mysqli_fetch_assoc($antinnlegg);
+
+                        // Finner bruker som skrev siste svar
+                        $siste_innlegg = mysqli_query($conn, "SELECT tråd_dato, tråd_av, tråd_av_id FROM tråd WHERE tråd_ukat = '$ukat_id' ORDER BY tråd_dato DESC LIMIT 1");
+                        $siste_innlegg_row = mysqli_fetch_assoc($siste_innlegg);
+
+                        if ($siste_innlegg->num_rows > 0) {
+                            // Finner dato på siste tråd.. lag en spørring som sjekker BÅDE tråd og innlegg dato. Finn siste!!
+                            $dagensdato = date("y-d/m");
+                            $meldingdato = date("y-d/m", strtotime($siste_innlegg_row['tråd_dato']));
+
+                            $postdm = utf8_encode(strftime("%a %d %B", strtotime($siste_innlegg_row['tråd_dato'])));
+                            $postgis = date("G:i ", strtotime($siste_innlegg_row['tråd_dato']));
+
+                            if ($meldingdato == $dagensdato) {
+                                $postdm = " I dag ";
+                            }
+                            $postdato = '<i class="fa fa-clock-o"></i> ' . $postdm . ' ' . $postgis;
+                        }
+                        else {
+                            $postdato = "";
+                        }
+
                         echo '      <tr>';
-                        echo '          <td class="center"><i class="' . $row_ukat['ukat_img'] . $row_ukat['ukat_img_farge'] . '"></i></span></td>';
+                        echo '          <td class="center"><i class="' . $row_ukat['ukat_img'] . $row_ukat['ukat_img_farge'] . '"></i></td>';
                         echo '          <td>
                                             <h4>
-                                                <a href="kategori.php?kat_id=' . $row_kat['kat_id'] . '&ukat_id=' . $row_ukat['ukat_id'] . '&ukat_navn=' . $row_ukat['ukat_navn'] . '">
+                                                <a href="kategori.php?kat_id=' . $row_kat['kat_id'] . '&ukat_id=' . $row_ukat['ukat_id'] . '&ukat_navn=' . $ukat_navn . '">
                                                     ' . $row_ukat['ukat_navn'] . '
                                                 </a><br>
                                                 <small>
@@ -70,9 +84,19 @@ if ($kat) {
                                                 </small>
                                             </h4>
                                         </td>';
-                        echo '          <td class="text-center skjul-liten skjul-medium"><a href="#">1 234</a></td>';
-                        echo '          <td class="text-center skjul-liten skjul-medium"><a href="#">4 321</a></td>';
-                        echo '          <td class="skjul-liten skjul-medium">av <a href="#">Bruker:1</a><br><small><i class="fa fa-clock-o"></i> 1 dag siden</small></td>';
+                        echo '          <td class="text-center skjul-liten skjul-medium"><a href="kategori.php?kat_id=' . $row_kat['kat_id'] . '&ukat_id=' .
+                            $row_ukat['ukat_id'] . '">' . $anttråd_result['antPosts'] . '</a></td>';
+                        echo '          <td class="text-center skjul-liten skjul-medium"><a href="#">' . $antinnlegg_result['antInnlegg'] . '</a></td>';
+
+                        echo '          <td class="skjul-liten skjul-medium">';
+                        if ($siste_innlegg->num_rows > 0 ) {
+                            echo '<small>av </small> <a href="bruker.php?brukerid=' . $siste_innlegg_row['tråd_av_id'] .  '">' .
+                            $siste_innlegg_row['tråd_av'] . '</a><br><small>' . $postdato . '</small></td>';
+                        }
+                        else {
+                            echo '<small>ingen innlegg enda</small>';
+                        }
+
                         echo '      </tr>';
                     }
                 }

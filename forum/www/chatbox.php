@@ -2,7 +2,7 @@
 require_once(__DIR__ . '/includes/functions.php');
 require_once(__DIR__ . '/includes/db_connect.php');
 ?>
-<script src="js/chatbox.js" xmlns="http://www.w3.org/1999/html"></script>
+<script src="js/chatbox.js" xmlns="http://www.w3.org/1999/xhtml"></script>
 <script type="text/javascript">
     $(document).ready(function () {
         $.ajaxSetup({cache:false});
