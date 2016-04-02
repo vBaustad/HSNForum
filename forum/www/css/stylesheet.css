@@ -332,24 +332,23 @@ html {
     padding-top: 10px;
 }
 
-.fa-toggle-off, .fa-toggle-on {
-    padding-bottom: 8px;
+.fa-caret-square-o-up, .fa-caret-square-o-down {
+    margin-bottom: 7px;
     cursor: pointer;
     transition: all .5s;
 }
 
-.fa-toggle-off {
+.fa-caret-square-o-down {
     color: #33e000;
 }
-.fa-toggle-off:hover {
+.fa-caret-square-o-down:hover {
     color: #32b800;
 }
 
-.fa-toggle-on {
+.fa-caret-square-o-up {
     color: #e54c50;
 }
-
-.fa-toggle-on:hover {
+.fa-caret-square-o-up:hover {
     color: #f24646;
 }
 
@@ -414,7 +413,21 @@ html {
     color: #262626;
 }
 
-th h2 a {
+.h1 {
+    margin: .67em 0;
+    font-size: 1.5em;
+}
+
+.th_text {
+    margin: .67em 0;
+    font-size: 1.9em;
+    font-family: inherit;
+    font-weight: 500;
+    line-height: 1.7em;
+    color: inherit
+}
+
+th .th_text a {
     text-decoration: underline;
     color: #3f45c6;
 }
@@ -496,10 +509,6 @@ th {
     text-align: left
 }
 
-thead > tr > th > h3 {
-    color: #262626;
-}
-
 thead > tr > th {
     color: #262626;
     font-size: .85em;
@@ -514,6 +523,11 @@ tbody > tr > td > a {
 tbody > tr > td > a:hover {
     text-decoration: underline;
     color: #333333;
+}
+
+.tablehide {
+    opacity: .7;
+    transition: .5s;
 }
 
 .table {
@@ -579,6 +593,43 @@ tbody > tr > td > a:hover {
 .ny_ukat:hover {
     color: rgb(32, 189, 22);
     cursor: pointer;
+}
+
+/* TRÅD.php */
+.traadtop {
+    background: green;
+    padding: 1px 15px 1px;
+    border-radius: 3px 3px 0 0;
+}
+
+#traadtable {
+    display: table;
+    background: green;
+    width: 100%;
+}
+
+.table-row-group {
+    display: table-row-group;
+}
+
+.table-row {
+    display: table-row;
+    padding-bottom: 50px;
+}
+
+.table-cell {
+    display: table-cell;
+}
+
+.traadleft {
+    width: 150px;
+    background: blue;
+    padding: 5px;
+}
+
+.traadright {
+    background: red;
+    padding: 5px;
 }
 
 /* FOOTER */

@@ -1,3 +1,5 @@
+</div>
+
 <footer class="center">
     <div class="pull-left">
         <p>Laget av Jørgen Solli og Vebjørn Baustad</p>
@@ -7,5 +9,6 @@
     </div>
     
 </footer>
+</div>
 </body>
 </html>

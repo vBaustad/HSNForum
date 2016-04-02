@@ -1,8 +1,8 @@
 $(document).ready(function () {
     // Lukker vinduer
-    $(".button-lukk, .registrer-icon-lukk, .logginn-icon-lukk, #registrer-avbryt").click(function () {
+    $(".button-lukk, .registrer-icon-lukk, .box-icon-lukk, #registrer-avbryt, #ny_traad_btn").click(function () {
         $(".registrer-box-success, #registrer-mail-sendt, #registrer-feil, #registrer-box," +
-            "#logginn-box, #ny_kat, #ny_ukat, #slett_kat, #logginn-box-ikke-aktiv").hide();
+            "#logginn-box, #ny_kat, #ny_ukat, #slett_kat, #logginn-box-ikke-aktiv, #slett_ukat").hide();
     });
 
     // Skjul/vis bokser
@@ -13,13 +13,14 @@ $(document).ready(function () {
         $("#logginn-box").show();
     });
 
-
+    // Skjuler kategorier
     $(".skjul_tbody_btn").click(function () {
         var getID = $(this).attr('id');
         var faclass = ".bildeID" + getID;
         var rowclass = ".radID" + getID;
         $(rowclass).toggle();
-        $(faclass).toggleClass('fa-toggle-on');
+        $(faclass).toggleClass('fa-caret-square-o-down').toggleClass('fa-caret-square-o-up');
+        $(this).parent().toggleClass('tablehide');
     });
 });
 

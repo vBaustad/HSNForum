@@ -47,7 +47,7 @@ if (isset($_GET['kat_id']) && !isset($_GET['ukat_id'])) {
             echo '  <thead>';
             echo '       <tr>';
             echo '            <th class="cell-stat"></th>';
-            echo '            <th><h1>' . $katnavn['kat_navn'] . '</h1></th>';
+            echo '            <th class="th_text">' . $katnavn['kat_navn'] . '</th>';
             echo '            <th class="cell-stat text-center skjul-liten skjul-medium">Emner</th>';
             echo '            <th class="cell-stat text-center skjul-liten skjul-medium">Innlegg</th>';
             echo '            <th class="cell-stat-2x skjul-liten skjul-medium">Siste Innlegg</th>';
@@ -57,6 +57,9 @@ if (isset($_GET['kat_id']) && !isset($_GET['ukat_id'])) {
 
             while ($row_ukat = mysqli_fetch_assoc($ukat)) {
                 $ukat_id = $row_ukat['ukat_id'];
+                // For HTML validering
+                $ukat_navn = (str_replace(" ", "_", $row_ukat['ukat_navn']));
+
                 $antposts = mysqli_query($conn, "SELECT COUNT(tråd_id) as antPosts FROM tråd WHERE tråd_ukat = '$ukat_id'");
                 $antposts_result = mysqli_fetch_assoc($antposts);
 
@@ -64,11 +67,27 @@ if (isset($_GET['kat_id']) && !isset($_GET['ukat_id'])) {
                 $siste_innlegg_row = mysqli_fetch_assoc($siste_innlegg);
 
                 echo '      <tr>';
-                echo '          <td class="center"><i class="' . $row_ukat['ukat_img'] . ' ' . $row_ukat['ukat_img_farge'] . '"></i></span></td>';
-                echo '          <td><h4><a href="kategori.php?kat_id=' . $row_ukat['kat_id']  . '&ukat_id=' . $row_ukat['ukat_id'] . '&ukat_navn=' . $row_ukat['ukat_navn'] . '">' . $row_ukat['ukat_navn'] . '</a><br><small>' . $row_ukat['ukat_beskrivelse'] . '</small></h4></td>';
+                echo '          <td class="center"><i class="'
+                                                            . $row_ukat['ukat_img'] . ' '
+                                                            . $row_ukat['ukat_img_farge'] . '"></i></span></td>';
+
+                echo '          <td><h4><a href="kategori.php?kat_id='
+                                                            . $row_ukat['kat_id']
+                                                            . '&ukat_id='
+                                                            . $row_ukat['ukat_id']
+                                                            . '&ukat_navn='
+                                                            . $ukat_navn . '">'
+                                                            . $row_ukat['ukat_navn'] . '</a><br><small>'
+                                                            . $row_ukat['ukat_beskrivelse'] . '</small></h4></td>';
+
                 echo '          <td class="text-center skjul-liten skjul-medium"><a href="#">1 234</a></td>';
-                echo '          <td class="text-center skjul-liten skjul-medium"><a href="kategori.php?kat_id=' . $row_ukat['kat_id']  . '&ukat_id=' . $row_ukat['ukat_id'] . '&ukat_navn=' . $row_ukat['ukat_navn'] . '">' . $antposts_result['antPosts'] . '</a></td>';
-                echo '          <td class="skjul-liten skjul-medium">av <a href="bruker.php?brukerid=' . $siste_innlegg_row['tråd_av_id'] .  '">' . $siste_innlegg_row['tråd_av'] . '</a><br><small><i class="fa fa-clock-o"></i> 1 dag siden</small></td>';
+
+                echo '          <td class="text-center skjul-liten skjul-medium"><a href="#">' . $antposts_result['antPosts'] . '</a></td>';
+
+                echo '          <td class="skjul-liten skjul-medium">av <a href="bruker.php?brukerid='
+                                                            . $siste_innlegg_row['tråd_av_id'] . '">'
+                                                            . $siste_innlegg_row['tråd_av']
+                                                            . '</a><br><small><i class="fa fa-clock-o"></i> 1 dag siden</small></td>';
                 echo '      </tr>';
             }
             echo '  </tbody>';
@@ -81,16 +100,16 @@ if (isset($_GET['kat_id']) && !isset($_GET['ukat_id'])) {
 if (isset($_GET['kat_id']) && isset($_GET['ukat_id'])) {
     $kat_id = $_GET['kat_id'];
     $ukat_id = $_GET['ukat_id'];
-    $ukat_navn = $_GET['ukat_navn'];
+    $ukat_navn = (str_replace("_", " ", $_GET['ukat_navn']));
 
     $posts = mysqli_query($conn, "SELECT * FROM tråd WHERE `tråd_ukat` = '$ukat_id' ");
 
     if (innlogget() && bruker_level() == "admin") {
-        echo '<a class="pull-right button-std mar-bot" id="ny_ukat_btn" href="#"><i class="fa fa-plus-square-o"></i> Ny post</a>';
+        echo '<a class="pull-right button-std mar-bot" id="ny_traad_btn" href="traad.php?ukat_id=' . $ukat_id . '"><i class="fa fa-plus-square-o"></i> Ny post</a>';
         echo '<a class="pull-right button-std mar-bot mar-right" id="slett_ukat_btn" href="#"><i class="fa fa-minus-square-o"></i> Slett underkategori</a>';
     }
     elseif (innlogget() && bruker_level() == "regular") {
-        echo '<a class="pull-right button-std mar-bot" id="ny_ukat_btn" href="#"><i class="fa fa-plus-square-o"></i> Ny post</a>';
+        echo '<a class="pull-right button-std mar-bot" id="ny_traad_btn" href="#"><i class="fa fa-plus-square-o"></i> Ny post</a>';
     }
 
     echo $ukat_navn;
@@ -110,26 +129,17 @@ if (isset($_GET['kat_id']) && isset($_GET['ukat_id'])) {
         while ($row_posts = mysqli_fetch_assoc($posts)) {
             echo '<tr>';
             echo '<td></td>';
-            echo '<td>
-                    <h4><a href="#">
-                        ' . $row_posts['tråd_navn'] . '
-                        </a><br>
-                        <small><a href="#">
-                            ' . $row_posts['tråd_av'] . '</a> @ ' . $row_posts['tråd_dato'] . '
-                        </small>
-                    <h4>
-                  </td>';
+            echo '<td><h4><a href="#">' . $row_posts['tråd_navn']
+                                            . '</a><br><small><a href="#">'
+                                            . $row_posts['tråd_av'] . '</a> @ '
+                                            . $row_posts['tråd_dato'] . '</small><h4></td>';
             echo '<td class="center">??</td>';
             echo '<td> ?? </td>';
             echo '</tr>';
         }
-
         echo '    </tbody>';
         echo '</table>';
     }
-
-
-
 }
 
 require_once 'includes/footer.php';
@@ -142,7 +152,7 @@ require_once 'includes/footer.php';
             <h2 class="white icon-user pull-right"><i class="fa fa-minus-square-o"></i> Slette kategori?</h2>
         </div>
         <div class="pull-right half" style="width: 30%;">
-            <i class="logginn-icon-lukk fa fa-times fa-2x red pull-right"></i>
+            <i class="box-icon-lukk fa fa-times fa-2x red pull-right"></i>
         </div>
     </div>
     <div class="popup-container center">
@@ -155,6 +165,68 @@ require_once 'includes/footer.php';
     </div>
 </div>
 
+<!-- NY UNDERKATEGORI -->
+<div id="ny_ukat">
+    <div class="popup-header center">
+        <div class="pull-left" style="width: 80%">
+            <h2 class="white icon-user pull-right"><i class="fa fa-plus-square-o"></i> Legg til underkategori</h2>
+        </div>
+        <div class="pull-right half" style="width: 20%;">
+            <i class="box-icon-lukk fa fa-times fa-2x red pull-right"></i>
+        </div>
+    </div>
+
+    <div class="popup-container center">
+        <?php echo '<form id="ny_ukat_form" name="ny_ukat_form" method="post" action="http://localhost/forum/www/includes/endringer.php?kat_id=' . $kat_id . '">' ?>
+            <div class="popup-divider">
+                <input type="text" name="ny_ukat_navn" id="ny_kat_navn" placeholder="Kategori navn" class="popup-input">
+            </div>
+            <div class="popup-divider">
+                <input type="text" name="ny_ukat_besk" id="ny_kat_besk" placeholder="Kategori beskrivelse" class="popup-input">
+            </div>
+            <div class="popup-divider">
+                <select name="ny_ukat_img" class="popup-select">
+                    <option value="fa fa-th-list fa-2x ">Velg bilde</option>
+                    <option value="fa fa-exclamation-triangle fa-2x ">Trekantvarsel</option>
+                    <option value="fa fa-info fa-2x ">Info</option>
+                    <option value="fa fa-archive fa-2x ">Arkiv</option>
+                    <option value="fa fa-comment-o fa-2x ">Kommentar</option>
+                    <option value="fa fa-question fa-2x ">Hjelp</option>
+                    <option value="fa fa-book fa-2x ">Bok</option>
+                    <option value="fa fa-calendar-o fa-2x ">Kalender</option>
+                    <option value="fa fa-thumbs-up fa-2x ">Tommel opp</option>
+                    <option value="fa fa-thumbs-down fa-2x ">Tommel ned</option>
+                    <option value="fa fa-heart-o fa-2x ">Hjerte</option>
+                    <option value="fa fa-file fa-2x ">Ark/Papir</option>
+                    <option value="fa fa-bar-chart fa-2x ">Diagram</option>
+                    <option value="fa fa-database fa-2x ">Database</option>
+                    <option value="fa fa-internet-explorer fa-2x ">Internet</option>
+                    <option value="fa fa-linux fa-2x ">Linux</option>
+                    <option value="fa fa-briefcase fa-2x ">Koffert</option>
+                    <option value="fa fa-building-o fa-2x ">Bygning</option>
+                    <option value="fa fa-globe fa-2x ">Globe</option>
+                    <option value="fa fa-futbol-o fa-2x">Fotball</option>
+                </select>
+            </div>
+            <div class="popup-divider">
+                <select name="ny_ukat_img_farge" class="popup-select">
+                    <option value="black">Velg farge</option>
+
+                    <option value="black ">Sort</option>
+                    <option value="red ">Rød</option>
+                    <option value="blue ">Blå</option>
+                    <option value="green ">Grønn</option>
+
+                    <option value="cyan ">Cyan</option>
+                    <option value="orange ">Oransje</option>
+                    <option value="purple ">Lilla</option>
+                </select>
+            </div>
+            <input type="submit" name="ny_ukat_btn" id="ny_ukat_submit" value="LEGG TIL">
+        </form>
+    </div>
+</div>
+
 <!-- SLETT UNDERKATEGORI -->
 <div id="slett_ukat">
     <div class="popup-header center">
@@ -162,7 +234,7 @@ require_once 'includes/footer.php';
             <h2 class="white icon-user pull-right"><i class="fa fa-minus-square-o"></i> Slette underkategori?</h2>
         </div>
         <div class="pull-right half" style="width: 20%;">
-            <i class="logginn-icon-lukk fa fa-times fa-2x red pull-right"></i>
+            <i class="box-icon-lukk fa fa-times fa-2x red pull-right"></i>
         </div>
     </div>
     <div class="popup-container center">
