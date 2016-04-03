@@ -1,7 +1,6 @@
 <?php
 require_once (__DIR__ . '/functions.php');
 require_once (__DIR__ . '/db_connect.php');
-// error_reporting(0);
 ?>
 <!DOCTYPE html>
 <html lang="no" xmlns="http://www.w3.org/1999/xhtml">
@@ -52,7 +51,7 @@ require_once (__DIR__ . '/db_connect.php');
 
 <div class="container">
     <div class="page-header">
-        <h1 class="pull-left"><a id="logo-text" href="http://localhost/forum/www/"><b>FORUM</b> FOR <i>HSN</i> STUDENTER</a></h1>
+        <h1 class="pull-left"><a id="logo-text" href="index.php"><b>FORUM</b> FOR <i>HSN</i> STUDENTER</a></h1>
         
         <?php
         if (innlogget() == true) {

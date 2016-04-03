@@ -35,7 +35,7 @@ if ($kat) {
 
             $ukat = mysqli_query($conn, "SELECT kat_id, ukat_id, ukat_navn, ukat_beskrivelse, ukat_img, ukat_img_farge FROM underkategori WHERE kat_id = '$ukat_teller'");
 
-            if ($ukat) {
+            if ($ukat->num_rows > 0) {
                 if (mysqli_num_rows($ukat) > 0) {
                     while ($row_ukat = mysqli_fetch_assoc($ukat)) {
 
@@ -44,15 +44,15 @@ if ($kat) {
                         $ukat_navn = (str_replace(" ", "_", $row_ukat['ukat_navn']));
 
                         // Teller antall tråder
-                        $anttråd = mysqli_query($conn, "SELECT COUNT(tråd_id) as antPosts FROM tråd WHERE tråd_ukat = '$ukat_id'");
+                        $anttråd = mysqli_query($conn, "SELECT COUNT(tråd_id) as antPosts FROM tråd WHERE ukat_id = '$ukat_id'");
                         $anttråd_result = mysqli_fetch_assoc($anttråd);
 
                         // Teller antall svar
-                        $antinnlegg = mysqli_query($conn, "SELECT COUNT(innlegg_id) as antInnlegg FROM innlegg WHERE innlegg_tråd_id = '$ukat_id'");
+                        $antinnlegg = mysqli_query($conn, "SELECT COUNT(innlegg_id) as antInnlegg FROM innlegg WHERE tråd_id = '$ukat_id'");
                         $antinnlegg_result = mysqli_fetch_assoc($antinnlegg);
 
                         // Finner bruker som skrev siste svar
-                        $siste_innlegg = mysqli_query($conn, "SELECT tråd_dato, tråd_av, tråd_av_id FROM tråd WHERE tråd_ukat = '$ukat_id' ORDER BY tråd_dato DESC LIMIT 1");
+                        $siste_innlegg = mysqli_query($conn, "SELECT tråd_dato, bruker_navn, bruker_id FROM tråd WHERE ukat_id = '$ukat_id' ORDER BY tråd_dato DESC LIMIT 1");
                         $siste_innlegg_row = mysqli_fetch_assoc($siste_innlegg);
 
                         if ($siste_innlegg->num_rows > 0) {
@@ -90,8 +90,8 @@ if ($kat) {
 
                         echo '          <td class="skjul-liten skjul-medium">';
                         if ($siste_innlegg->num_rows > 0 ) {
-                            echo '<small>av </small> <a href="bruker.php?brukerid=' . $siste_innlegg_row['tråd_av_id'] .  '">' .
-                            $siste_innlegg_row['tråd_av'] . '</a><br><small>' . $postdato . '</small></td>';
+                            echo '<small>av </small> <a href="bruker.php?brukerid=' . $siste_innlegg_row['bruker_id'] .  '">' .
+                            $siste_innlegg_row['bruker_navn'] . '</a><br><small>' . $postdato . '</small></td>';
                         }
                         else {
                             echo '<small>ingen innlegg enda</small>';
