@@ -333,7 +333,7 @@ html {
 }
 
 .fa-caret-square-o-up, .fa-caret-square-o-down {
-    margin-bottom: 7px;
+    margin-bottom: 2px;
     cursor: pointer;
     transition: all .5s;
 }
@@ -404,6 +404,18 @@ html {
 }
 
 /* TEXT */
+.traad_innhold {
+    padding: 0 15px 0 0;
+    font-size: 1em;
+    line-height: 1.5em;
+}
+
+.innlegg_innhold {
+    padding: 0 15px 0 0;
+    font-size: 1em;
+    line-height: 1.5em;
+}
+
 .link-light {
     color: #99bcff;
 }
@@ -420,7 +432,7 @@ html {
 
 .th_text {
     margin: .67em 0;
-    font-size: 1.9em;
+    font-size: 1.6em;
     font-family: inherit;
     font-weight: 500;
     line-height: 1.7em;
@@ -597,14 +609,13 @@ tbody > tr > td > a:hover {
 
 /* TRÅD.php */
 .traadtop {
-    background: green;
+    background: #d3d4d8;
     padding: 1px 15px 1px;
     border-radius: 3px 3px 0 0;
 }
 
 #traadtable {
     display: table;
-    background: green;
     width: 100%;
 }
 
@@ -614,7 +625,8 @@ tbody > tr > td > a:hover {
 
 .table-row {
     display: table-row;
-    padding-bottom: 50px;
+    padding-bottom: .5em;
+    padding-top: .5em;
 }
 
 .table-cell {
@@ -623,13 +635,18 @@ tbody > tr > td > a:hover {
 
 .traadleft {
     width: 150px;
-    background: blue;
-    padding: 5px;
+    background: #949494;
+    padding: 15px 0 15px 15px;
 }
 
 .traadright {
-    background: red;
-    padding: 5px;
+    background: #f2eaec;
+    padding: 15px 0 15px 15px;
+}
+
+.traadspacer {
+    height: 10px;
+    background: rgba(50, 184, 0, 0);
 }
 
 /* FOOTER */
@@ -637,6 +654,7 @@ footer {
     clear: both;
     background: #7fa0e0;
     height: 50px;
+    margin-top: 10px;
     padding-right: 15px;
     padding-left: 15px;
 }

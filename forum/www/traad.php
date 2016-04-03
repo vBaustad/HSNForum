@@ -1,69 +1,54 @@
 <?php
 require_once 'includes/db_connect.php';
 require_once 'includes/header.php';
-?>
 
-<div class="traadtop"><h2>Tråd tittel<br><small>Skrevet av Admin, 17 timer siden</small></h2></div>
-<div id="traadtable">
-    <div class="table-row-group">
-        <div class="table-row">
-            <div class="table-cell traadleft">Admin<br><small>1/1-2016</small></div>
-            <div class="table-cell traadright">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed metus mauris, rhoncus ut neque ac, placerat scelerisque tellus. Sed id finibus arcu, vestibulum venenatis sapien. Duis interdum a purus et varius. Nunc non lectus sed justo finibus sodales vitae fringilla leo. Aliquam mauris erat, luctus ac lacus nec, scelerisque malesuada turpis. Proin pharetra enim risus, a condimentum lorem aliquam ut. Nullam sem quam, posuere in felis vulputate, lacinia lacinia nunc. Vivamus at cursus lectus. Ut in fermentum nibh, vel rutrum velit.
-                Sed condimentum dolor dui. Sed in ultricies sem. Suspendisse eget massa aliquet mi vestibulum hendrerit. Vivamus sed rutrum velit. Integer lacinia, augue sed eleifend feugiat, libero orci euismod sapien, aliquam convallis urna enim eu nunc. Sed dui nibh, feugiat eu libero vitae, pellentesque venenatis lacus. Sed pharetra sodales ipsum quis tempus. Vestibulum consectetur odio vitae varius fringilla. Nulla nunc sapien, porta vel sollicitudin ac, tincidunt ut lectus. Aliquam et arcu et arcu tristique vestibulum. Ut sed purus neque. Duis tincidunt risus a justo gravida molestie. Donec dictum venenatis est, fringilla scelerisque tortor semper ut. Curabitur interdum massa sed odio tincidunt, sed aliquam elit mattis.</td>
-            </div>
-        </div>
-        <div class="table-row">
-            <div class="table-cell traadleft">Olle<br><small>2/1-2016</small></div>
-            <div class="table-cell traadright">Sed in ultricies sem. Suspendisse eget massa aliquet mi vestibulum hendrerit. Vivamus sed rutrum velit.</div>
-        </div>
-        <div class="table-row">
-            <div class="table-cell traadleft">Marte89<br><small>3/1-2016</small></div>
-            <div class="table-cell traadright">consectetur adipiscing elit. Sed metus mauris, rhoncus ut neque ac, placerat scelerisque tellus. Sed id finibus arcu, vestibulum venenatis sapien. Duis interdum a purus et varius.</div>
-        </div>
-    </div>
-</div>
-
-<table class="main-table table forum table-striped">
-    <thead>
-        <tr>
-            <th class="cell-stat"><i class="fa fa-clock-o fa-2x"></i></th>
-            <th colspan="100">Tråd tittel<br><small>Skrevet av Admin, 17 timer siden</small></th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>Admin<br><small>1/1-2016</small></td>
-            <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed metus mauris, rhoncus ut neque ac, placerat scelerisque tellus. Sed id finibus arcu, vestibulum venenatis sapien. Duis interdum a purus et varius. Nunc non lectus sed justo finibus sodales vitae fringilla leo. Aliquam mauris erat, luctus ac lacus nec, scelerisque malesuada turpis. Proin pharetra enim risus, a condimentum lorem aliquam ut. Nullam sem quam, posuere in felis vulputate, lacinia lacinia nunc. Vivamus at cursus lectus. Ut in fermentum nibh, vel rutrum velit.
-
-                Sed condimentum dolor dui. Sed in ultricies sem. Suspendisse eget massa aliquet mi vestibulum hendrerit. Vivamus sed rutrum velit. Integer lacinia, augue sed eleifend feugiat, libero orci euismod sapien, aliquam convallis urna enim eu nunc. Sed dui nibh, feugiat eu libero vitae, pellentesque venenatis lacus. Sed pharetra sodales ipsum quis tempus. Vestibulum consectetur odio vitae varius fringilla. Nulla nunc sapien, porta vel sollicitudin ac, tincidunt ut lectus. Aliquam et arcu et arcu tristique vestibulum. Ut sed purus neque. Duis tincidunt risus a justo gravida molestie. Donec dictum venenatis est, fringilla scelerisque tortor semper ut. Curabitur interdum massa sed odio tincidunt, sed aliquam elit mattis.</td>
-        </tr>
-        <tr>
-            <td>Olle<br><small>2/1-2016</small></td>
-            <td>Ikke mye, Admin...</td>
-        </tr>
-        <tr>
-            <td>Marte89<br><small>3/1-2016</small></td>
-            <td>Samme her... Wanna fuck?</td>
-        </tr>
-        <tr>
-            <td>Olle<br><small>3/1-2016</small></td>
-            <td>Haha nei din stygge bitch</td>
-        </tr>
-        <tr>
-            <td>Admin<br><small>3/1-2016</small></td>
-            <td>Kyle what the fuck? Come on, son!</td>
-        </tr>
-
-    </tbody>
-
-</table>
-<?php
-if (isset($_GET['ukat_id'])) {
+if (isset($_GET['ukat_id']) && isset($_GET['tråd_id'])) {
     $ukad_id = $_GET['ukat_id'];
+    $tråd_id = $_GET['tråd_id'];
 
+    $traad_sql = mysqli_query($conn, "SELECT * FROM tråd WHERE ukat_id = '$ukad_id' AND tråd_id = '$tråd_id'");
+    $traad_row = mysqli_fetch_assoc($traad_sql);
+
+    $innlegg_sql = mysqli_query($conn, "SELECT * FROM innlegg WHERE tråd_id = '$tråd_id'");
+
+    echo '<div class="traadtop"><h3>'   . $traad_row['tråd_tittel']
+                                        . '<br><small>Skrevet av <a href="bruker.php?bruker_id='
+                                        . $traad_row['bruker_id'] . '">'
+                                        . $traad_row['bruker_navn'] .  '</a>  <i class="fa fa-clock-o"></i>'
+                                        . " 17 timer siden" . '</small></h3></div>';
+    echo '  <div id="traadtable">';
+    echo '    <div class="table-row-group">';
+    echo '      <div class="table-row">';
+    echo '        <div class="table-cell traadleft"><a href="#">' . $traad_row['bruker_navn'] . '</a><br><small>1/1-2016</small></div>';
+    echo '        <div class="table-cell traadright"><i class="fa fa-clock-o"></i> Skrevet 1/1/2016';
+    echo '          <div class="traad_innhold">'
+                      . $traad_row['tråd_innhold'] . '
+                    </div>';
+    echo '      </div>';
+    echo '    </div>';
+
+    while ($innlegg_row = $innlegg_sql->fetch_assoc()) {
+        echo '    <div class="table-row traadspacer"></div>';
+        echo '      <div class="table-row">';
+        echo '        <div class="table-cell traadleft">' . $innlegg_row['bruker_navn'] . '<br><small>2/1-2016</small></div>';
+        echo '        <div class="table-cell traadright"><i class="fa fa-clock-o"></i> Skrevet 1/1/2016<h4></h4>';
+        echo '          <div class="innlegg_innhold">'
+                          . $innlegg_row['innlegg_innhold'] . '
+                        </div>';
+        echo '      </div>';
+        echo '</div>';
+    }
+    echo '</div>';
 }
-require_once 'includes/footer.php';
+
 ?>
+
+
+
+
+
+
+
 
 <!-- SLETT UNDERKATEGORI -->
 <div id="slett_traad" style="display: none">
@@ -84,3 +69,13 @@ require_once 'includes/footer.php';
         </form>
     </div>
 </div>
+
+<?php
+if (isset($_GET['ukat_id'])) {
+    $ukad_id = $_GET['ukat_id'];
+
+}
+require_once 'includes/footer.php';
+?>
+
+
