@@ -1,6 +1,30 @@
 /* GLOBALS */
 html {
     font-family: 'Open Sans', sans-serif;
+    overflow-y: scroll;
+}
+
+/* SØK */
+.sok_form {
+
+}
+
+.sok_text, #sok_btn {
+    padding:6px 15px 6px 15px;
+    border-radius: 2px;
+}
+
+.sok_text {
+    border: 1px solid #6081bc;
+
+}
+
+#sok_btn {
+    position:relative;
+    border: 1px solid #6081bc;
+    color: #fcfeff;
+    background: #6081bc;
+    cursor: pointer;
 }
 
 /* CHATBOX */
@@ -32,7 +56,10 @@ html {
     padding: 10px;
     margin-left: -5px;
     border: solid 3px #b1b1b1;
-    transition: border 0.3s;
+    -webkit-transition: border .3s;
+    -moz-transition: border .3s;
+    -o-transition: border .3s;
+    transition: border .3s;
 }
 
 #chat_send {
@@ -114,7 +141,10 @@ html {
 
 #chatbox-msg:focus {
     border: 2px solid green;
-    transition: border 0.3s;
+    -webkit-transition: border .3s;
+    -moz-transition: border .3s;
+    -o-transition: border .3s;
+    transition: border .3s;
 }
 
 #chatbox-send {
@@ -178,7 +208,10 @@ html {
 }
 
 .popup-select:hover {
-    transition: 0.3s;
+    -webkit-transition:  .3s;
+    -moz-transition:  .3s;
+    -o-transition:  .3s;
+    transition:  .3s;
     background: #5b78b5;
 }
 
@@ -193,7 +226,10 @@ html {
     box-shadow: none;
     padding: 10px;
     border: solid 3px #b1b1b1;
-    transition: border 0.3s;
+    -webkit-transition: border .3s;
+    -moz-transition: border .3s;
+    -o-transition: border .3s;
+    transition: border .3s;
 }
 
 .popup-input:focus {
@@ -214,7 +250,7 @@ html {
     position: inherit;
 }
 
-#feilPass, #ikkeAktiv, #sjekkBnavn, #sjekkEpost, #bnavnErr, #fnavnErr, #enavnErr, #epostErr, #passErr, #passTwoErr {
+#feilPass, #ikkeAktiv, #sjekkBnavn, #sjekkEpost, #bnavnErr, #fnavnErr, #enavnErr, #epostErr, #epostErrTwo, #passErr, #passTwoErr {
     font-size: 0.7em;
     color: #f5f5f5;
     margin: 0;
@@ -225,6 +261,16 @@ html {
     float: left;
 }
 
+#epostEndre {
+    font-size: 0.7em;
+    color: #f5f5f5;
+    margin: 0;
+    padding-top: 8px;
+    line-height: 0;
+    display: block;
+    float: left
+}
+
 #sjekkBnavn, #sjekkEpost {
     display: inline-block;
 }
@@ -233,7 +279,7 @@ html {
     margin-top: 40px;
 }
 
-#registrer_submitt, #logginn_submitt, #ny_kat_submit, #ny_ukat_submit {
+#ny_epost_submitt, #nytt_pass_submitt, #registrer_submitt, #logginn_submitt, #ny_kat_submit, #ny_ukat_submit {
     color: white;
     font-size: 1.3em;
     width: 100%;
@@ -245,11 +291,15 @@ html {
     outline: none;
     background: #1ab188;
     margin-top: 25px;
+    cursor: pointer;
 }
 
-#registrer_submitt:hover, #logginn_submitt:hover, #ny_kat_submit:hover, #ny_kat_submit:hover {
+#ny_epost_submitt:hover, #nytt_pass_submitt:hover, #registrer_submitt:hover, #logginn_submitt:hover, #ny_kat_submit:hover, #ny_kat_submit:hover {
     background: #179b77;
-    transition: background 0.3s;
+    -webkit-transition: background .3s;
+    -moz-transition: background .3s;
+    -o-transition: background .3s;
+    transition: background .3s;
     cursor: pointer;
 }
 
@@ -267,13 +317,19 @@ html {
 
 #registrer-avbryt:hover {
     background: #b7080c;
-    transition: background 0.3s;
+    -webkit-transition: background .3s;
+    -moz-transition: background .3s;
+    -o-transition: background .3s;
+    transition: background .3s;
     cursor: pointer;
 }
 
 .button-lukk:hover {
     background: #b7080c;
-    transition: background 0.3s;
+    -webkit-transition: background .3s;
+    -moz-transition: background .3s;
+    -o-transition: background .3s;
+    transition: background .3s;
     cursor: pointer;
 }
 
@@ -335,7 +391,10 @@ html {
 .fa-caret-square-o-up, .fa-caret-square-o-down {
     margin-bottom: 2px;
     cursor: pointer;
-    transition: all .5s;
+    -webkit-transition: all .5s;
+    -moz-transition: all .5s ;
+    -o-transition: all .5s ;
+    transition: all .5s ;
 }
 
 .fa-caret-square-o-down {
@@ -359,35 +418,39 @@ html {
 }
 
 .black {
-    color: #111111;
+    color: #111111 !important;
 }
 
 .green {
-    color: #00FF00;
+    color: #6fe02a !important;
+}
+
+.green_bg {
+    background: #6fe02a !important;
 }
 
 .white {
-    color: #f5f5f5;
+    color: #f5f5f5 !important;
 }
 
 .blue {
-    color: #3847ff;
+    color: #3847ff !important;
 }
 
 .cyan {
-    color: #1ab188;
+    color: #1ab188 !important;
 }
 
 .red {
-    color: #d1080c;
+    color: #d1080c !important;
 }
 
 .orange {
-    color: #FFA500;
+    color: #FFA500 !important;
 }
 
 .purple {
-    color: #800080;
+    color: #800080 !important;
 }
 
 /* BUTTONS */
@@ -539,6 +602,9 @@ tbody > tr > td > a:hover {
 
 .tablehide {
     opacity: .7;
+    -webkit-transition: .5s;
+    -moz-transition: .5s;
+    -o-transition: .5s;
     transition: .5s;
 }
 
@@ -581,11 +647,15 @@ tbody > tr > td > a:hover {
     text-align: center;
 }
 
-.forum.table th.cell-stat {
+.forum.table th.rad-bredde-icon {
     width: 6em;
 }
 
-.forum.table th.cell-stat-2x {
+.forum.table th.rad-bredde {
+    width: 6em;
+}
+
+.forum.table th.rad-bredde-2x {
     width: 14em;
 }
 
@@ -607,7 +677,130 @@ tbody > tr > td > a:hover {
     cursor: pointer;
 }
 
+/* BRUKER.php */
+#endre_bilde_box, #endre_epost_box, #endre_pass_box, #bruker_info {
+    display: none;
+}
+#bruker_container {
+    width: 100%;
+    padding: 0 0 10px 10px;
+    margin: 0;
+    box-sizing: border-box;
+    background: #c4c1bc;
+}
+
+#bruker_container h2, #endre_pass_box h2, #endre_epost_box h2, #endre_bilde_box h2 {
+    margin: 0;
+}
+
+#bruker_endringer {
+    list-style: none;
+    display: block;
+    float: left;
+    width: 220px;
+    padding: 10px 15px 0 0;
+    margin: 0;
+}
+
+#bruker_endringer li {
+    padding: 5px 5px 5px 10px;
+    cursor: pointer;
+    text-decoration: none;
+    color: black;
+}
+
+.bruker_container_pil:before {
+    display: block;
+    content: '';
+    width: 20px;
+    height: 20px;
+    float: right;
+    margin-left: 200px;
+    position: absolute;
+    background-color: #6fe02a;
+    transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    z-index: 1;
+}
+
+#bruker_endringer li:hover{
+    background: #6fe02a !important;
+}
+
+#bruker_endringer li:nth-child(even) {
+    background: #6081bc;
+}
+
+#bruker_endringer li:nth-child(odd) {
+    background: #4e649b;
+}
+
+#bruker_endringer li i {
+    width: 16px;
+    padding-right: 5px;
+}
+
+#bruker_info, #endre_pass_box, #endre_bilde_box, #endre_epost_box {
+    box-sizing: border-box;
+    padding: 10px 10px 10px 10px;
+    list-style: none;
+    float: left;
+}
+
+.bruker_info_format {
+    display: inline;
+}
+
+.bruker_endre_input {
+    width: 300px;
+    display: block;
+    box-shadow: none;
+    padding: 10px;
+    border: solid 3px #b1b1b1;
+    -webkit-transition: border .3s;
+    -moz-transition: border .3s;
+    -o-transition: border .3s;
+    transition: border .3s;
+}
+
+.bruker_endre_input:focus {
+    outline: none;
+    border: solid 3px #60bb80;
+}
+
+.type_file_input::-webkit-file-upload-button {
+    visibility: hidden;
+}
+
+.type_file_input {
+    width: 300px;
+    display: inline-block;
+    background: #60bb80;
+    border: solid 2px #3e7c51;
+    padding: 5px 8px;
+    margin-top: 15px;
+    outline: none;
+    cursor: pointer;
+    text-shadow: 1px 1px #fff;
+    font-weight: 700;
+    font-size: 10pt;
+}
+
+#nytt_pass_submitt, #ny_epost_submitt {
+    margin-top: 15px;
+}
+
+.form_divider {
+    padding-top: 15px;
+}
+
 /* TRÅD.php */
+.traad_mobile {
+    display: inline;
+}
+
 .traadtop {
     background: #d3d4d8;
     padding: 1px 15px 1px;
@@ -660,6 +853,10 @@ footer {
 }
 
 /* POSITIONING ELEMENTS */
+.position_inherit {
+    position: inherit !important;
+}
+
 #meldinger, #chat_msg_text, #chat_send, .popup-input {
     box-sizing: border-box;
     -moz-box-sizing: border-box;

@@ -31,6 +31,8 @@ $katnavn = mysqli_fetch_assoc($finnkatnavn);
 $ukat = mysqli_query($conn, "SELECT kat_id, ukat_id, ukat_navn, ukat_beskrivelse, ukat_img, ukat_img_farge FROM underkategori WHERE `kat_id` = '$kat_id' ");
 
 require_once 'includes/header.php';
+require_once 'chatbox.php';
+require_once 'includes/boxes.php';
 
 
 /* Viser alle underkategorier */
@@ -46,11 +48,11 @@ if (isset($_GET['kat_id']) && !isset($_GET['ukat_id'])) {
             echo '<table class="main-table table forum table-striped">';
             echo '  <thead>';
             echo '       <tr>';
-            echo '            <th class="cell-stat"></th>';
+            echo '            <th class="rad-bredde"></th>';
             echo '            <th class="th_text">' . $katnavn['kat_navn'] . '</th>';
-            echo '            <th class="cell-stat text-center skjul-liten skjul-medium">Emner</th>';
-            echo '            <th class="cell-stat text-center skjul-liten skjul-medium">Innlegg</th>';
-            echo '            <th class="cell-stat-2x skjul-liten skjul-medium">Siste Innlegg</th>';
+            echo '            <th class="rad-bredde text-center skjul-liten skjul-medium">Emner</th>';
+            echo '            <th class="rad-bredde text-center skjul-liten skjul-medium">Innlegg</th>';
+            echo '            <th class="rad-bredde-2x skjul-liten skjul-medium">Siste Innlegg</th>';
             echo '      </tr>';
             echo '  </thead>';
             echo '  <tbody>';
@@ -116,10 +118,10 @@ if (isset($_GET['kat_id']) && isset($_GET['ukat_id']) && isset($_GET['ukat_navn'
         echo '<table class="main-table table forum table-striped">';
         echo '  <thead>';
         echo '       <tr>';
-        echo '            <th class="cell-stat"></th>';
+        echo '            <th class="rad-bredde"></th>';
         echo '            <th><h2>Tråd navn</h2></th>';
-        echo '            <th class="cell-stat-2x text-center skjul-liten skjul-medium">Antal svar</th>';
-        echo '            <th class="cell-stat-2x skjul-liten skjul-medium">Siste svar</th>';
+        echo '            <th class="rad-bredde-2x text-center skjul-liten skjul-medium">Antal svar</th>';
+        echo '            <th class="rad-bredde-2x skjul-liten skjul-medium">Siste svar</th>';
         echo '      </tr>';
         echo '  </thead>';
         echo '  <tbody>';
@@ -157,7 +159,7 @@ require_once 'includes/footer.php';
         </div>
     </div>
     <div class="popup-container center">
-        <?php echo '<form id="slett_kat_form" name="slett_kat_form" method="post" action="http://localhost/forum/www/includes/endringer.php?slett_id=' . $kat_id .'">' ?>
+        <?php echo '<form id="slett_kat_form" name="slett_kat_form" method="post" action="includes/endringer.php?slett_id=' . $kat_id .'">' ?>
         <div class="popup-divider">
             <?php echo '<p class="white">Er du vikker på at du vil slette kategorien ' . $katnavn['kat_navn'] .  '?</p>' ?>
         </div>
@@ -178,7 +180,7 @@ require_once 'includes/footer.php';
     </div>
 
     <div class="popup-container center">
-        <?php echo '<form id="ny_ukat_form" name="ny_ukat_form" method="post" action="http://localhost/forum/www/includes/endringer.php?kat_id=' . $kat_id . '">' ?>
+        <?php echo '<form id="ny_ukat_form" name="ny_ukat_form" method="post" action="includes/endringer.php?kat_id=' . $kat_id . '">' ?>
             <div class="popup-divider">
                 <input type="text" name="ny_ukat_navn" id="ny_kat_navn" placeholder="Kategori navn" class="popup-input">
             </div>
@@ -239,7 +241,7 @@ require_once 'includes/footer.php';
         </div>
     </div>
     <div class="popup-container center">
-        <?php echo '<form id="slett_ukat_form" name="slett_ukat_form" method="post" action="http://localhost/forum/www/includes/endringer.php?slett_ukat_id=' . $ukat_id .'&kat_id=' . $kat_id . '">' ?>
+        <?php echo '<form id="slett_ukat_form" name="slett_ukat_form" method="post" action="includes/endringer.php?slett_ukat_id=' . $ukat_id .'&kat_id=' . $kat_id . '">' ?>
         <div class="popup-divider">
             <?php echo '<p class="white">Er du vikker på at du vil slette underkategorien ' . $ukat_navn .  '?</p>' ?>
         </div>

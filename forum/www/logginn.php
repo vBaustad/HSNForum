@@ -29,7 +29,7 @@ if (isset($_POST['logginn-btn'])) {
                 $_SESSION["bruker_level"] = $info["bruker_level"];
 
                 // Tilbake til index.php
-                header("Location: http://localhost/forum/www/");
+                header("Location: index.php");
                 die();
             }
         }

@@ -1,10 +1,6 @@
 <?php
-require_once(__DIR__ . '/db_connect.php');
-
-$ukat_navn = $_POST['ny_ukat_navn'];
-$ukat_besk = $_POST['ny_ukat_besk'];
-$ukat_img = $_POST['ny_ukat_img'];
-$ukat_img_farge = $_POST['ny_ukat_img_farge'];
+require_once 'db_connect.php';
+require_once 'functions.php';
 
 /* LEGGE TIL KATEGORIER */
 if (isset($_POST['ny_kat_btn']) && $_SESSION['bruker_level'] == '2') {
@@ -15,9 +11,9 @@ if (isset($_POST['ny_kat_btn']) && $_SESSION['bruker_level'] == '2') {
     $stmt->execute();
 
     if ($sql) {
-        header("Location: http://localhost/forum/www/", true, 301);
+        header("Location: ../index.php", true, 301);
         exit;
-    }else {
+    } else {
         echo "Kunne ikke legge til ny kat";
     }
 }
@@ -36,7 +32,7 @@ if (isset($_POST['ny_ukat_btn']) && $_SESSION['bruker_level'] == '2') {
     $stmt->execute();
 
     if ($sql) {
-        header("Location: http://localhost/forum/www/", true, 301);
+        header("Location: ../index.php", true, 301);
         exit;
     }else {
         echo "Kunne ikke legge til ny ukat";
@@ -50,7 +46,7 @@ if (isset($_POST['slett_kat_btn']) && $_SESSION['bruker_level'] == '2') {
     $sql = mysqli_query($conn, "DELETE FROM kategori WHERE kat_id = '$kat_id'");
 
     if ($sql) {
-        header("Location: http://localhost/forum/www/", true, 301);
+        header("Location: ../index.php", true, 301);
         exit;
     }
     else {
@@ -65,7 +61,7 @@ if (isset($_POST['slett_ukat_btn']) && $_SESSION['bruker_level'] == '2') {
     $sql = mysqli_query($conn, "DELETE FROM underkategori WHERE ukat_id = '$ukat_id'");
 
     if ($sql) {
-        header("Location: http://localhost/forum/www/kategori.php?kat_id=$kat_id", true, 301);
+        header("Location: ../kategori.php?kat_id=$kat_id", true, 301);
         exit;
     }
     else {
@@ -73,18 +69,30 @@ if (isset($_POST['slett_ukat_btn']) && $_SESSION['bruker_level'] == '2') {
     }
 }
 
-/* SLETTE TRÅDER - TRENGER VI PREPARED STATEMENT HER?
-if (isset($_POST['slett_ukat_btn']) && $_SESSION['bruker_level'] == '2') {
-    $kat_id = mysqli_real_escape_string($conn, $_GET['kat_id']);
-    $ukat_id = mysqli_real_escape_string($conn, $_GET['slett_ukat_id']);
-    $sql = mysqli_query($conn, "DELETE FROM underkategori WHERE ukat_id = '$ukat_id'");
+/* NY EPOST */
+if (isset($_POST['ny_epost_submitt']) && innlogget()) {
+    $bruker_id = $_SESSION['bruker_id'];
+    $ny_epost = $_POST['epost_reg'];
+    $passord = mysqli_real_escape_string($conn, $_POST ['brukernavn_pass']);
+    $salt1 = 'dkn?';
+    $salt2 = '$l3*!';
+    $passordhash = hash('ripemd160', "$salt1$passord$salt2");
 
-    if ($sql) {
-        header("Location: http://localhost/forum/www/kategori.php?kat_id=$kat_id", true, 301);
-        exit;
+    $sql = mysqli_query($conn, "SELECT bruker_pass FROM bruker WHERE bruker_pass = '$passordhash' AND bruker_id = '$bruker_id'");
+
+    if ($sql->num_rows > 0) {
+        $sql = "UPDATE bruker SET bruker_mail=? WHERE bruker_id=?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("si", $ny_epost, $bruker_id);
+        $stmt->execute();
+
+        if ($stmt->execute()) {
+            header("Location: ../bruker.php?bruker=$bruker_id");
+        } else {
+            echo "kunne ikke opdatere epost";
+        }
+    } else {
+        echo "feil passord. Prøv igjen";
     }
-    else {
-        echo "kunne ikke slette ukat.";
-    }
+
 }
-*/

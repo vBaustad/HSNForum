@@ -1,6 +1,8 @@
 <?php
-require_once(__DIR__ . '/includes/db_connect.php');
-require_once(__DIR__ . '/includes/header.php');
+require_once '/includes/db_connect.php';
+require_once '/includes/header.php';
+require_once 'chatbox.php';
+require_once 'includes/boxes.php';
 
 if (bruker_level() == "admin") {
     echo '<a class="pull-right button-std mar-bot" id="ny_kat_btn" href="#"><i class="fa fa-plus-square-o"></i> Ny kategori</a>';
@@ -18,14 +20,14 @@ if ($kat) {
                 echo '<table class="main-table table forum table-striped">';
                 echo '  <thead>';
                 echo '       <tr>';
-                echo '            <th id="' . $row_kat['kat_id'] . '" class="center skjul_tbody_btn cell-stat">';
+                echo '            <th id="' . $row_kat['kat_id'] . '" class="center skjul_tbody_btn rad-bredde-icon">';
                 echo '              <i class="bildeID' . $row_kat['kat_id'] . ' fa fa-caret-square-o-up fa-2x"></i></th>';
                 echo '            <th>';
                 echo '              <a class="th_text" href="kategori.php?kat_id=' . $row_kat['kat_id'] .'">' . $row_kat['kat_navn'] . '</a>';
                 echo '            </th>';
-                echo '            <th class="cell-stat text-center skjul-liten skjul-medium">Emner</th>';
-                echo '            <th class="cell-stat text-center skjul-liten skjul-medium">Innlegg</th>';
-                echo '            <th class="cell-stat-2x skjul-liten skjul-medium">Siste Innlegg</th>';
+                echo '            <th class="rad-bredde text-center skjul-liten skjul-medium">Emner</th>';
+                echo '            <th class="rad-bredde text-center skjul-liten skjul-medium">Innlegg</th>';
+                echo '            <th class="rad-bredde-2x skjul-liten skjul-medium">Siste Innlegg</th>';
                 echo '      </tr>';
                 echo '  </thead>';
                 echo '  <tbody class=radID' . $row_kat['kat_id'] . '>';

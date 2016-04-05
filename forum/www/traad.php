@@ -1,6 +1,7 @@
 <?php
 require_once 'includes/db_connect.php';
 require_once 'includes/header.php';
+require_once 'includes/boxes.php';
 
 if (isset($_GET['ukat_id']) && isset($_GET['tråd_id'])) {
     $ukad_id = $_GET['ukat_id'];
@@ -16,26 +17,33 @@ if (isset($_GET['ukat_id']) && isset($_GET['tråd_id'])) {
                                         . $traad_row['bruker_id'] . '">'
                                         . $traad_row['bruker_navn'] .  '</a>  <i class="fa fa-clock-o"></i>'
                                         . " 17 timer siden" . '</small></h3></div>';
-    echo '  <div id="traadtable">';
-    echo '    <div class="table-row-group">';
-    echo '      <div class="table-row">';
-    echo '        <div class="table-cell traadleft"><a href="#">' . $traad_row['bruker_navn'] . '</a><br><small>1/1-2016</small></div>';
-    echo '        <div class="table-cell traadright"><i class="fa fa-clock-o"></i> Skrevet 1/1/2016';
-    echo '          <div class="traad_innhold">'
-                      . $traad_row['tråd_innhold'] . '
-                    </div>';
-    echo '      </div>';
-    echo '    </div>';
+    echo '<div id="traadtable">';
+        echo '<div class="table-row-group">';
+            echo '<div class="table-row">';
+                echo '<div class="table-cell traadleft skjul-liten">';
+                        echo '<a href="#">' . $traad_row['bruker_navn'] . '</a><br><small>Echo mer om bruker her!</small>';
+                echo '</div>';
+                    echo '<div class="table-cell traadright">';
+                        echo '<i class="fa fa-clock-o"></i> Skrevet 1/1/2016 <p class="traad_mobile"> av <a href="#">' . $traad_row['bruker_navn'] . '</a></p>';
+                        echo '<div class="traad_innhold">';
+                            echo $traad_row['tråd_innhold'];
+                        echo '</div>';
+                    echo '</div>';
+            echo '</div>';
+        echo '</div>';
 
     while ($innlegg_row = $innlegg_sql->fetch_assoc()) {
-        echo '    <div class="table-row traadspacer"></div>';
-        echo '      <div class="table-row">';
-        echo '        <div class="table-cell traadleft">' . $innlegg_row['bruker_navn'] . '<br><small>2/1-2016</small></div>';
-        echo '        <div class="table-cell traadright"><i class="fa fa-clock-o"></i> Skrevet 1/1/2016<h4></h4>';
-        echo '          <div class="innlegg_innhold">'
-                          . $innlegg_row['innlegg_innhold'] . '
-                        </div>';
-        echo '      </div>';
+        echo '<div class="table-row traadspacer"></div>';
+        echo '<div class="table-row">';
+            echo '<div class="table-cell traadleft skjul-liten">';
+                echo $innlegg_row['bruker_navn'] . '<br><small>Echo mer om bruker her!</small>';
+            echo '</div>';
+            echo '<div class="table-cell traadright">';
+                echo '<i class="fa fa-clock-o"></i> Skrevet 1/1/2016 <p class="traad_mobile"> av <a href="#">' . $traad_row['bruker_navn'] . '</a></p>';
+                echo '<div class="innlegg_innhold">';
+                    echo $innlegg_row['innlegg_innhold'];
+                echo '</div>';
+            echo '</div>';
         echo '</div>';
     }
     echo '</div>';
@@ -61,7 +69,7 @@ if (isset($_GET['ukat_id']) && isset($_GET['tråd_id'])) {
         </div>
     </div>
     <div class="popup-container center">
-        <?php echo '<form id="slett_ukat_form" name="slett_ukat_form" method="post" action="http://localhost/forum/www/includes/endringer.php?slett_ukat_id=' . $ukat_id .'&kat_id=' . $kat_id . '">' ?>
+        <?php echo '<form id="slett_ukat_form" name="slett_ukat_form" method="post" action="includes/endringer.php?slett_ukat_id=' . $ukat_id .'&kat_id=' . $kat_id . '">' ?>
         <div class="popup-divider">
             <?php echo '<p class="white">Er du vikker på at du vil slette underkategorien ' . $ukat_navn .  '?</p>' ?>
         </div>

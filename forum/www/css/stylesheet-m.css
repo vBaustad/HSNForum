@@ -3,17 +3,29 @@
     .container {
         width: 720px
     }
+
+    .traad_mobile {
+        display: none;
+    }
 }
 
 @media (min-width: 992px) {
     .container {
         width: 940px
     }
+
+    .traad_mobile {
+        display: none;
+    }
 }
 
 @media (min-width: 1200px) {
     .container {
         width: 1140px
+    }
+
+    .traad_mobile {
+        display: none;
     }
 }
 
@@ -25,6 +37,10 @@
 
     .chatbox-container {
         width: 100% !important;
+    }
+
+    .forum.table th.rad-bredde-icon {
+        width: 3em !important;
     }
 }
 
