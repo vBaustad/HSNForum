@@ -1,7 +1,7 @@
 $(document).ready(function () {
     // Lukker vinduer
     $(".button-lukk, .registrer-icon-lukk, .box-icon-lukk, #registrer-avbryt, #ny_traad_btn").click(function () {
-        $(".registrer-box-success, #registrer-mail-sendt, #registrer-feil, #registrer-box," +
+        $(".endringer_box, .registrer-box-success, #registrer-mail-sendt, #registrer-feil, #registrer-box," +
             "#logginn-box, #ny_kat, #ny_ukat, #slett_kat, #logginn-box-ikke-aktiv, #slett_ukat").hide();
     });
 

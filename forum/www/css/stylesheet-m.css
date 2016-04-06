@@ -45,7 +45,7 @@
 }
 
 @media (max-width: 400px) {
-    .registrer-box-success, .registrer-mail-sendt, .registrer-box-loading, #registrer-box, #logginn-box, #registrer-feil, #ny_kat, #slett_kat, #ny_ukat {
+    .endringer_box, .registrer-box-success, .registrer-mail-sendt, .registrer-box-loading, #registrer-box, #logginn-box, #registrer-feil, #ny_kat, #slett_kat, #ny_ukat {
         width: 90% !important;
     }
 

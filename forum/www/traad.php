@@ -21,7 +21,9 @@ if (isset($_GET['ukat_id']) && isset($_GET['tråd_id'])) {
         echo '<div class="table-row-group">';
             echo '<div class="table-row">';
                 echo '<div class="table-cell traadleft skjul-liten">';
-                        echo '<a href="#">' . $traad_row['bruker_navn'] . '</a><br><small>Echo mer om bruker her!</small>';
+                        echo '<a href="#">' . $traad_row['bruker_navn'];
+                        echo '<div class="clearfix"></div><img class="avatar_forum" src="img/profilbilder/' . hentBilde($conn, $traad_row['bruker_id']) . '">';
+                        echo '</a><div class="clearfix"></div><small>Echo mer om bruker her!</small>';
                 echo '</div>';
                     echo '<div class="table-cell traadright">';
                         echo '<i class="fa fa-clock-o"></i> Skrevet 1/1/2016 <p class="traad_mobile"> av <a href="#">' . $traad_row['bruker_navn'] . '</a></p>';
@@ -36,10 +38,11 @@ if (isset($_GET['ukat_id']) && isset($_GET['tråd_id'])) {
         echo '<div class="table-row traadspacer"></div>';
         echo '<div class="table-row">';
             echo '<div class="table-cell traadleft skjul-liten">';
-                echo $innlegg_row['bruker_navn'] . '<br><small>Echo mer om bruker her!</small>';
+                echo $innlegg_row['bruker_navn'];
+                echo '<img class="avatar_forum"src="img/profilbilder/' . hentBilde($conn, $innlegg_row['bruker_id']) . '"><div class="clearfix"></div><small></small>';
             echo '</div>';
             echo '<div class="table-cell traadright">';
-                echo '<i class="fa fa-clock-o"></i> Skrevet 1/1/2016 <p class="traad_mobile"> av <a href="#">' . $traad_row['bruker_navn'] . '</a></p>';
+                echo '<i class="fa fa-clock-o"></i> ' . datoSjekk($traad_row['tråd_dato']) . '<p class="traad_mobile"> av <a href="#">' . $traad_row['bruker_navn'] . '</a></p>';
                 echo '<div class="innlegg_innhold">';
                     echo $innlegg_row['innlegg_innhold'];
                 echo '</div>';

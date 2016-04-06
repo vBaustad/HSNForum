@@ -84,15 +84,95 @@ if (isset($_POST['ny_epost_submitt']) && innlogget()) {
         $sql = "UPDATE bruker SET bruker_mail=? WHERE bruker_id=?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("si", $ny_epost, $bruker_id);
-        $stmt->execute();
 
         if ($stmt->execute()) {
-            header("Location: ../bruker.php?bruker=$bruker_id");
+            header("Location: ../bruker.php?bruker=$bruker_id&ny_epoost=1");
         } else {
             echo "kunne ikke opdatere epost";
         }
     } else {
         echo "feil passord. Prøv igjen";
+    }
+
+}
+
+/* NYT PASSORD */
+if (isset($_POST['nytt_pass_submitt']) && innlogget()) {
+    $bruker_id = $_SESSION['bruker_id'];
+    $salt1 = 'dkn?';
+    $salt2 = '$l3*!';
+
+    $passord = mysqli_real_escape_string($conn, $_POST['curr_pass']);
+    $passordhash = hash('ripemd160', "$salt1$passord$salt2");
+
+    $new_pass = mysqli_real_escape_string($conn, $_POST['new_pass']);
+    $new_passhash = hash('ripemd160', "$salt1$new_pass$salt2");
+
+    $sql = mysqli_query($conn, "SELECT bruker_pass FROM bruker WHERE bruker_pass = '$passordhash' AND bruker_id = '$bruker_id'");
+
+    if ($sql->num_rows > 0) {
+        $sql = "UPDATE bruker SET bruker_pass=? WHERE bruker_id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("si", $new_passhash, $bruker_id);
+
+        if ($stmt->execute()) {
+            header("Location: ../bruker.php?bruker=$bruker_id&nytt_pass=1");
+        } else {
+            echo "Kunen ikke oppdatere passord";
+        }
+    } else {
+        echo "feil passord. Prøve igjen";
+    }
+}
+
+/* NYTT PROFILBILDE */
+if (isset($_POST['nytt_bilde_submitt']) && innlogget()) {
+    $img_fil = basename($_FILES['upload_file']['name']);
+    $img_fil_type = pathinfo($img_fil, PATHINFO_EXTENSION);
+    $uploadok = 1;
+
+    $sjekk_filtype = getimagesize($_FILES['upload_file']['tmp_name']);
+    if ($sjekk_filtype !== false ) {
+        echo "Filen er ett bilde - " . $sjekk_filtype['mime'] . ".<br>";
+    } else {
+        echo "Filen er ikke ett bilde<br>";
+        $uploadok = 0;
+    }
+
+    // Hvis filen er større en 5MB
+    if ($_FILES['upload_file']['size'] > 5000000) {
+        echo "Filen er for stor!<br>";
+        $uploadok = 0;
+    }
+
+    if ($img_fil_type != "jpg" && $img_fil_type != "jpeg" && $img_fil_type != "png" && $img_fil_type != "gif"
+        && $img_fil_type != "JPG" && $img_fil_type != "JPEG" && $img_fil_type != "PNG" && $img_fil_type != "GIF") {
+        echo "feil filformat. Kun PNG, JPG, JPEG, GIF<br>";
+        $uploadok = 0;
+    }
+
+    if ($uploadok == 0) {
+        echo "Kunne ikke laste opp filen";
+    } else {
+        // Setter bilenavn = bruker_id
+        $bruker_id = $_SESSION['bruker_id'];
+        $tmp = explode(".", $_FILES["upload_file"]["name"]);
+        $nyfilnavn = $bruker_id . '.' . end($tmp);
+
+
+        // Laster opp og plaserer filen.
+        if (move_uploaded_file($_FILES["upload_file"]["tmp_name"], "../img/profilbilder/" . $nyfilnavn)) {
+            echo "Filen " . basename($_FILES['upload_file']['name']) . " Har blitt opplastet!<br>";
+            $bildefil = $nyfilnavn;
+            echo $bildefil;
+            $sql = "UPDATE bruker SET bruker_bilde = ? WHERE bruker_id = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("si", $bildefil, $bruker_id);
+            $stmt->execute();
+
+        } else {
+            echo "noe gikk galt...<br>";
+        }
     }
 
 }

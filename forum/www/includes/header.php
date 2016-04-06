@@ -24,8 +24,6 @@ require_once (__DIR__ . '/db_connect.php');
 </head>
 <body>
 
-
-
 <script src="js/validate.js"></script>
 <script src="js/functions.js"></script>
 
