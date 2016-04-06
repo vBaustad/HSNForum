@@ -49,7 +49,7 @@ function sjekkBNavn(verdi) {
                 document.getElementById("sjekkBnavn").innerHTML = xmlhttp.responseText;
             }
         };
-        xmlhttp.open("GET", "http://localhost/forum/www/includes/sjekkinfo.php?bnavn="+bnavn, true);
+        xmlhttp.open("GET", "includes/sjekkinfo.php?bnavn="+bnavn, true);
         xmlhttp.send();
 
         var resultat = document.getElementById("sjekkBnavn").innerHTML;
@@ -135,7 +135,7 @@ function sjekkEpost(verdi) {
                 document.getElementById("sjekkEpost").innerHTML = xmlhttp.responseText;
             }
         };
-        xmlhttp.open("GET", "http://localhost/forum/www/includes/sjekkinfo.php?epost=" +epost, true);
+        xmlhttp.open("GET", "includes/sjekkinfo.php?epost=" +epost, true);
         xmlhttp.send();
 
         var resultat = document.getElementById("sjekkEpost").innerHTML;
@@ -159,6 +159,24 @@ function sjekkEpost(verdi) {
                 document.getElementById(verdi).style.border = 'solid 3px #e35152';
                 document.getElementById("epostErr").innerHTML = "Ugyldig epost!";
             }
+        }
+    }
+}
+
+function sjekkEpostTo(verdi) {
+    var epost1 = document.getElementById('epost_reg').value;
+    var epost2 = document.getElementById('epost_reg_two').value;
+
+    if (epost2 == 0) {
+        document.getElementById('epostErrTwo').innerHTML = "Kan ikke være blank!";
+        document.getElementById(verdi).style.border = "solid 3px #e35152";
+    } else {
+        if (epost1 == epost2) {
+            document.getElementById('epostErrTwo').innerHTML = "";
+            document.getElementById(verdi).style.border = "solid 3px #60bb80";
+        } else {
+            document.getElementById('epostErrTwo').innerHTML = "Stemmer ikke overens";
+            document.getElementById(verdi).style.border = "solid 3px #e35152";
         }
     }
 }
@@ -187,11 +205,10 @@ function sjekkPassTo(verdi) {
 
     if (pass2 == pass1) {
         document.getElementById('passTwoErr').style.display = "none";
-        document.getElementById(verdi).style.border = 'solid 3px #60bb80';
+        document.getElementById(verdi).style.border = "solid 3px #60bb80";
         return true;
-    }
-    else {
-        document.getElementById(verdi).style.border = 'solid 3px #e35152';
+    } else {
+        document.getElementById(verdi).style.border = "solid 3px #e35152";
         document.getElementById('passTwoErr').style.display = "block";
     }
 }

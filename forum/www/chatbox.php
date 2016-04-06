@@ -7,7 +7,7 @@ require_once(__DIR__ . '/includes/db_connect.php');
     $(document).ready(function () {
         $.ajaxSetup({cache:false});
         setInterval(function () {
-            $("#meldinger").load('http://localhost/forum/www/includes/chat.php');
+            $("#meldinger").load('includes/chat.php');
         }, 1000);
 
         $("#chat_msg_text").keyup(function(event){
@@ -38,8 +38,9 @@ require_once(__DIR__ . '/includes/db_connect.php');
             </div>
         </div>
     </div>
-<div class="textarea pull-right skjul-liten skjul-medium">
-    <h1>TESTING</h1>
-    <p>Mer test her om test og anndre ikke test reaterte tester </p>
+    <div class="textarea pull-right skjul-liten skjul-medium">
+        <h1>TESTING</h1>
+        <p>Mer test her om test og anndre ikke test reaterte tester </p>
+    </div>
 </div>
 <div class="clearfix seperator"></div>

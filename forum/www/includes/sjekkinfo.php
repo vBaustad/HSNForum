@@ -16,7 +16,6 @@ if (isset($_GET['bnavn']) && $_GET['bnavn'] != "") {
         echo 'Brukernavnet <b>' . $bnavn . '</b> er ledig';
         exit();
     }
-
 }
 
 if (isset($_GET['epost']) && $_GET['epost'] != "") {
@@ -27,7 +26,7 @@ if (isset($_GET['epost']) && $_GET['epost'] != "") {
     $row = mysqli_fetch_assoc($sql);
 
     if ($row['@epost_finnes'] == '1') {
-        echo 'Eposten <b>' . $epost . '</b> er tatt! Log inn?';
+        echo 'Eposten <b>' . $epost . '</b> er tatt!';
         exit();
     }
     else {

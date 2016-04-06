@@ -12,7 +12,7 @@ function chat() {
                     document.getElementById("meldinger").innerHTML = xmlhttp.responseText;
                 }
             }
-        xmlhttp.open("GET", "http://localhost/forum/www/includes/chat.php?melding="+melding, true);
+        xmlhttp.open("GET", "includes/chat.php?melding="+melding, true);
         xmlhttp.send();
     }
 

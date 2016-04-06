@@ -1,6 +1,56 @@
 <?php
 require_once 'db_connect.php';
 
+function tellInnlegg($conn, $bruker_id) {
+    $sql = mysqli_query($conn, "SELECT COUNT(innlegg_id) AS antInnlegg FROM innlegg WHERE bruker_id = '$bruker_id'");
+    $row = mysqli_fetch_assoc($sql);
+    
+    return $result = $row['antInnlegg'];
+}
+
+function tellTraader($conn, $bruker_id) {
+    $sql = mysqli_query($conn, "SELECT COUNT(tråd_id) AS antTråder FROM tråd WHERE bruker_id = '$bruker_id'");
+    $row = mysqli_fetch_assoc($sql);
+
+    return $result = $row['antTråder'];
+}
+
+function hentBilde($conn, $bruker_id) {
+    $sql = mysqli_query($conn, "SELECT bruker_bilde FROM bruker WHERE bruker_id = '$bruker_id'");
+    $row = mysqli_fetch_assoc($sql);
+    
+    return $bilde = $row['bruker_bilde'];
+}
+
+function datoSjekk ($dato) {
+    $formatDato = date("Y-m-d G:i:s", strtotime($dato));
+
+    $dagensdato = date("d-m-Y");
+    $meldingsdato = date("d-m-Y", strtotime($formatDato));
+
+    if ($dagensdato == $meldingsdato) {
+        // Finner time
+        $posttime = date("G", strtotime($dato));
+        $currtime = date("G");
+
+        $postMin = date("i" , strtotime($dato));
+        $currMin = date("i");
+
+        $diffH = $currtime - $posttime;
+        $diffM = $currMin - $postMin;
+
+        if ($diffH > 0 ) {
+            return $diffH . " timer siden";
+        } else  {
+            return $diffM . " minutter siden";
+        }
+
+    } else {
+        $kortdato = utf8_encode(strftime("%d %B %Y %H:%M", strtotime($formatDato)));
+        return $kortdato;
+    }
+}
+
 function innlogget() {
     if (isset($_SESSION['innlogget'])) {
         return true;
@@ -66,13 +116,3 @@ function send_email($info) {
     $result = "Mail sendt!";
     return $result;
 }
-
-function lesParam($param) {
-    $input = "";
-    if (isset($_POST[$param])) {
-        $input = htmlentities(stripslashes($_POST[$param]));
-        return $input;
-    }
-}
-
-?>

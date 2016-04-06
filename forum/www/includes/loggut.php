@@ -2,6 +2,6 @@
     session_start();
     session_destroy();
 
-    header("Location: http://localhost/forum/www/", true, 301);
+    header("Location: ../index.php", true, 301);
     exit;
 ?>
