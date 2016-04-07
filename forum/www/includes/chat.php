@@ -7,8 +7,7 @@ if (innlogget() == true) {
     $bruker_id = $_SESSION['bruker_id'];
 
     if (isset($_GET['melding']) != "" && !empty($_GET['melding'])) {
-        // Fjerener bruk av SQL kode
-        $msg_melding_get = mysqli_real_escape_string($conn, $_GET['melding']);
+        $msg_melding_get = $_GET['melding'];
         // Bruk av smileyface
         $msg_melding = str_replace(":)", "<i class=\"fa fa-smile-o\"></i>", $msg_melding_get);
         // Fjerner bruk av HTML tags
@@ -16,11 +15,15 @@ if (innlogget() == true) {
 
         $bruker_level = bruker_level();
 
-        $sendData = mysqli_query($conn, "INSERT INTO chat (`bruker_navn`, `bruker_status`, `bruker_id`, `msg_melding`, `msg_dato`)
-                            VALUES ('$bruker_navn', '$bruker_level', '$bruker_id', '$msg_melding_stripped', NOW())");
+        $sql = "INSERT INTO chat (`bruker_navn`, `bruker_status`, `bruker_id`, `msg_melding`, `msg_dato`)
+                            VALUES (?, ?, ?, ?, NOW())";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ssis", $bruker_navn, $bruker_level, $bruker_id, $msg_melding_stripped);
+        $stmt->execute();
+
     }
 
-    // $hentData = mysqli_query($conn, "SELECT bruker_navn, bruker_status, msg_melding, msg_dato FROM chat ORDER BY msg_dato DESC LIMIT 30");
+    // Ingen data fra bruker. Kan trygt bruker mysqli_query her.
     $hentData = mysqli_query($conn, "SELECT * FROM (SELECT * FROM chat ORDER BY msg_dato DESC LIMIT 30) AS resultat ORDER BY msg_dato ASC");
 
     while ($row = mysqli_fetch_assoc($hentData)) {

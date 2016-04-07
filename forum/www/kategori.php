@@ -1,34 +1,23 @@
 <?php
 require_once 'includes/db_connect.php';
-?>
 
-<!DOCTYPE html>
-<html lang="no">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="#">
+$kat_id = $_GET['kat_id'];
 
-    <title>Forum for studenter på HSN avdeling Bø</title>
-    <!-- CSS, FONTS AND OTHER LIBS-->
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700,800,400italic' rel='stylesheet'
-          type='text/css'>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+$ukat = "SELECT kat_id, ukat_id, ukat_navn, ukat_beskrivelse, ukat_img, ukat_img_farge 
+                              FROM underkategori WHERE `kat_id` = ? ";
+$stmt_ukat = $conn->prepare($ukat);
+$stmt_ukat->bind_param("i", $kat_id);
+$stmt_ukat->execute();
+$ukat_res = $stmt_ukat->get_result();
 
-    <link rel="stylesheet" type="text/css" href="css/stylesheet.css">
-    <link rel="stylesheet" type="text/css" href="css/stylesheet-m.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-</head>
-<body>
+$finnkatnavn = "SELECT kat_navn FROM kategori WHERE kategori.kat_id = ?";
+$stmt = $conn->prepare($finnkatnavn);
+$stmt->bind_param("i", $kat_id);
+$stmt->execute();
+$res = $stmt->get_result();
+$katnavn = $res->fetch_assoc();
+$stmt->close();
 
-<?php
-$kat_id = mysqli_real_escape_string($conn, $_GET['kat_id']);
-$finnkatnavn = mysqli_query($conn, "SELECT kat_navn FROM kategori WHERE kategori.kat_id = '$kat_id'");
-$katnavn = mysqli_fetch_assoc($finnkatnavn);
-$ukat = mysqli_query($conn, "SELECT kat_id, ukat_id, ukat_navn, ukat_beskrivelse, ukat_img, ukat_img_farge FROM underkategori WHERE `kat_id` = '$kat_id' ");
 
 require_once 'includes/header.php';
 require_once 'chatbox.php';
@@ -43,8 +32,10 @@ if (isset($_GET['kat_id']) && !isset($_GET['ukat_id'])) {
         echo '<a class="pull-right button-std mar-bot mar-right" id="slett_kat_btn" href="#"><i class="fa fa-minus-square-o"></i> Slett kategori</a>';
     }
 
-    if ($ukat) {
-        if (mysqli_num_rows($ukat) > 0) {
+    if ($ukat_res) {
+
+        if ($ukat_res->num_rows > 0) {
+
             echo '<table class="main-table table forum table-striped">';
             echo '  <thead>';
             echo '       <tr>';
@@ -57,10 +48,10 @@ if (isset($_GET['kat_id']) && !isset($_GET['ukat_id'])) {
             echo '  </thead>';
             echo '  <tbody>';
 
-            while ($row_ukat = mysqli_fetch_assoc($ukat)) {
-                $ukat_id = $row_ukat['ukat_id'];
+            while ($ukat = $ukat_res->fetch_assoc()) {
+                $ukat_id = $ukat['ukat_id'];
                 // For HTML validering
-                $ukat_navn = (str_replace(" ", "_", $row_ukat['ukat_navn']));
+                $ukat_navn = (str_replace(" ", "_", $ukat['ukat_navn']));
 
                 $antposts = mysqli_query($conn, "SELECT COUNT(tråd_id) as antPosts FROM tråd WHERE ukat_id = '$ukat_id'");
                 $antposts_result = mysqli_fetch_assoc($antposts);
@@ -70,15 +61,15 @@ if (isset($_GET['kat_id']) && !isset($_GET['ukat_id'])) {
 
                 echo '      <tr>';
                 echo '          <td class="center"><i class="'
-                                                            . $row_ukat['ukat_img'] . ' '
-                                                            . $row_ukat['ukat_img_farge'] . '"></i></span></td>';
+                                                            . $ukat['ukat_img'] . ' '
+                                                            . $ukat['ukat_img_farge'] . '"></i></span></td>';
 
                 echo '          <td><h4><a href="kategori.php?kat_id='
-                                                            . $row_ukat['kat_id']
-                                                            . '&ukat_id=' . $row_ukat['ukat_id']
+                                                            . $ukat['kat_id']
+                                                            . '&ukat_id=' . $ukat['ukat_id']
                                                             . '&ukat_navn=' . $ukat_navn . '">'
-                                                            . $row_ukat['ukat_navn'] . '</a><br><small>'
-                                                            . $row_ukat['ukat_beskrivelse'] . '</small></h4></td>';
+                                                            . $ukat['ukat_navn'] . '</a><br><small>'
+                                                            . $ukat['ukat_beskrivelse'] . '</small></h4></td>';
 
                 echo '          <td class="text-center skjul-liten skjul-medium"><a href="#">1 234</a></td>';
 
@@ -102,19 +93,26 @@ if (isset($_GET['kat_id']) && isset($_GET['ukat_id']) && isset($_GET['ukat_navn'
     $ukat_id = $_GET['ukat_id'];
     $ukat_navn = (str_replace("_", " ", $_GET['ukat_navn']));
 
-    $posts = mysqli_query($conn, "SELECT * FROM tråd WHERE `ukat_id` = '$ukat_id' ");
+    $sql = "SELECT * FROM tråd WHERE `ukat_id` = ? ";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $ukat_id);
+    $stmt->execute();
+    $res = $stmt->get_result();
 
     if (innlogget() && bruker_level() == "admin") {
-        echo '<a class="pull-right button-std mar-bot" id="ny_traad_btn" href="traad.php?ukat_id=' . $ukat_id . '"><i class="fa fa-plus-square-o"></i> Ny post</a>';
-        echo '<a class="pull-right button-std mar-bot mar-right" id="slett_ukat_btn" href="#"><i class="fa fa-minus-square-o"></i> Slett underkategori</a>';
+        echo '<a class="pull-right button-std mar-bot" id="ny_traad_btn" href="traad.php?ukat_id='
+                                . $ukat_id . '"><i class="fa fa-plus-square-o"></i> Ny post</a>';
+        echo '<a class="pull-right button-std mar-bot mar-right" id="slett_ukat_btn" href="#">
+                    <i class="fa fa-minus-square-o"></i> Slett underkategori
+              </a>';
     }
     elseif (innlogget() && bruker_level() == "regular") {
         echo '<a class="pull-right button-std mar-bot" id="ny_traad_btn" href="#"><i class="fa fa-plus-square-o"></i> Ny post</a>';
     }
 
-    echo $ukat_navn;
+    echo $ukat_navn; // Erstatt denne med noe litt mer lekkert å se på :p
 
-    if ($posts->num_rows > 0) {
+    if ($res->num_rows > 0) {
         echo '<table class="main-table table forum table-striped">';
         echo '  <thead>';
         echo '       <tr>';
@@ -126,18 +124,33 @@ if (isset($_GET['kat_id']) && isset($_GET['ukat_id']) && isset($_GET['ukat_navn'
         echo '  </thead>';
         echo '  <tbody>';
 
-        while ($row_posts = mysqli_fetch_assoc($posts)) {
+        while ($row = $res->fetch_assoc()) {
+
+            // Teller antall innlegg og siste svar
+            $sql = "SELECT COUNT(innlegg_id), max(innlegg_dato) AS sisteInnlegg,
+                        ( SELECT bruker_id WHERE innlegg_dato = max(innlegg_dato) ) as Bruker_id
+                        FROM innlegg";
+            
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("i", $row['tråd_id']);
+            $stmt->execute();
+            $res_antinnlegg = $stmt->get_result();
+            $row_antinnlegg = $res_antinnlegg->fetch_assoc();
+            $stmt->close();
+            
+            
+
             echo '<tr>';
             echo '<td></td>';
             echo '<td><h4><a href="traad.php?ukat_id=' . $ukat_id
-                                         . '&tråd_id=' . $row_posts['tråd_id'] . '">'
-                                            . $row_posts['tråd_tittel']
+                                         . '&tråd_id=' . $row['tråd_id'] . '">'
+                                            . $row['tråd_tittel']
                                             . '</a><br><small>
                           <a href="#">'
-                          . $row_posts['bruker_navn'] . '</a> @ '
-                          . $row_posts['tråd_dato'] . '</small><h4></td>';
-            echo '<td class="center">??</td>';
-            echo '<td> ?? </td>';
+                          . $row['bruker_navn'] . '</a> @ '
+                          . $row['tråd_dato'] . '</small></h4></td>';
+            echo '<td class="center">' . $row_antinnlegg['antInnlegg'] . '</td>'; /*Ant Svar*/
+            echo '<td></td>'; /*Siste svar*/
             echo '</tr>';
         }
         echo '    </tbody>';

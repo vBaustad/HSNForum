@@ -9,6 +9,7 @@ if (isset($_POST['ny_kat_btn']) && $_SESSION['bruker_level'] == '2') {
     $stmt->bind_param("s", $kat_navn);
     $kat_navn = $_POST['ny_kat_navn'];
     $stmt->execute();
+    $stmt->close();
 
     if ($sql) {
         header("Location: ../index.php", true, 301);
@@ -30,6 +31,7 @@ if (isset($_POST['ny_ukat_btn']) && $_SESSION['bruker_level'] == '2') {
     $ukat_img = $_POST['ny_ukat_img'];
     $ukat_img_farge = $_POST['ny_ukat_img_farge'];
     $stmt->execute();
+    $stmt->close();
 
     if ($sql) {
         header("Location: ../index.php", true, 301);
@@ -39,13 +41,17 @@ if (isset($_POST['ny_ukat_btn']) && $_SESSION['bruker_level'] == '2') {
     }
 }
 
-/* SLETTE KATEGORIER - TRENGER VI PREPARED STATEMENT HER? */
+/* SLETTE KATEGORIER  */
 if (isset($_POST['slett_kat_btn']) && $_SESSION['bruker_level'] == '2') {
 
-    $kat_id = mysqli_real_escape_string($conn, $_GET['slett_id']);
-    $sql = mysqli_query($conn, "DELETE FROM kategori WHERE kat_id = '$kat_id'");
+    $kat_id = $_GET['slett_id'];
+    $sql = "DELETE FROM kategori WHERE kat_id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $kat_id);
+    $stmt->execute();
+    $stmt->close();
 
-    if ($sql) {
+    if ($stmt) {
         header("Location: ../index.php", true, 301);
         exit;
     }
@@ -54,13 +60,18 @@ if (isset($_POST['slett_kat_btn']) && $_SESSION['bruker_level'] == '2') {
     }
 }
 
-/* SLETTE UNDERKATEGORIER - TRENGER VI PREPARED STATEMENT HER? */
+/* SLETTE UNDERKATEGORIER */
 if (isset($_POST['slett_ukat_btn']) && $_SESSION['bruker_level'] == '2') {
-    $kat_id = mysqli_real_escape_string($conn, $_GET['kat_id']);
-    $ukat_id = mysqli_real_escape_string($conn, $_GET['slett_ukat_id']);
-    $sql = mysqli_query($conn, "DELETE FROM underkategori WHERE ukat_id = '$ukat_id'");
+    $kat_id = $_GET['kat_id'];
+    $ukat_id = $_GET['slett_ukat_id'];
 
-    if ($sql) {
+    $sql = "DELETE FROM underkategori WHERE ukat_id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $ukat_id);
+    $stmt->execute();
+    $stmt->close();
+
+    if ($stmt) {
         header("Location: ../kategori.php?kat_id=$kat_id", true, 301);
         exit;
     }
@@ -78,15 +89,20 @@ if (isset($_POST['ny_epost_submitt']) && innlogget()) {
     $salt2 = '$l3*!';
     $passordhash = hash('ripemd160', "$salt1$passord$salt2");
 
-    $sql = mysqli_query($conn, "SELECT bruker_pass FROM bruker WHERE bruker_pass = '$passordhash' AND bruker_id = '$bruker_id'");
+    $sql = "SELECT bruker_pass FROM bruker WHERE bruker_pass = ? AND bruker_id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("si", $passordhash, $bruker_id);
+    $stmt->execute();
+    $res = $stmt->get_result();
+    $stmt->close();
 
-    if ($sql->num_rows > 0) {
+    if ($res->num_rows > 0) {
         $sql = "UPDATE bruker SET bruker_mail=? WHERE bruker_id=?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("si", $ny_epost, $bruker_id);
 
         if ($stmt->execute()) {
-            header("Location: ../bruker.php?bruker=$bruker_id&ny_epoost=1");
+            header("Location: ../bruker.php?bruker=$bruker_id&ny_epost=1");
         } else {
             echo "kunne ikke opdatere epost";
         }
@@ -96,7 +112,7 @@ if (isset($_POST['ny_epost_submitt']) && innlogget()) {
 
 }
 
-/* NYT PASSORD */
+/* NYTT PASSORD */
 if (isset($_POST['nytt_pass_submitt']) && innlogget()) {
     $bruker_id = $_SESSION['bruker_id'];
     $salt1 = 'dkn?';
@@ -108,14 +124,20 @@ if (isset($_POST['nytt_pass_submitt']) && innlogget()) {
     $new_pass = mysqli_real_escape_string($conn, $_POST['new_pass']);
     $new_passhash = hash('ripemd160', "$salt1$new_pass$salt2");
 
-    $sql = mysqli_query($conn, "SELECT bruker_pass FROM bruker WHERE bruker_pass = '$passordhash' AND bruker_id = '$bruker_id'");
+    $sql = "SELECT bruker_pass FROM bruker WHERE bruker_pass = ? AND bruker_id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("si", $passordhash, $bruker_id);
+    $stmt->execute();
+    $res = $stmt->get_result();
+    $stmt->close();
 
-    if ($sql->num_rows > 0) {
-        $sql = "UPDATE bruker SET bruker_pass=? WHERE bruker_id = ?";
+    if ($res->num_rows > 0) {
+        $sql = "UPDATE bruker SET bruker_pass = ? WHERE bruker_id = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("si", $new_passhash, $bruker_id);
 
         if ($stmt->execute()) {
+            $stmt->close();
             header("Location: ../bruker.php?bruker=$bruker_id&nytt_pass=1");
         } else {
             echo "Kunen ikke oppdatere passord";
@@ -159,7 +181,6 @@ if (isset($_POST['nytt_bilde_submitt']) && innlogget()) {
         $tmp = explode(".", $_FILES["upload_file"]["name"]);
         $nyfilnavn = $bruker_id . '.' . end($tmp);
 
-
         // Laster opp og plaserer filen.
         if (move_uploaded_file($_FILES["upload_file"]["tmp_name"], "../img/profilbilder/" . $nyfilnavn)) {
             echo "Filen " . basename($_FILES['upload_file']['name']) . " Har blitt opplastet!<br>";
@@ -174,5 +195,20 @@ if (isset($_POST['nytt_bilde_submitt']) && innlogget()) {
             echo "noe gikk galt...<br>";
         }
     }
+}
 
+/* NYTT INNLEGG */
+if (isset($_POST['svar_btn']) && innlogget()) {
+    $innlegg_innhold = $_POST['innlegg_innhold'];
+    $tråd_id = $_GET['tråd_id'];
+    $ukat_id = $_GET['ukat_id'];
+    $bruker_id = $_SESSION['bruker_id'];
+    $bruker_navn = $_SESSION['bruker_navn'];
+
+    $sql = "INSERT INTO innlegg(innlegg_innhold, innlegg_dato, tråd_id, ukat_id, bruker_id, bruker_navn) VALUES(?, NOW(), ?, ?, ?, ?)";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("siiis", $innlegg_innhold, $tråd_id, $ukat_id, $bruker_id, $bruker_navn);
+    $stmt->execute();
+    $stmt->close();
+    header("Location: ../traad.php?ukat_id=$ukat_id&tråd_id=$tråd_id");
 }

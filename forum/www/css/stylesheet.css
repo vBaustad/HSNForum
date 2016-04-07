@@ -5,6 +5,14 @@ html {
 }
 
 /* SØK */
+.table_sok thead tr th {
+    padding: 0 !important;
+}
+
+.table_sok tbody tr td {
+    padding: 0 !important;
+}
+
 .sok_form {
 
 }
@@ -16,7 +24,6 @@ html {
 
 .sok_text {
     border: 1px solid #6081bc;
-
 }
 
 #sok_btn {
@@ -25,6 +32,33 @@ html {
     color: #fcfeff;
     background: #6081bc;
     cursor: pointer;
+}
+
+#sok_btn:hover {
+    background: #4c6097;
+    -webkit-transition: background .3s;
+    -moz-transition: background .3s;
+    -ms-transition: background .3s;
+    -o-transition: background .3s;
+    transition: background .3s;
+}
+
+#sok_btn:focus {
+    outline: 0;
+}
+
+.sok_select {
+    padding: 0;
+    margin: 0;
+    border: 1px solid #6081bc;
+    border-radius: 2px;
+    width: 20px;
+    height: 29px;
+    font-size: .8em;
+}
+
+.sok_select:focus {
+    outline: 0;
 }
 
 /* CHATBOX */
@@ -583,21 +617,6 @@ h1 {
     -webkit-border-radius: 55px;
 }
 
-/*.bruker_profilbilde_container {
-    padding-bottom: 15px;
-    text-align: center;
-    margin-right: auto;
-    margin-left: auto;
-}
-.bruker_profilbilde {
-    width:  80px;
-    height: 80px;
-    object-fit: cover;
-    border-radius: 40px;
-    -moz-border-radius: 40px;
-    -webkit-border-radius: 40px;
-}*/
-
 table {
     background-color: transparent;
     border-spacing: 0;
@@ -616,7 +635,7 @@ th:nth-last-child(1) {
 }
 
 th {
-    text-align: left
+    text-align: left;
 }
 
 thead > tr > th {
@@ -646,19 +665,19 @@ tbody > tr > td > a:hover {
 .table {
     width: 100%;
     max-width: 100%;
-    margin-bottom: 20px
+    margin-bottom: 20px;
 }
 
 .table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
     padding: 8px;
     line-height: 1.4;
     vertical-align: top;
-    border-top: 1px solid #ddd
+    border-top: 1px solid #ddd;
 }
 
 .table > thead > tr > th {
     vertical-align: bottom;
-    border-bottom: 2px solid #ddd
+    border-bottom: 2px solid #ddd;
 }
 
 .table > caption + thead > tr:first-child > td, .table > caption + thead > tr:first-child > th, .table > colgroup + thead > tr:first-child > td, .table > colgroup + thead > tr:first-child > th, .table > thead:first-child > tr:first-child > td, .table > thead:first-child > tr:first-child > th {
@@ -666,7 +685,7 @@ tbody > tr > td > a:hover {
 }
 
 .table-striped > tbody > tr:nth-of-type(odd) {
-    background-color: #f9f9f9
+    background-color: #f9f9f9;
 }
 
 .table-striped > tbody > tr:nth-of-type(even) {
@@ -682,15 +701,15 @@ tbody > tr > td > a:hover {
     text-align: center;
 }
 
-.forum.table th.rad-bredde-icon {
+.rad-bredde-icon {
     width: 6em;
 }
 
-.forum.table th.rad-bredde {
+.rad-bredde {
     width: 6em;
 }
 
-.forum.table th.rad-bredde-2x {
+.rad-bredde-2x {
     width: 14em;
 }
 
@@ -704,7 +723,7 @@ tbody > tr > td > a:hover {
 }
 
 .ny_ukat {
-    color: rgba(23, 169, 0, 0.78);
+    color: rgba(23, 169, 0, 0.8);
 }
 
 .ny_ukat:hover {
