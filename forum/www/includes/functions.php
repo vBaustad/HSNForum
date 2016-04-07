@@ -1,25 +1,48 @@
 <?php
 require_once 'db_connect.php';
 
+function sistAktiv($conn, $bruker_id) {
+    $sql = "UPDATE bruker SET bruker_sist_aktiv = NOW() WHERE bruker_id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $bruker_id);
+    $stmt->execute();
+    $stmt->close();
+}
+
 function tellInnlegg($conn, $bruker_id) {
-    $sql = mysqli_query($conn, "SELECT COUNT(innlegg_id) AS antInnlegg FROM innlegg WHERE bruker_id = '$bruker_id'");
-    $row = mysqli_fetch_assoc($sql);
+    $sql = "SELECT COUNT(innlegg_id) AS antInnlegg FROM innlegg WHERE bruker_id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $bruker_id);
+    $stmt->execute();
+    $res = $stmt->get_result();
+    $row = $res->fetch_assoc();
+    $stmt->close();
     
-    return $result = $row['antInnlegg'];
+    return $row['antInnlegg'];
 }
 
 function tellTraader($conn, $bruker_id) {
-    $sql = mysqli_query($conn, "SELECT COUNT(tråd_id) AS antTråder FROM tråd WHERE bruker_id = '$bruker_id'");
-    $row = mysqli_fetch_assoc($sql);
+    $sql = "SELECT COUNT(tråd_id) AS antTråder FROM tråd WHERE bruker_id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $bruker_id);
+    $stmt->execute();
+    $res = $stmt->get_result();
+    $row = $res->fetch_assoc();
+    $stmt->close();
 
-    return $result = $row['antTråder'];
+    return $row['antTråder'];
 }
 
 function hentBilde($conn, $bruker_id) {
-    $sql = mysqli_query($conn, "SELECT bruker_bilde FROM bruker WHERE bruker_id = '$bruker_id'");
-    $row = mysqli_fetch_assoc($sql);
-    
-    return $bilde = $row['bruker_bilde'];
+    $sql = "SELECT bruker_bilde FROM bruker WHERE bruker_id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $bruker_id);
+    $stmt->execute();
+    $res = $stmt->get_result();
+    $row = $res->fetch_assoc();
+    $stmt->close();
+
+    return $row['bruker_bilde'];
 }
 
 function datoSjekk ($dato) {

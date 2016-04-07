@@ -5,7 +5,7 @@ require_once 'includes/header.php';
 
 if (isset($_GET['bruker']) && $_GET['bruker'] > 0) {
     $bruker_id = mysqli_real_escape_string($conn, $_GET['bruker']);
-    $sql = mysqli_query($conn, "SELECT bruker_navn, bruker_fornavn, bruker_etternavn, bruker_bilde, bruker_dato FROM bruker WHERE bruker_id = '$bruker_id'");
+    $sql = mysqli_query($conn, "SELECT bruker_navn, bruker_fornavn, bruker_etternavn, bruker_bilde, bruker_dato, bruker_mail FROM bruker WHERE bruker_id = '$bruker_id'");
     $row = mysqli_fetch_assoc($sql);
 
     if ($_GET['bruker'] == $_SESSION['bruker_id']) {
@@ -17,7 +17,7 @@ if (isset($_GET['bruker']) && $_GET['bruker'] > 0) {
     }
 
         echo '<div class="bruker_profilbilde_container">';
-            echo '<img class="bruker_profilbilde" src="img/profilbilder/' . $row['bruker_bilde'] . '">';
+            echo '<img class="bruker_profilbilde" src="img/profilbilder/' . hentBilde($conn, $bruker_id) . '">';
             echo '<h1>' . $header_text . '</h1>';
         echo '</div>';
         echo '<div class="clearfix"></div>';
@@ -68,7 +68,7 @@ if (isset($_GET['bruker']) && $_GET['bruker'] > 0) {
             }
             echo '<div>Antal innlegg: <p class="bruker_info_format">' . tellInnlegg($conn, $bruker_id) . '</p></div>';
             echo '<div>Antal tråder: <p class="bruker_info_format">' . tellTraader($conn, $bruker_id) . '</p></div>';
-            echo '<div>Medlem siden: <p class="bruker_info_format">' . $row['bruker_dato'] . '</p></div>';
+            echo '<div>Medlem siden: <p class="bruker_info_format">' . datoSjekk($row['bruker_dato'])  . '</p></div>';
         echo '</div>';
 
         // Endre passord
@@ -142,4 +142,3 @@ if (isset($_GET['bruker']) && $_GET['bruker'] > 0) {
 }
 
 require_once 'includes/footer.php';
-?>

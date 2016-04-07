@@ -65,9 +65,15 @@ require_once (__DIR__ . '/db_connect.php');
                 echo    '</ol>';
             }
             ?>
-            <form class="sok_form pull-right clearfix" action="sok.php">
-                <input class="sok_text" type="search" placeholder="Søk i forumet...">
-                <input id="sok_btn" name="sok_btn" type="button" value="Søk">
+            <form class="sok_form pull-right clearfix" method="post" action="sok.php">
+                <input name="sok_text" class="sok_text" type="search" placeholder="Søk i forumet...">
+                <select name="sok_select" class="sok_select">
+                    <option selected value="hele">Hele forumet</option>
+                    <option value="bruker">Brukere</option>
+                    <option value="traader">Tråder</option>
+                    <option value="ukategorier">Underkategorier</option>
+                </select>
+                <input type="submit" id="sok_btn" name="sok_btn" value="Søk">
             </form>
         </div>
         <div class="clearfix"></div>
