@@ -1,5 +1,5 @@
+// TODO: Flytt inn i functions.js
 function chat() {
-
     var melding = document.getElementById('chat_msg_text').value;
     if (melding == "") {
         alert ("Du må nesten skrive noe først...");

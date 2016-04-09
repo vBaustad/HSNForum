@@ -1,6 +1,7 @@
 <?php
 require_once 'includes/db_connect.php';
 require_once 'includes/header.php';
+require_once 'includes/boxes.php';
 
 
 if (isset($_GET['bruker']) && $_GET['bruker'] > 0) {
@@ -8,7 +9,7 @@ if (isset($_GET['bruker']) && $_GET['bruker'] > 0) {
     $sql = mysqli_query($conn, "SELECT bruker_navn, bruker_fornavn, bruker_etternavn, bruker_bilde, bruker_dato, bruker_mail FROM bruker WHERE bruker_id = '$bruker_id'");
     $row = mysqli_fetch_assoc($sql);
 
-    if ($_GET['bruker'] == $_SESSION['bruker_id']) {
+    if (innlogget() && $_GET['bruker'] == $_SESSION['bruker_id']) {
         $header_text = "Min profil";
         $brukernavn = "meg";
     } else {
@@ -26,7 +27,7 @@ if (isset($_GET['bruker']) && $_GET['bruker'] > 0) {
     
         echo '<ul id="bruker_endringer">';
             echo '<li id="om_bruker"><i class="fa fa-user"></i>Om ' . $row['bruker_navn'] . '</li>';
-        if ($_GET['bruker'] == $_SESSION['bruker_id']) {
+        if (innlogget() && $_GET['bruker'] == $_SESSION['bruker_id']) {
             echo '<li id="endre_pass"><i class="fa fa-key"></i>Endre passord</li>';
             echo '<li id="endre_epost"><i class="fa fa-envelope"></i>Endre epost</li>';
             echo '<li id="endre_bilde"><i class="fa fa-picture-o"></i>Endre profilbilde</li>';
@@ -63,7 +64,7 @@ if (isset($_GET['bruker']) && $_GET['bruker'] > 0) {
         echo '<div id="bruker_info">';
             echo '<h2>Om ' . $row['bruker_navn'] . '</h2>';
             echo '<div>Navn: <p class="bruker_info_format">' . $row['bruker_fornavn'] . ' ' . $row['bruker_etternavn'] . '</p></div>';
-            if ($_GET['bruker'] == $_SESSION['bruker_id']) {
+            if (innlogget() && $_GET['bruker'] == $_SESSION['bruker_id']) {
                 echo '<div>Epost: <p class="bruker_info_format">' . $row['bruker_mail'] . '</p></div>';
             }
             echo '<div>Antal innlegg: <p class="bruker_info_format">' . tellInnlegg($conn, $bruker_id) . '</p></div>';

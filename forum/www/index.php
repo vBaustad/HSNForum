@@ -27,14 +27,14 @@ if ($kat) {
                 echo '            </th>';
                 echo '            <th class="rad-bredde text-center skjul-liten skjul-medium">Emner</th>';
                 echo '            <th class="rad-bredde text-center skjul-liten skjul-medium">Innlegg</th>';
-                echo '            <th class="rad-bredde-2x skjul-liten skjul-medium">Siste Innlegg</th>';
+                echo '            <th class="rad-bredde-2x skjul-liten skjul-medium">Siste aktivitet</th>';
                 echo '      </tr>';
                 echo '  </thead>';
                 echo '  <tbody class=radID' . $row_kat['kat_id'] . '>';
 
                 $ukat_teller = $row_kat['kat_id'];
             }
-
+            // TODO: Prepared statement
             $ukat = mysqli_query($conn, "SELECT kat_id, ukat_id, ukat_navn, ukat_beskrivelse, ukat_img, ukat_img_farge FROM underkategori WHERE kat_id = '$ukat_teller'");
             if ($ukat->num_rows > 0) {
                 if (mysqli_num_rows($ukat) > 0) {
@@ -44,18 +44,25 @@ if ($kat) {
                         // For HTML validering
                         $ukat_navn = (str_replace(" ", "_", $row_ukat['ukat_navn']));
 
+                        // TODO: Prepared statement, og/eller bruk funksjon??
                         // Teller antall tråder
                         $anttråd = mysqli_query($conn, "SELECT COUNT(tråd_id) as antPosts FROM tråd WHERE ukat_id = '$ukat_id'");
                         $anttråd_result = mysqli_fetch_assoc($anttråd);
 
+
+                        // TODO: Prepared statement
                         // Teller antall svar
                         $antinnlegg = mysqli_query($conn, "SELECT COUNT(innlegg_id) as antInnlegg FROM innlegg WHERE tråd_id = '$ukat_id'");
                         $antinnlegg_result = mysqli_fetch_assoc($antinnlegg);
 
+
+                        // TODO: Prepared statement, og/eller bruk funksjon sjekkDato()
                         // Finner bruker som skreve siste innlegg
                         $siste_innlegg = mysqli_query($conn, "SELECT innlegg_dato, bruker_navn, bruker_id FROM innlegg WHERE ukat_id = '$ukat_id' ORDER BY innlegg_dato DESC LIMIT 1");
                         $siste_innlegg_row = mysqli_fetch_assoc($siste_innlegg);
 
+
+                        // TODO: Prepared statement, og/eller bruk funksjon??
                         // Finner bruker som skrev siste tråd
                         $siste_innlegg = mysqli_query($conn, "SELECT tråd_dato, bruker_navn, bruker_id FROM tråd WHERE ukat_id = '$ukat_id' ORDER BY tråd_dato DESC LIMIT 1");
                         $siste_traad_row = mysqli_fetch_assoc($siste_innlegg);
@@ -89,40 +96,56 @@ if ($kat) {
                             $postdato = "";
                         }
 
-                        echo '      <tr>';
-                        echo '          <td class="center"><i class="' . $row_ukat['ukat_img'] . $row_ukat['ukat_img_farge'] . '"></i></td>';
-                        echo '          <td>
-                                            <h4>
-                                                <a href="kategori.php?kat_id=' . $row_kat['kat_id'] . '&ukat_id=' . $row_ukat['ukat_id'] . '&ukat_navn=' . $ukat_navn . '">
-                                                    ' . $row_ukat['ukat_navn'] . '
-                                                </a><br>
-                                                <small>
-                                                    ' . $row_ukat['ukat_beskrivelse'] . '
-                                                </small>
-                                            </h4>
-                                        </td>';
-                        echo '          <td class="text-center skjul-liten skjul-medium"><a href="kategori.php?kat_id=' . $row_kat['kat_id'] . '&ukat_id=' .
-                            $row_ukat['ukat_id'] . '">' . $anttråd_result['antPosts'] . '</a></td>';
-                        echo '          <td class="text-center skjul-liten skjul-medium"><a href="#">' . $antinnlegg_result['antInnlegg'] . '</a></td>';
+                        echo '<tr>';
+                            echo '<td class="center"><i class="'
+                                        . $row_ukat['ukat_img']
+                                        . $row_ukat['ukat_img_farge'] . '"></i>';
+                            echo '</td>';
 
-                        echo '          <td class="skjul-liten skjul-medium">';
-                        if ($siste_innlegg->num_rows > 0 ) {
-                            echo '<small>av </small> <a href="bruker.php?bruker=' . $siste_innlegg_id .  '">' .
-                                $siste_innlegg_navn . '</a><br><small>' . $siste_aktivitet . '</small></td>';
-                        }
-                        else {
-                            echo '<small>ingen innlegg enda</small>';
-                        }
+                            echo '<td><h4>';
+                                echo '<a href="kategori.php?kat_id='
+                                    . $row_kat['kat_id']
+                                    . '&ukat_id=' . $row_ukat['ukat_id']
+                                    . '&ukat_navn=' . $ukat_navn . '">'
+                                    . $row_ukat['ukat_navn'] . '</a><br>
+                                    <small>'
+                                        . $row_ukat['ukat_beskrivelse'] . '
+                                    </small>';
+                            echo '</h4></td>';
 
-                        echo '      </tr>';
+                            echo '<td class="text-center skjul-liten skjul-medium">';
+                                    echo '<a href="kategori.php?kat_id='
+                                            . $row_kat['kat_id']
+                                            . '&ukat_id='
+                                            . $row_ukat['ukat_id'] . '">'
+                                            . $anttråd_result['antPosts'] . '</a></td>';
+
+                            echo '<td class="text-center skjul-liten skjul-medium">';
+                                echo '<a href="#">' . $antinnlegg_result['antInnlegg'];
+                                echo '</a>';
+                            echo '</td>';
+
+                            echo '<td class="skjul-liten skjul-medium">';
+                            if ($siste_innlegg->num_rows > 0 ) {
+                                echo '<small>av </small>';
+                                    echo '<a href="bruker.php?bruker='
+                                            . $siste_innlegg_id .  '">'
+                                            . $siste_innlegg_navn;
+                                    echo '</a><br><small>';
+                                    echo '<i class="fa fa-clock-o"></i> '
+                                                . $siste_aktivitet;
+                                    echo '</small></td>'; // TODO: Bruk funksjon sjekkDato()
+                            }
+                            else {
+                                echo '<small>ingen aktivitet enda</small>';
+                            }
+                        echo '</tr>';
                     }
                 }
             }
-            echo '  </tbody>';
+                echo '</tbody>';
             echo '</table>';
         }
     }
 }
-
 require_once(__DIR__ . '/includes/footer.php');
-?>

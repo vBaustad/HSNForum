@@ -48,6 +48,7 @@ $(document).ready(function () {
         $("#om_bruker, #endre_pass, #endre_epost").removeClass("bruker_container_pil green_bg");
         $("#bruker_info, #endre_pass_box, #endre_epost_box").hide();
     });
+    
 });
 
 // bruker til registrer.php
