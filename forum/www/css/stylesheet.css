@@ -318,7 +318,8 @@ html {
     margin-top: 40px;
 }
 
-#nytt_bilde_submitt, #ny_epost_submitt, #nytt_pass_submitt, #registrer_submitt, #logginn_submitt, #ny_kat_submit, #ny_ukat_submit {
+/* TODO: press alt inn i std_btn? */
+#ny_traad_submitt, #nytt_bilde_submitt, #ny_epost_submitt, #nytt_pass_submitt, #registrer_submitt, #logginn_submitt, #ny_kat_submit, #ny_ukat_submit {
     color: white;
     font-size: 1.3em;
     width: 100%;
@@ -333,7 +334,21 @@ html {
     cursor: pointer;
 }
 
-#nytt_bilde_submitt, #ny_epost_submitt:hover, #nytt_pass_submitt:hover, #registrer_submitt:hover, #logginn_submitt:hover, #ny_kat_submit:hover, #ny_kat_submit:hover {
+.std_btn {
+    color: white;
+    font-size: 1.3em;
+    width: 100%;
+    height: 40px;
+    display: block;
+    text-decoration: none;
+    text-align: center;
+    border: none;
+    outline: none;
+    background: #1ab188;
+    cursor: pointer;
+}
+
+.std_btn:hover, #ny_traad_submitt:hover, #nytt_bilde_submitt:hover, #ny_epost_submitt:hover, #nytt_pass_submitt:hover, #registrer_submitt:hover, #logginn_submitt:hover, #ny_kat_submit:hover, #ny_kat_submit:hover {
     background: #179b77;
     -webkit-transition: background .3s;
     -moz-transition: background .3s;
@@ -342,7 +357,7 @@ html {
     cursor: pointer;
 }
 
-#registrer-avbryt, .button-lukk {
+.std_btn_avbryt, #registrer-avbryt, .button-lukk {
     color: white;
     font-size: 1.3em;
     width: 93%;
@@ -354,7 +369,7 @@ html {
     background: #c92024;
 }
 
-#registrer-avbryt:hover {
+.std_btn_avbryt:hover, #registrer-avbryt:hover {
     background: #b7080c;
     -webkit-transition: background .3s;
     -moz-transition: background .3s;
@@ -506,6 +521,11 @@ html {
 }
 
 /* TEXT */
+.siste_svar {
+    font-size: .9em;
+    line-height: 0;
+}
+
 .endringer_box_h2 {
     padding-top: 17px;
     padding-right: 25px;
@@ -607,16 +627,6 @@ h1 {
 }
 
 /* FORUM */
-.avatar_forum {
-    float: left;
-    width: 80px;
-    height: 80px;
-    object-fit: cover;
-    border-radius: 55px;
-    -moz-border-radius: 55px;
-    -webkit-border-radius: 55px;
-}
-
 table {
     background-color: transparent;
     border-spacing: 0;
@@ -827,7 +837,7 @@ tbody > tr > td > a:hover {
     display: inline;
 }
 
-.bruker_endre_input {
+.std_input, .bruker_endre_input {
     width: 300px;
     display: block;
     box-shadow: none;
@@ -839,7 +849,7 @@ tbody > tr > td > a:hover {
     transition: border .3s;
 }
 
-.bruker_endre_input:focus {
+.std_input:focus, .bruker_endre_input:focus {
     outline: none;
     border: solid 3px #60bb80;
 }
@@ -871,6 +881,107 @@ tbody > tr > td > a:hover {
 }
 
 /* TRÅD.php */
+#likepost_btn {
+    cursor: pointer;
+}
+
+.likepost {
+    padding: 5px 10px 5px 10px;
+    margin-right: 10px;
+    list-style: none;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+    font-size: .7em;
+}
+
+.likepost > li {
+    display: inline-block;
+}
+
+.likepost > li + li:before {
+    padding: 0 5px;
+    color: #ccc;
+    content: "/\00a0";
+}
+
+.likepost a {
+    text-decoration: none;
+    color: #aad;
+    font-size: .85em;
+}
+
+.likepost a:hover {
+    text-decoration: underline;
+}
+
+#svar_btn {
+    width: 200px;
+}
+
+#innlegg_innhold {
+    margin-top: 10px;
+    padding: 5px;
+    box-sizing: border-box;
+    resize: none;
+    width: 100%;
+    height: 100px;
+}
+
+#innlegg_innhold:focus {
+    outline-color: #1ab188;
+}
+
+.traad_side_btn, .traad_side_btn_avtive {
+    width: 25px;
+    height: 32px;
+    margin-left: 5px;
+    color: white;
+    font-size: 1em;
+    line-height: 2em;
+    padding-left: 5px;
+    text-decoration: none;
+    text-align: center;
+    border: none;
+    outline: none;
+    background: #6f87cb;
+    margin-top: 20px;
+}
+
+.traad_side_btn:hover {
+    background: #4c6097;
+    -webkit-transition: background .3s;
+    -moz-transition: background .3s;
+    -o-transition: background .3s;
+    transition: background .3s;
+    cursor: pointer;
+}
+
+.active {
+    background: #54c84e;
+    color: #ffffff;
+}
+
+.traad_page_spacer:last-child {
+    margin-right: 25px;
+}
+
+.traad_buttons_one, .traad_buttons_two {
+    width: 200px;
+}
+
+#ny_traad_submitt, .std_btn_avbryt {
+    margin-top: 7px !important;
+    width: 100%;
+}
+
+#ny_traad_text {
+    resize: none;
+    width: 100%;
+    height: 150px;
+    box-sizing: border-box;
+    margin: 0;
+}
+
 .traad_mobile {
     display: inline;
 }
@@ -900,15 +1011,25 @@ tbody > tr > td > a:hover {
     display: table-cell;
 }
 
+.avatar_forum {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 55px;
+    -moz-border-radius: 55px;
+    -webkit-border-radius: 55px;
+}
+
 .traadleft {
     width: 150px;
     background: #949494;
-    padding: 15px 0 15px 15px;
+    padding: 15px 5px 15px 5px;
 }
 
 .traadright {
     background: #f2eaec;
     padding: 15px 0 15px 15px;
+    vertical-align: top;
 }
 
 .traadspacer {
@@ -920,7 +1041,7 @@ tbody > tr > td > a:hover {
 footer {
     clear: both;
     background: #7fa0e0;
-    height: 50px;
+    height: auto;
     margin-top: 10px;
     padding-right: 15px;
     padding-left: 15px;

@@ -5,6 +5,7 @@
         <div class="pull-right">
             <p>Mer tekst her. Undermeny?</p>
         </div>
+        <div class="clearfix"></div>
     </footer>
 </div> <!-- /Container  -->
 </body>

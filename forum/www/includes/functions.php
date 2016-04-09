@@ -1,6 +1,162 @@
 <?php
 require_once 'db_connect.php';
 
+// TODO: Flytt likTraad og likInnlegg sammen, Bruk paramenter "$type" som i "harLikt" funksjonen!
+function likTraad($conn, $trå_id, $bruker_id, $bruker_navn) {
+    // Sjekk først om han/hun har likt tråden.
+    $sql = "SELECT tråd_id, bruker_id FROM likes WHERE bruker_id = ? AND tråd_id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ii", $bruker_id, $trå_id);
+    $stmt->execute();
+    $res = $stmt->get_result();
+    $stmt->close();
+
+    // Brukeren har ikke likt tråden. Den kan likes
+    if ($res->num_rows < 1) {
+        $sql = "INSERT INTO likes (tråd_id, bruker_id, bruker_navn) VALUES(?, ?, ?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("iis", $trå_id, $bruker_id, $bruker_navn);
+        $stmt->execute();
+        $stmt->close();
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function likInnlegg($conn, $trå_id, $innlegg_id, $bruker_id, $bruker_navn) {
+    // Sjekk først om han/hun har likt innlegget.
+    $sql = "SELECT tråd_id, innlegg_id, bruker_id FROM likes WHERE bruker_id = ? AND tråd_id = ? AND innlegg_id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("iii", $bruker_id, $trå_id, $innlegg_id);
+    $stmt->execute();
+    $res = $stmt->get_result();
+    $stmt->close();
+
+    // Brukeren har ikke likt tråden. Den kan likes
+    if ($res->num_rows < 1) {
+        $sql = "INSERT INTO likes (tråd_id, innlegg_id, bruker_id, bruker_navn) VALUES(?, ?, ?, ?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("iiis", $trå_id, $innlegg_id, $bruker_id, $bruker_navn);
+        $stmt->execute();
+        $stmt->close();
+        return "Du har nå likt dette innlegget";
+    } else {
+        return "Du kan kun like 1 gang";
+    }
+}
+
+function getLikes($conn, $innlegg_id, $tråd_id) {
+    // Hvis innlegg er null, da teller vi likes i en tråd
+    if ($innlegg_id == null) {
+        $sql = "SELECT COUNT(bruker_id) as antLikes FROM likes WHERE tråd_id = ? AND innlegg_id IS NULL";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("i", $tråd_id);
+        $stmt->execute();
+        $res = $stmt->get_result();
+        $row = $res->fetch_assoc();
+        $stmt->close();
+
+        $antLikes = $row['antLikes'];
+        if (harLikt($conn, "traad", $innlegg_id, $tråd_id, $_SESSION['bruker_id']) == true) {
+            $antLikes -= 1;
+
+            if ($antLikes > 0) {
+                return $antLikes . " andre liker dette";
+            } else {
+                return "0 andre liker dette";
+            }
+        } else {
+            if ($antLikes > 0) {
+                return $antLikes . " andre liker dette";
+            } else {
+                return "ingen har likt dette enda";
+            }
+        }
+    }
+    // Teller likes i innlegg
+    else {
+        $sql = "SELECT COUNT(bruker_id) as antLikes FROM likes WHERE tråd_id = ? AND innlegg_id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ii", $tråd_id, $innlegg_id);
+        $stmt->execute();
+        $res = $stmt->get_result();
+        $row = $res->fetch_assoc();
+
+        $antLikes = $row['antLikes'];
+        if (harLikt($conn, "innlegg", $innlegg_id, $tråd_id, $_SESSION['bruker_id']) == true) {
+            $antLikes -= 1;
+        }
+
+        if ($antLikes > 0) {
+            return $antLikes . " liker dette";
+        } else {
+            return "0 likes";
+        }
+    }
+}
+
+function harLikt ($conn, $type, $innlegg_id, $tråd_id, $bruker_id) {
+    if ($type = "traad") {
+        $sql = "SELECT innlegg_id, tråd_id, bruker_id FROM likes WHERE bruker_id = ? AND tråd_id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ii", $bruker_id, $tråd_id);
+        $stmt->execute();
+        $res = $stmt->get_result();
+        $stmt->close();
+
+        if ($res->num_rows >= 1) {
+            return true;
+        } else {
+            return false;
+        }
+    } elseif ($type = "innlegg") {
+        $sql = "SELECT innlegg_id, tråd_id, bruker_id FROM likes WHERE bruker_id = ? AND tråd_id = ? AND innlegg_id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("iii", $bruker_id, $tråd_id, $innlegg_id);
+        $stmt->execute();
+        $res = $stmt->get_result();
+        $stmt->close();
+
+        if ($res->num_rows >= 1) {
+            return true;
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
+
+
+}
+
+function innleggIdag($conn, $bruker_id){
+    $dagensdato = date("d-m-Y");
+
+    $sql ="SELECT COUNT(innlegg_id) AS innleggIdag FROM innlegg WHERE bruker_id = '$bruker_id' AND innlegg_dato = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $dagensdato);
+    $stmt->execute();
+    $res = $stmt->get_result();
+    $row = $res->fetch_assoc();
+    $stmt->close();
+
+    return $row['innleggIdag'];
+}
+
+function aktiveBrukere($conn, $sistAktiv){
+
+    $formatDato = date("Y-m-d G", strtotime($sistAktiv));
+    $dagensDato = date("Y-m-d G");
+
+    if ($formatDato == $dagensDato) {
+
+        $sql = mysqli_query($conn, "SELECT COUNT(bruker_id) AS aktiveBrukere FROM bruker WHERE bruker_sist_aktiv = '$sistAktiv'");
+        $row = mysqli_fetch_assoc($sql);
+    }
+    return $row['aktiveBrukere'];
+}
+
 function sistAktiv($conn, $bruker_id) {
     $sql = "UPDATE bruker SET bruker_sist_aktiv = NOW() WHERE bruker_id = ?";
     $stmt = $conn->prepare($sql);
@@ -88,7 +244,7 @@ function bruker_level() {
     else return "regular";
 }
 
-//send the welcome letter
+/* Sender epost til ny bruker */
 function send_email($info) {
     // Henter infor fra array
     $fornavn = $info['fornavn'];
