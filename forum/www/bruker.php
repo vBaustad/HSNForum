@@ -33,7 +33,7 @@ if (isset($_GET['bruker']) && $_GET['bruker'] > 0) {
         $header_text = $brukernavn;
     }
 
-    /* Kaller på metodene som henter bilde, teller innlegg, teller tråder, og sjekker dato brukeren regisrerte seg*/
+    /* Kaller på metodene som henter bilde, teller innlegg, teller traader, og sjekker dato brukeren regisrerte seg*/
     $profilbilde = hentBilde($conn, $bruker_id);
     $ant_innlegg = tellInnlegg($conn, "bruker", $bruker_id);
     $ant_traader = tellTraader($conn, "bruker", $bruker_id);
@@ -102,7 +102,7 @@ _END;
 
             echo <<<_END
             <div>Antal innlegg: <p class="bruker_info_format">$ant_innlegg</p></div>
-            <div>Antal tråder: <p class="bruker_info_format">$ant_traader</p></div>
+            <div>Antal traader: <p class="bruker_info_format">$ant_traader</p></div>
             <div>Medlem siden: <p class="bruker_info_format"></p>$medlem_dato</div>
         </div>
 _END;

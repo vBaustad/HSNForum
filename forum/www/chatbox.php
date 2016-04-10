@@ -67,7 +67,7 @@ _EOL;
 
 
     $ant_innlegg = tellInnlegg($conn, "bruker", $bruker_id);
-    $ant_tråder = tellTraader($conn, "bruker", $bruker_id);
+    $ant_traader = tellTraader($conn, "bruker", $bruker_id);
 
     $profilbilde = hentBilde($conn, $bruker_id);
     $bruker_siden = date("d-m-Y", strtotime($sql_bruker_dato));
@@ -77,7 +77,7 @@ _EOL;
     $aktivitet_idag = $traad_idag + $innlegg_idag;
 
     $aktive_brukere = aktiveBrukere($conn, $sql_bruker_sist_aktiv);
-    $karma = $ant_innlegg + $ant_tråder;
+    $karma = $ant_innlegg + $ant_traader;
 
 echo <<<_EOL
     <div class="textarea pull-right skjul-liten skjul-medium">

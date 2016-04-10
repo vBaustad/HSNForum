@@ -3,29 +3,29 @@ require_once 'includes/db_connect.php';
 require_once 'includes/header.php';
 require_once 'includes/boxes.php';
 
-// Lister alle innlegg i en tråd
+// Lister alle innlegg i en traad
 if (isset($_GET['ukat_id']) && isset($_GET['traad_id'])) {
     $ukad_id = $_GET['ukat_id'];
-    $tråd_id = $_GET['traad_id'];
+    $traad_id = $_GET['traad_id'];
 
     // Finner sideNr
     $curr_side = isset($_GET['side']) ? intval($_GET['side']) : 1;
 
-    $traad_sql = "SELECT tråd_id, ukat_id, tråd_tittel, tråd_innhold, tråd_dato, bruker_navn, bruker_id FROM tråd WHERE ukat_id = ? AND tråd_id = ?";
-    $stmt_tråd = $conn->prepare($traad_sql);
-    $stmt_tråd->bind_param("ii", $ukad_id, $tråd_id);
-    $stmt_tråd->execute();
-    $stmt_tråd->store_result();
-    $stmt_tråd->bind_result($traad_tråd_id, $traad_ukat_id, $traad_tråd_tittel,
-                       $traad_tråd_innhold, $traad_tråd_dato, $traad_bruker_navn, $traad_bruker_id);
-    $stmt_tråd->fetch();
-    $stmt_tråd->close();
+    $traad_sql = "SELECT traad_id, ukat_id, traad_tittel, traad_innhold, traad_dato, bruker_navn, bruker_id FROM traad WHERE ukat_id = ? AND traad_id = ?";
+    $stmt_traad = $conn->prepare($traad_sql);
+    $stmt_traad->bind_param("ii", $ukad_id, $traad_id);
+    $stmt_traad->execute();
+    $stmt_traad->store_result();
+    $stmt_traad->bind_result($traad_traad_id, $traad_ukat_id, $traad_traad_tittel,
+                       $traad_traad_innhold, $traad_traad_dato, $traad_bruker_navn, $traad_bruker_id);
+    $stmt_traad->fetch();
+    $stmt_traad->close();
 
-    $innlegg_sql = "SELECT innlegg_id, tråd_id, innlegg_innhold, innlegg_dato, ukat_id, bruker_id, bruker_navn FROM innlegg WHERE tråd_id = ?";
+    $innlegg_sql = "SELECT innlegg_id, traad_id, innlegg_innhold, innlegg_dato, ukat_id, bruker_id, bruker_navn FROM innlegg WHERE traad_id = ?";
     $stmt_innlegg = $conn->prepare($innlegg_sql);
-    $stmt_innlegg->bind_param("i", $tråd_id);
+    $stmt_innlegg->bind_param("i", $traad_id);
     $stmt_innlegg->execute();
-    $stmt_innlegg->bind_result($innlegg_innlegg_id, $innlegg_tråd_id, $innlegg_innlegg_innhold, $innlegg_innlegg_dato,
+    $stmt_innlegg->bind_result($innlegg_innlegg_id, $innlegg_traad_id, $innlegg_innlegg_innhold, $innlegg_innlegg_dato,
                                $innlegg_ukat_id, $innlegg_bruker_id, $innlegg_bruker_navn);
     $stmt_innlegg->fetch();
     $stmt_innlegg->close();
@@ -52,16 +52,16 @@ if (isset($_GET['ukat_id']) && isset($_GET['traad_id'])) {
         } else {
             echo '<a class="traad_page_spacer" href="traad.php?ukat_id='
                         . $ukad_id . '&traad_id='
-                        . $tråd_id . '&side='
+                        . $traad_id . '&side='
                         . $i . '"><div class="traad_side_btn pad-right pull-left">' . $i . '</div></a> ';
         }
     }
     $bilde = hentBilde($conn, $traad_bruker_id);
-    $datosjekk = datoSjekk($traad_tråd_dato);
-    $likes = getLikes($conn, null, $tråd_id);
+    $datosjekk = datoSjekk($traad_traad_dato);
+    $likes = getLikes($conn, null, $traad_id);
     echo <<<_END
         </div>
-        <div class="traadtop"><h3>$traad_tråd_tittel<br><small>Skrevet av 
+        <div class="traadtop"><h3>$traad_traad_tittel<br><small>Skrevet av 
             <a href="bruker.php?bruker_id=$traad_bruker_id">$traad_bruker_navn</a> 
             <i class="fa fa-clock-o"></i> $datosjekk</small></h3>
         </div>
@@ -80,14 +80,14 @@ if (isset($_GET['ukat_id']) && isset($_GET['traad_id'])) {
                     <div class="table-cell traadright">
                         <i class="fa fa-clock-o"></i> $datosjekk<p class="traad_mobile"> av <a href="#">$traad_bruker_navn</a></p>
                         <div class="traad_innhold">
-                            $traad_tråd_innhold
+                            $traad_traad_innhold
                         </div>
                         <ol class="likepost pull-right clearfix">
 _END;
                             /* TODO: Sjekk erinnlogget() */
-                            if (harLikt($conn, "traad", null, $tråd_id, $_SESSION['bruker_id']) == false) {
+                            if (harLikt($conn, "traad", null, $traad_id, $_SESSION['bruker_id']) == false) {
                                 echo '<li id="likepost_btn"><a href="includes/endringer.php?
-                                                                traad_id=' . $tråd_id . '
+                                                                traad_id=' . $traad_id . '
                                                                 &bruker_id=' . $_SESSION['bruker_id'] . '
                                                                 &bruker_navn=' . $_SESSION['bruker_navn'] . '" /> 
                                                                 <i class="fa fa-thumbs-up"></i> Lik</a></li>';
@@ -103,12 +103,12 @@ _END;
 _END;
 
     // Henter dato for nåværende side
-    $sql = "SELECT innlegg_id, tråd_id, innlegg_innhold, innlegg_dato, ukat_id, bruker_id, bruker_navn FROM innlegg WHERE tråd_id = ? LIMIT ?, ?";
+    $sql = "SELECT innlegg_id, traad_id, innlegg_innhold, innlegg_dato, ukat_id, bruker_id, bruker_navn FROM innlegg WHERE traad_id = ? LIMIT ?, ?";
     $stmt_pagedata = $conn->prepare($sql);
-    $stmt_pagedata->bind_param("iii", $tråd_id, $forste_innlegg, $innlegg_per_side);
+    $stmt_pagedata->bind_param("iii", $traad_id, $forste_innlegg, $innlegg_per_side);
     $stmt_pagedata->execute();
     $stmt_pagedata->store_result();
-    $stmt_pagedata->bind_result($pagedata_innlegg_id, $pagedata_tråd_id, $pagedata_innlegg_innhold, $pagedata_innlegg_dato,
+    $stmt_pagedata->bind_result($pagedata_innlegg_id, $pagedata_traad_id, $pagedata_innlegg_innhold, $pagedata_innlegg_dato,
                                 $pagedata_ukat_id, $pagedata_bruker_id, $pagedata_bruker_navn);
 
     while ($stmt_pagedata->fetch()) {
@@ -138,26 +138,26 @@ _END;
     $stmt_pagedata->close();
     echo <<<_END
         </div>
-        <form name="form_svar" action="includes/endringer.php?ukat_id=$ukad_id&traad_id=$tråd_id" method="post">
+        <form name="form_svar" action="includes/endringer.php?ukat_id=$ukad_id&traad_id=$traad_id" method="post">
             <textarea name="innlegg_innhold" id="innlegg_innhold" placeholder="Har du noe spennende å bidra med..?"></textarea>
             <input type="submit" name="svar_btn" id="svar_btn" class="std_btn" value="Svar">
         </form>
 _END;
 }
 
-// Hvis vi skal lage ny tråd
+// Hvis vi skal lage ny traad
 if (isset($_GET['kat_id']) && isset($_GET['ukat_id']) && isset($_GET['nytraad'])) {
     $kat_id = $_GET['kat_id'];
     $ukad_id = $_GET['ukat_id'];
 
     echo <<<_END
     <form action="includes/endringer.php?kat_id=$kat_id&ukat_id=$ukad_id" method="post">
-        <input type="text" name="ny_traad_navn" id="ny_traad_navn" class="std_input mar-bot" placeholder="Trådnavn">
+        <input type="text" name="ny_traad_navn" id="ny_traad_navn" class="std_input mar-bot" placeholder="traadnavn">
         <textarea name="ny_traad_text" id="ny_traad_text" class="std_input" placeholder="Hva har du på hjertet...?"></textarea>
 
         <div id="traad_buttons" clasS="pull-right">
             <div class="traad_buttons_one pull-left mar-bot pad-right">
-                <input type="submit" name="ny_traad_submitt" id="ny_traad_submitt" value="Lag tråd">
+                <input type="submit" name="ny_traad_submitt" id="ny_traad_submitt" value="Lag traad">
             </div>
             <div class="traad_buttons_two pull-left mar-bot">
                 <input type="button" class="std_btn_avbryt" value="Avbryt">

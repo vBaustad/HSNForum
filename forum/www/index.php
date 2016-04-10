@@ -26,7 +26,7 @@ if ($stmt = $conn->prepare("SELECT kat_id, kat_navn FROM kategori")) {
                       <th>
                         <a class="th_text" href="kategori.php?kat_id=$sq_kat_id">$sql_kat_navn</a>
                       </th>
-                      <th class="rad-bredde text-center skjul-liten skjul-medium">Tråder</th>
+                      <th class="rad-bredde text-center skjul-liten skjul-medium">traader</th>
                       <th class="rad-bredde text-center skjul-liten skjul-medium">Innlegg</th>
                       <th class="rad-bredde-2x skjul-liten skjul-medium">Siste aktivitet</th>
                 </tr>
@@ -48,13 +48,13 @@ _END;
             // For HTML validering
             $ukat_navn = (str_replace(" ", "_", $sql_ukat_navn));
 
-            // Teller antall tråder
-            $anttråd = $conn->prepare("SELECT COUNT(tråd_id) as antTråder FROM tråd WHERE ukat_id = ?");
-            $anttråd->bind_param("i", $ukat_id);
-            $anttråd->execute();
-            $anttråd->store_result();
-            $anttråd->bind_result($sql_antTråder);
-            $anttråd->fetch();
+            // Teller antall traader
+            $anttraad = $conn->prepare("SELECT COUNT(traad_id) as anttraader FROM traad WHERE ukat_id = ?");
+            $anttraad->bind_param("i", $ukat_id);
+            $anttraad->execute();
+            $anttraad->store_result();
+            $anttraad->bind_result($sql_anttraader);
+            $anttraad->fetch();
 
             // Teller antall innlegg
             $antinnlegg = $conn->prepare("SELECT COUNT(innlegg_id) as antInnlegg FROM innlegg WHERE ukat_id = ?");
@@ -74,27 +74,27 @@ _END;
             $siste_innlegg->fetch();
             
             // TODO: bruk funksjon?
-            // Finner bruker som skrev siste tråd
-            $siste_traad = $conn->prepare("SELECT tråd_dato, bruker_navn, bruker_id FROM tråd WHERE ukat_id = ? ORDER BY tråd_dato DESC LIMIT 1");
+            // Finner bruker som skrev siste traad
+            $siste_traad = $conn->prepare("SELECT traad_dato, bruker_navn, bruker_id FROM traad WHERE ukat_id = ? ORDER BY traad_dato DESC LIMIT 1");
             $siste_traad->bind_param("i", $ukat_id);
             $siste_traad->execute();
             $siste_traad->store_result();
-            $siste_traad->bind_result($sql_traad_tråd_dato, $sql_traad_bruker_navn, $sql_traad_bruker_id);
+            $siste_traad->bind_result($sql_traad_traad_dato, $sql_traad_bruker_navn, $sql_traad_bruker_id);
             $siste_traad->fetch();
 
             // TODO: Peker på feil bruker.
-            if ($sql_innlegg_dato > $sql_traad_tråd_dato) {
+            if ($sql_innlegg_dato > $sql_traad_traad_dato) {
                 $siste_aktivitet = datoSjekk($sql_innlegg_dato);
                 $siste_innlegg_navn = $sql_bruker_navn;
                 $siste_innlegg_id = $sql_bruker_id;
             } else {
-                $siste_aktivitet = datoSjekk($sql_traad_tråd_dato);
+                $siste_aktivitet = datoSjekk($sql_traad_traad_dato);
                 $siste_innlegg_navn = $sql_traad_bruker_navn;
                 $siste_innlegg_id = $sql_traad_bruker_id;
             }
 
             if ($siste_innlegg->num_rows > 0) {
-                // Finner dato på siste tråd.. lag en spørring som sjekker BÅDE tråd og innlegg dato. Finn siste!!
+                // Finner dato på siste traad.. lag en spørring som sjekker BÅDE traad og innlegg dato. Finn siste!!
                 $dagensdato = date("y-d/m");
                 $meldingdato = date("y-d/m", strtotime($sql_innlegg_dato));
 
@@ -120,7 +120,7 @@ _END;
                 </h4></td>
 
                 <td class="text-center skjul-liten skjul-medium">
-                    <a href="kategori.php?kat_id=$sql_kat_id&ukat_id=$sql_ukat_id">$sql_antTråder</a>
+                    <a href="kategori.php?kat_id=$sql_kat_id&ukat_id=$sql_ukat_id">$sql_anttraader</a>
                 </td>
 
                 <td class="text-center skjul-liten skjul-medium">
@@ -145,7 +145,7 @@ _END;
         echo '</table>';
         $siste_traad->close();
         $antinnlegg->close();
-        $anttråd->close();
+        $anttraad->close();
         $stmt_ukat->close();
     }
 }
