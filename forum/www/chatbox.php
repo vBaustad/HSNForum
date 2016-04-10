@@ -21,91 +21,54 @@ require_once(__DIR__ . '/includes/db_connect.php');
         $("#meldinger").animate({
             scrollTop: $(document).height()
         }, "slow");
-        
     });
 </script>
 
 <?php
 
+echo '<div id="chatbox">';
+    echo '<div class="chatbox-container pull-left">';
+        echo '<div id="meldinger">';
+            echo '<span id="chat_laster" class="center">';
+                echo '<i class="fa fa-circle-o-notch fa-spin fa-3x"></i>';
+            echo '</span>';
+        echo '</div>';
+        echo '<div class="chatbox-bottom">';
+            echo '<div class="chat_footer">';
+                echo '<input type="button" id="chat_send" class="button-std pull-right" value="SEND" onclick="chat()" />';
+                echo '<span id="inline_fix"><input type="text" name="chat_msg_text" id="chat_msg_text" class="pull-left" placeholder="Si hei..."/></span>';
+            echo '</div>';
+        echo '</div>';
+echo '</div>';
 
-if(innlogget()){
+    if(innlogget()){
 
-echo <<<_EOL
-<div id="chatbox">
-    <div class="chatbox-container pull-left">
-        <div id="meldinger">
-            <span id="chat_laster" class="center">
-                <i class="fa fa-circle-o-notch fa-spin fa-3x"></i>
-            </span>
-        </div>
-        <div class="chatbox-bottom">
-            <div class="chat_footer">
-                <input type="button" id="chat_send" class="button-std pull-right" value="SEND" onclick="chat()" />
-                <span id="inline_fix"><input type="text" name="chat_msg_text" id="chat_msg_text" class="pull-left" placeholder="Si hei..."/></span>
-            </div>
-        </div>
-    </div>
-_EOL;
-
+    // TODO: Prepared statement goes here
     $bruker_id = $_SESSION['bruker_id'];
+    $sql = mysqli_query($conn, "SELECT bruker_fornavn, bruker_bilde, bruker_dato, bruker_sist_aktiv FROM bruker WHERE bruker_id = '$bruker_id'");
+    $row = mysqli_fetch_assoc($sql);
 
-    if($stmt = $conn->prepare("SELECT bruker_fornavn, bruker_bilde, bruker_dato, bruker_sist_aktiv FROM bruker WHERE bruker_id = ?")){
-        // Bind parameters
-        $stmt -> bind_param("i", $bruker_id);
-        $stmt -> execute();
-        $stmt -> store_result();
+    $bruker_siden = date("d-m-Y", strtotime($row['bruker_dato']));
 
-        //Bind results
-        $stmt -> bind_result($sql_bruker_fornavn, $sql_bruker_bilde, $sql_bruker_dato, $sql_bruker_sist_aktiv);
-
-        //fetch value
-        $stmt -> fetch();
-
-        //close statement
-        $stmt -> close();
-
-    }
-
-    $bruker_siden = date("d-m-Y", strtotime($sql_bruker_dato));
-    $ant_innlegg = tellInnlegg($conn, $bruker_id);
-    $ant_tråder = tellTraader($conn, $bruker_id);
+    $ant_innlegg = tellInnlegg($conn, "bruker", $bruker_id);
+    $ant_tråder = tellTraader($conn, "bruker", $bruker_id);
     $karma = $ant_innlegg + $ant_tråder;
-    $innlegg_idag = innleggIdag($conn, $bruker_id);
-    $aktive_brukere = aktiveBrukere($conn, $sql_bruker_sist_aktiv);
 
-echo <<<_EOL
-    <div class="textarea pull-right skjul-liten skjul-medium">
-        <h1>Velkommen $sql_bruker_fornavn !</h1>
-        <div class="clearfix"></div><img style="float:right" class="avatar_forum" src="img/profilbilder/1.jpg">
-            <p>Medlem siden: $bruker_siden </p>
-            <p>Antall innlegg i dag: $innlegg_idag </p>
-            <p>Antall aktive brukere: $aktive_brukere</p>
-            <p>Karma: $karma </p>
-        </div>
-    </div>
-<div class="clearfix seperator"></div>
-_EOL;
 
-}
-else {
-echo <<<_EOL
+    echo '<div class="textarea pull-right skjul-liten skjul-medium">';
+        echo '<h1>Velkommen ' . $row['bruker_fornavn'] . '!</h1>';
+        echo '<div class="clearfix"></div><img style="float:right" class="avatar_forum" src="img/profilbilder/1.jpg">';
+            echo '<p>Medlem siden: ' . $bruker_siden  . '</p>';
 
-<div id="velkomstBoks">
-   <h1>Velkommen til HSNForum!</h1>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc dolor purus, lobortis vitae turpis vitae, 
-            eleifend convallis orci. Sed ac lectus rutrum, suscipit nisi ut, iaculis ligula. Suspendisse pellentesque pharetra ipsum ultrices tincidunt.
-             Mauris pellentesque magna quis elit mattis, vel rutrum purus ullamcorper. Nulla ut urna a urna euismod dignissim. Phasellus at sapien vitae dui pharetra sollicitudin non sit amet nisi. 
-             Vestibulum a diam at odio rhoncus aliquam eget non sem. Fusce at quam eget ante dignissim laoreet. Donec eleifend convallis semper. Nunc nec risus ut sapien scelerisque malesuada. 
-             Praesent sollicitudin nisi et quam viverra, in venenatis ipsum tristique. Cras neque orci, bibendum eu nisl in, varius pellentesque mauris.
-            
-            Ut ut scelerisque purus. Aenean pretium velit sed tellus ullamcorper porttitor. Suspendisse varius neque eget semper bibendum. 
-            Cras consequat tortor at magna consectetur porttitor. Duis congue hendrerit nibh, sed maximus est placerat sed. Integer non tempus leo, ut venenatis quam. 
-            Curabitur eget quam sagittis, laoreet libero eu, cursus eros. Donec ullamcorper gravida dolor. Curabitur et ex placerat, tempus augue non, tristique purus. 
-            Ut molestie mauris nisi, ut molestie turpis commodo sit amet. Sed malesuada finibus nibh ut mattis. Nulla pretium feugiat leo, vitae dapibus sapien suscipit vitae.
-            Nulla elementum pulvinar diam ac suscipit. Nam ut velit nec lectus sodales suscipit placerat sit amet magna.
-        </p>
-</div>
-_EOL;
+            // TODO: not working
+            echo '<p>antall innlegg i dag: '. innleggIdag($conn, $bruker_id) . ' </p>';
+
+            // TODO: not working
+            echo '<p>antall aktive brukere: '. aktiveBrukere($conn, $row['bruker_sist_aktiv']) . ' </p>';
+            echo '<p>karma: ' . $karma . '</p>';
+        echo '</div>';
+    echo '</div>';
+echo '<div class="clearfix seperator"></div>';
 
 }
 
