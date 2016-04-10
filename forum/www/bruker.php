@@ -33,6 +33,7 @@ if (isset($_GET['bruker']) && $_GET['bruker'] > 0) {
         $header_text = $brukernavn;
     }
 
+    /* Kaller på metodene som henter bilde, teller innlegg, teller tråder, og sjekker dato brukeren regisrerte seg*/
     $profilbilde = hentBilde($conn, $bruker_id);
     $ant_innlegg = tellInnlegg($conn, $bruker_id);
     $ant_traader = tellTraader($conn, $bruker_id);
@@ -107,7 +108,8 @@ _END;
 _END;
 
 
-    /*Endre passord*/
+
+    /* HTML-kode for å endre passord, endre epost, og endre/legge til profilbilde. */
 echo <<<_END
         <div id="endre_pass_box">
             <h2>Endre passord</h2>
@@ -132,33 +134,23 @@ echo <<<_END
                 <input type="submit" name="nytt_pass_submitt" id="nytt_pass_submitt" value="BYTT PASSORD">
             </form>
         </div>
-_END;
+    
 
-    /*Endre epost*/
+        <div id="endre_epost_box">
+        <h2>Endre epost</h2>
 
-      echo '<div id="endre_epost_box">';
-      echo  '<h2>Endre epost</h2>';
-
-    /*Current password*/
-echo <<<_END
            <form id="endre_epost_form" name="endre_epost_form" method="post" action="includes/endringer.php" onsubmit="return sjekkSkjema()">
                 <div class="form_divider">
                     <input type="password" name="brukernavn_pass" id="brukernavn_pass" class="bruker_endre_input" placeholder="Ditt passord">
                     <span id="feilPass" class="black"></span>
             </div>
-_END;
 
-    /*Ny epostadresse*/
-echo <<<_END
             <div class="form_divider">
                 <input type="text" name="epost_reg" id="epost_reg" class="bruker_endre_input" placeholder="Ny epost adresse" 
                              onkeyup="sjekkEpost()" onblur="sjekkEpost(id)">
                 <span id="epostErr" class="position_inherit black"></span><span id="sjekkEpost" class="black"></span>
             </div>
-_END;
 
-                /*Gjenta epost adresse*/
-echo <<<_END
              <div class="form_divider">
                  <input type="text" name="epost_reg_two" id="epost_reg_two" class="bruker_endre_input" placeholder="Gjenta ny epost adresse" 
                               onblur="sjekkEpostTo(id)">
@@ -168,9 +160,7 @@ echo <<<_END
              <input type="submit" name="ny_epost_submitt" id="ny_epost_submitt" value="BYTT EPOST">
          </form>
      </div>
-_END;
-    /*Endre/legge til profilbilde*/
-echo <<<_END
+
         
         <div id="endre_bilde_box">
             <h2>Endre/legge til profilbilde</h2>
