@@ -130,28 +130,48 @@ function harLikt ($conn, $type, $innlegg_id, $tråd_id, $bruker_id) {
 
 }
 
-function innleggIdag($conn, $bruker_id){
+function aktivitetIdag($conn, $type, $bruker_id){
 
     $dato = DATE('Y-m-d') . '%';
 
-    if($stmt = $conn->prepare("SELECT COUNT(*) AS innleggIdag FROM innlegg WHERE bruker_id = ? AND innlegg_dato LIKE ?")) {
+    if ($type == "traad") {
+        if ($stmt = $conn->prepare("SELECT COUNT(*) AS aktivitetIdag FROM innlegg WHERE bruker_id = ? AND innlegg_dato LIKE ? ")) {
 
-        $stmt->bind_param("ss", $bruker_id, $dato);
-        $stmt->execute();
-        $stmt->store_result();
+            $stmt->bind_param("ss", $bruker_id, $dato);
+            $stmt->execute();
+            $stmt->store_result();
 
-        //Bind results
-        $stmt->bind_result($sql_innleggIdag);
+            //Bind results
+            $stmt->bind_result($sql_aktivitetIdag);
 
-        //fetch value
-        $stmt->fetch();
+            //fetch value
+            $stmt->fetch();
 
-        //close statement
-        $stmt->close();
+            //close statement
+            $stmt->close();
 
 
-        return $sql_innleggIdag;
+            return $sql_aktivitetIdag;
+        }
+    } elseif ($type == "innlegg") {
+        if ($stmt = $conn->prepare("SELECT COUNT(*) AS aktivitetIdag FROM tråd WHERE bruker_id = ? AND tråd_dato LIKE ?")) {
 
+            $stmt->bind_param("ss", $bruker_id, $dato);
+            $stmt->execute();
+            $stmt->store_result();
+
+            //Bind results
+            $stmt->bind_result($sql_aktivitetIdag);
+
+            //fetch value
+            $stmt->fetch();
+
+            //close statement
+            $stmt->close();
+
+
+            return $sql_aktivitetIdag;
+        }
     }
 }
 

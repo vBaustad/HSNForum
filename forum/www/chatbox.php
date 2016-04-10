@@ -69,15 +69,18 @@ _EOL;
     $ant_innlegg = tellInnlegg($conn, "bruker", $bruker_id);
     $ant_tråder = tellTraader($conn, "bruker", $bruker_id);
     $karma = $ant_innlegg + $ant_tråder;
-    $innlegg_idag = innleggIdag($conn, $bruker_id);
+    $traad_idag = aktivitetIdag($conn, "traad" ,$bruker_id);
+    $innlegg_idag = aktivitetIdag($conn, "innlegg" ,$bruker_id);
+    $aktivitet_idag = $traad_idag + $innlegg_idag;
     $aktive_brukere = aktiveBrukere($conn, $sql_bruker_sist_aktiv);
+    $profilbilde = hentBilde($conn, $bruker_id);
 
 echo <<<_EOL
     <div class="textarea pull-right skjul-liten skjul-medium">
         <h1>Velkommen $sql_bruker_fornavn !</h1>
-        <div class="clearfix"></div><img style="float:right" class="avatar_forum" src="img/profilbilder/1.jpg">
+        <div class="clearfix"></div><img style="float:right" class="avatar_forum" src="img/profilbilder/$profilbilde">
             <p>Medlem siden: $bruker_siden </p>
-            <p>Antall innlegg i dag: $innlegg_idag </p>
+            <p>Antall innlegg i dag: $aktivitet_idag </p>
             <p>Antall aktive brukere: $aktive_brukere</p>
             <p>Karma: $karma </p>
         </div>
