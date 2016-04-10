@@ -50,8 +50,8 @@ echo '</div>';
 
     $bruker_siden = date("d-m-Y", strtotime($row['bruker_dato']));
 
-    $ant_innlegg = tellInnlegg($conn, $bruker_id);
-    $ant_tråder = tellTraader($conn, $bruker_id);
+    $ant_innlegg = tellInnlegg($conn, "bruker", $bruker_id);
+    $ant_tråder = tellTraader($conn, "bruker", $bruker_id);
     $karma = $ant_innlegg + $ant_tråder;
 
 

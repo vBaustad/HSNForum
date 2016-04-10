@@ -2,186 +2,189 @@
 require_once 'includes/db_connect.php';
 require_once 'includes/header.php';
 require_once 'chatbox.php';
-require_once 'includes/boxes.php';
 
+if ($stmt_ukat = $conn->prepare("SELECT kat_id, ukat_id, ukat_navn, ukat_beskrivelse, ukat_img, ukat_img_farge FROM underkategori WHERE `kat_id` = ?")) {
 
-$kat_id = $_GET['kat_id'];
-
-$ukat = "SELECT kat_id, ukat_id, ukat_navn, ukat_beskrivelse, ukat_img, ukat_img_farge 
-                              FROM underkategori WHERE `kat_id` = ? ";
-$stmt_ukat = $conn->prepare($ukat);
-$stmt_ukat->bind_param("i", $kat_id);
-$stmt_ukat->execute();
-$ukat_res = $stmt_ukat->get_result();
-
-$finnkatnavn = "SELECT kat_navn FROM kategori WHERE kategori.kat_id = ?";
-$stmt = $conn->prepare($finnkatnavn);
-$stmt->bind_param("i", $kat_id);
-$stmt->execute();
-$res = $stmt->get_result();
-$katnavn = $res->fetch_assoc();
-$stmt->close();
-
-
-/* Viser alle underkategorier */
-if (isset($_GET['kat_id']) && !isset($_GET['ukat_id'])) {
-
-    if (innlogget() == true && bruker_level() == "admin") {
-        echo '<a class="pull-right button-std mar-bot" id="ny_ukat_btn" href="#"><i class="fa fa-plus-square-o"></i> Ny underkategori</a>';
-        echo '<a class="pull-right button-std mar-bot mar-right" id="slett_kat_btn" href="#"><i class="fa fa-minus-square-o"></i> Slett kategori</a>';
+    if (isset($_GET['kat_id'])) {
+        $kat_id = $_GET['kat_id'];
+    } else {
+        die();
     }
 
-    if ($ukat_res) {
+    $stmt_ukat->bind_param("i", $kat_id);
+    $stmt_ukat->execute();
+    $stmt_ukat->store_result();
+    $stmt_ukat->bind_result($sql_ukat_kat_id, $sql_ukat_ukat_id, $sql_ukat_ukat_navn, $sql_ukat_ukat_beskrivelse, $sql_ukat_ukat_img, $sql_ukat_ukat_img_farge);
 
-        if ($ukat_res->num_rows > 0) {
+    $finnkatnavn = $conn->prepare("SELECT kat_navn FROM kategori WHERE kat_id = ?");
+    $finnkatnavn->bind_param("i", $kat_id);
+    $finnkatnavn->execute();
+    $finnkatnavn->store_result();
+    $finnkatnavn->bind_result($sql_kat_navn);
+    $finnkatnavn->fetch();
+
+    echo $sql_kat_navn;
+    /* Viser alle underkategorier*/
+    if (isset($_GET['kat_id']) && !isset($_GET['ukat_id'])) {
+
+        if (innlogget() == true && bruker_level() == "admin") {
+            echo '<a class="pull-right button-std mar-bot" id="ny_ukat_btn" href="#"><i class="fa fa-plus-square-o"></i> Ny underkategori</a>';
+            echo '<a class="pull-right button-std mar-bot mar-right" id="slett_kat_btn" href="#"><i class="fa fa-minus-square-o"></i> Slett kategori</a>';
+        }
+
+        if ($stmt_ukat->num_rows > 0) {
 
             echo '<table class="main-table table forum table-striped">';
                 echo '<thead>';
                     echo '<tr>';
                         echo '<th class="rad-bredde"></th>';
-                        echo '<th class="th_text">' . $katnavn['kat_navn'] . '</th>';
-                        echo '<th class="rad-bredde text-center skjul-liten skjul-medium">Emner</th>';
+                        echo '<th class="th_text">' . $sql_kat_navn . '</th>';
+                        echo '<th class="rad-bredde text-center skjul-liten skjul-medium">Tråder</th>';
                         echo '<th class="rad-bredde text-center skjul-liten skjul-medium">Innlegg</th>';
                         echo '<th class="rad-bredde-2x skjul-liten skjul-medium">Siste aktivitet</th>';
                     echo '</tr>';
                 echo '</thead>';
                 echo '<tbody>';
 
-            while ($ukat = $ukat_res->fetch_assoc()) {
-                $ukat_id = $ukat['ukat_id'];
+            while ($stmt_ukat->fetch()) {
+                $ukat_id = $sql_ukat_ukat_id;
                 // For HTML validering
-                $ukat_navn = (str_replace(" ", "_", $ukat['ukat_navn']));
+                $ukat_navn = (str_replace(" ", "_", $sql_ukat_ukat_navn));
 
-                $antposts = "SELECT COUNT(tråd_id) as antPosts FROM tråd WHERE ukat_id = ?";
-                $stmt = $conn->prepare($antposts);
-                $stmt->bind_param("i", $ukat_id);
-                $stmt->execute();
-                $antposts_res = $stmt->get_result();
-                $antposts_result = $res->fetch_assoc();
-                $stmt->close();
+                
+                // Teller antall tråder
+                $anttråder = tellTraader($conn, "ukat", $ukat_id);
 
-                $siste_innlegg = "SELECT tråd_dato, bruker_navn, bruker_id FROM tråd 
-                                                      WHERE ukat_id = ? ORDER BY tråd_dato DESC LIMIT 1";
-                $stmt = $conn->prepare($siste_innlegg);
-                $stmt->bind_param("i", $ukat_id);
-                $stmt->execute();
-                $siste_innlegg_res = $stmt->get_result();
-                $siste_innlegg_row = $siste_innlegg_res->fetch_assoc();
+                // Teller antall innlegg
+                $antInnlegg = tellInnlegg($conn, "ukat", $ukat_id);
 
-                        echo '<tr>';
-                        echo '<td class="center"><i class="'. $ukat['ukat_img'] . ' '
-                                                            . $ukat['ukat_img_farge'] . '"></i></span></td>';
+                // Finner bruker som skrev siste tråd
+                $sisteTråd = sistAktivUkat($conn, "tråd", $ukat_id);
 
-                        echo '<td><h4><a href="kategori.php?kat_id='
-                                                            . $ukat['kat_id']
-                                                            . '&ukat_id=' . $ukat['ukat_id']
-                                                            . '&ukat_navn=' . $ukat_navn . '">'
-                                                            . $ukat['ukat_navn'] . '</a><br><small>'
-                                                            . $ukat['ukat_beskrivelse'] . '</small></h4></td>';
+                // Finner bruker som skreve siste innlegg
+                $sisteInnlegg = sistAktivUkat($conn, "innlegg", $ukat_id);
 
-                        echo '<td class="text-center skjul-liten skjul-medium"><a href="#">1 234</a></td>';
+                if ($sisteInnlegg[0] > $sisteTråd[0]) {
+                    $siste_aktivitet = datoSjekk($sisteInnlegg[0]);
+                    $siste_innlegg_navn = $sisteInnlegg[1];
+                    $siste_innlegg_id = $sisteInnlegg[2];
+                } else {
+                    $siste_aktivitet = datoSjekk($sisteTråd[0]);
+                    $siste_innlegg_navn = $sisteTråd[1];
+                    $siste_innlegg_id = $sisteTråd[2];
+                }
 
-                        echo '<td class="text-center skjul-liten skjul-medium"><a href="#">' . $antposts_result['antPosts'] . '</a></td>';
-
-                        echo '<td class="skjul-liten skjul-medium">';
-
-                        if ($antposts_result['antPosts'] > 0 || $siste_innlegg_res->num_rows > 0) {
-                            echo 'av <a href="bruker.php?bruker='
-                                                            . $siste_innlegg_row['bruker_id'] . '">'
-                                                            . $siste_innlegg_row['bruker_navn']
-                                                            . '</a><br><small><i class="fa fa-clock-o"></i> 1 dag siden</small>';
-                        } else {
-                            echo '<small>ingen aktivitet enda</small>';
-                        }
-                        echo '</td>';
-                    echo '</tr>';
+                $antTråder = tellInnlegg($conn, "ukat", $ukat_id);
+                echo <<<_END
+                    <tr>
+                        <td class="center"><i class="$sql_ukat_ukat_img $sql_ukat_ukat_img_farge"></i></span></td>
+                        <td><h4><a href="kategori.php?kat_id=$sql_ukat_kat_id&ukat_id=$sql_ukat_kat_id&ukat_navn=$ukat_navn">
+                                                    $sql_ukat_ukat_navn</a><br><small>$sql_ukat_ukat_beskrivelse</small></h4></td>
+                        <td class="text-center skjul-liten skjul-medium"><a href="#">$anttråder</a></td>
+                        <td class="text-center skjul-liten skjul-medium"><a href="#">$antInnlegg</a></td>
+                        <td class="skjul-liten skjul-medium">
+_END;
+                if ($anttråder > 0 || $antInnlegg > 0) {
+                    echo <<<_END
+                            av <a href="bruker.php?bruker=$siste_innlegg_id">$siste_innlegg_navn</a><br><small><i class="fa fa-clock-o"></i> $siste_aktivitet</small>
+_END;
+                } else {
+                    echo '<small>ingen aktivitet enda</small>';
+                }
+                echo '</td>';
+                echo '</tr>';
             }
                 echo ' </tbody>';
             echo '</table>';
         }
     }
-}
+    
+    /* Viser alle tråder i en underkateori */
+    if (isset($_GET['kat_id']) && isset($_GET['ukat_id'])) {
+        $kat_id = $_GET['kat_id'];
+        $ukat_id = $_GET['ukat_id'];
+        $ukat_navn = (str_replace("_", " ", $_GET['ukat_navn']));
 
-/* Viser alle tråder i en underkateori */
-if (isset($_GET['kat_id']) && isset($_GET['ukat_id'])) {
-    $kat_id = $_GET['kat_id'];
-    $ukat_id = $_GET['ukat_id'];
-    $ukat_navn = (str_replace("_", " ", $_GET['ukat_navn']));
-
-    $sql = "SELECT * FROM tråd WHERE `ukat_id` = ? ";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $ukat_id);
-    $stmt->execute();
-    $res = $stmt->get_result();
-
-    if (innlogget() && bruker_level() == "admin") {
-        echo '<a class="pull-right button-std mar-bot" id="ny_traad_btn" href="traad.php?kat_id='
-                                . $kat_id . '&ukat_id='
-                                . $ukat_id . '&nytraad"><i class="fa fa-plus-square-o"></i> Ny tråd</a>';
-        echo '<a class="pull-right button-std mar-bot mar-right" id="slett_ukat_btn" href="#">
-                    <i class="fa fa-minus-square-o"></i> Slett underkategori
-              </a>';
-    }
-    elseif (innlogget() && bruker_level() == "regular") {
-        echo '<a class="pull-right button-std mar-bot" id="ny_traad_btn" href="#"><i class="fa fa-plus-square-o"></i> Ny tråd</a>';
-    }
-
-    echo $ukat_navn; // TODO: Erstatt denne med noe litt mer lekkert å se på :p
-
-    if ($res->num_rows > 0) {
-        echo '<table class="main-table table forum table-striped">';
-            echo '<thead>';
-                echo '<tr>';
-                    echo '<th class="rad-bredde"></th>';
-                    echo '<th><h2>Tråd navn</h2></th>';
-                    echo '<th class="rad-bredde-2x text-center skjul-liten skjul-medium">Antal svar</th>';
-                    echo '<th class="rad-bredde-2x skjul-liten skjul-medium">Siste svar</th>';
-                echo '</tr>';
-            echo '</thead>';
-            echo '<tbody>';
-
-        while ($row = $res->fetch_assoc()) {
-            // Teller antall innlegg og siste svar
-            $sql = "SELECT COUNT(innlegg_id) AS antInnlegg, max(innlegg_dato) AS sisteInnlegg,
-                        ( SELECT bruker_id WHERE innlegg_dato = max(innlegg_dato) ) as bruker_id,
-                        ( SELECT bruker_navn WHERE innlegg_dato = max(innlegg_dato) ) as bruker_navn
-                        FROM innlegg WHERE tråd_id = ?";
-            
-            $stmt = $conn->prepare($sql);
-            $stmt->bind_param("i", $row['tråd_id']);
-            $stmt->execute();
-            $res_antinnlegg = $stmt->get_result();
-            $row_antinnlegg = $res_antinnlegg->fetch_assoc();
-            $stmt->close();
-
-            echo '<tr>';
-            echo '<td></td>';
-            echo '<td><h4><a href="traad.php?ukat_id=' . $ukat_id
-                                         . '&traad_id=' . $row['tråd_id'] . '">'
-                                            . $row['tråd_tittel']
-                                            . '</a><br><small>
-                          <a href="#">'
-                          . $row['bruker_navn'] . '</a> @ '
-                          . $row['tråd_dato'] . '</small></h4></td>';
-            echo '<td class="center">' . $row_antinnlegg['antInnlegg'] . '</td>'; /*Ant Svar*/
-            echo '<td><h4 class="siste_svar">';
-
-                if ($row_antinnlegg['sisteInnlegg'] != NULL) {
-                    echo '<a href="bruker.php?bruker='
-                                                    . $row_antinnlegg['bruker_id'] . '">'
-                                                    . $row_antinnlegg['bruker_navn'] . '</a></h4>
-                    <small><i class="fa fa-clock-o"></i> ' . datoSjekk($row_antinnlegg['sisteInnlegg']) . '</small>';
-                } else {
-                    echo 'ingen svar enda';
-                }
-                echo '</td>';
-            echo '</tr>';
+        if (innlogget() && bruker_level() == "admin") {
+            echo <<<_END
+            <a class="pull-right button-std mar-bot" id="ny_traad_btn" href="traad.php?kat_id=$kat_id&ukat_id=$ukat_id&nytraad">
+                <i class="fa fa-plus-square-o"></i> Ny tråd
+            </a>
+            <a class="pull-right button-std mar-bot mar-right" id="slett_ukat_btn" href="#">
+                <i class="fa fa-minus-square-o"></i> Slett underkategori
+            </a>
+_END;
         }
-            echo '</tbody>';
-        echo '</table>';
-    }
-}
+        elseif (innlogget() && bruker_level() == "regular") {
+            echo <<<_END
+            <a class="pull-right button-std mar-bot" id="ny_traad_btn" href="traad.php?kat_id=$kat_id&ukat_id=$ukat_id&nytraad">
+                <i class="fa fa-plus-square-o"></i> Ny tråd
+            </a>
+_END;
+        }
 
+        echo $ukat_navn; // TODO: Erstatt denne med noe litt mer lekkert å se på :p
+
+        if ($stmt_tråd = $conn->prepare("SELECT tråd_id, ukat_id, tråd_tittel, tråd_dato, bruker_navn, bruker_id FROM tråd WHERE `ukat_id` = ?")) {
+            $stmt_tråd->bind_param("i", $ukat_id);
+            $stmt_tråd->execute();
+            $stmt_tråd->store_result();
+            $stmt_tråd->bind_result($sql_tråd_id, $sql_ukat_id, $sql_tråd_tittel, $sql_tråd_dato, $sql_bruker_navn, $sql_bruker_id);
+
+            echo <<<_END
+                <table class="main-table table forum table-striped">
+                    <thead>
+                        <tr>
+                            <th class="rad-bredde"></th>
+                            <th><h2>Tråd navn</h2></th>
+                            <th class="rad-bredde-2x text-center skjul-liten skjul-medium">Antal svar</th>
+                            <th class="rad-bredde-2x skjul-liten skjul-medium">Siste svar</th>
+                        </tr>
+                    </thead>
+                <tbody>
+_END;
+            while ($stmt_tråd->fetch()) {
+                // Teller antall innlegg og siste svar
+                $sql = "SELECT COUNT(innlegg_id) AS antInnlegg, max(innlegg_dato) AS sisteInnlegg,
+                            ( SELECT bruker_id WHERE innlegg_dato = max(innlegg_dato) ) as bruker_id,
+                            ( SELECT bruker_navn WHERE innlegg_dato = max(innlegg_dato) ) as bruker_navn
+                            FROM innlegg WHERE tråd_id = ?";
+
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param("i", $sql_tråd_id);
+                $stmt->execute();
+                $stmt->store_result();
+                $stmt->bind_result($sql_antInnlegg, $sql_sisteInnlegg, $sql_bruker_id, $sql_bruker_navn);
+                $stmt->fetch();
+                $stmt->close();
+
+                echo <<<_END
+                    <tr>
+                        <td></td>
+                        <td><h4><a href="traad.php?ukat_id=$ukat_id&traad_id=$sql_tråd_id">
+                                    $sql_tråd_tittel
+                                </a><br>
+                                <small><a href="#">$sql_bruker_navn</a>
+                                     @ $sql_tråd_dato
+                                </small></h4></td>
+                        <td class="center">$sql_antInnlegg</td>
+                        <td><h4 class="siste_svar">
+_END;
+                    if ($sql_sisteInnlegg != NULL) {
+                        echo '<a href="bruker.php?bruker='
+                                                        . $sql_bruker_id . '">'
+                                                        . $sql_bruker_navn . '</a></h4>
+                        <small><i class="fa fa-clock-o"></i> ' . datoSjekk($sql_sisteInnlegg) . '</small>';
+                    } else {
+                        echo 'ingen svar enda';
+                    }
+                    echo '</td></tr>';
+            }
+                echo '</tbody></table>';
+        }
+    }
+    // $finnkatnavn->close();
+}
 require_once 'includes/footer.php';
 ?>
 
@@ -198,7 +201,7 @@ require_once 'includes/footer.php';
     <div class="popup-container center">
         <?php echo '<form id="slett_kat_form" name="slett_kat_form" method="post" action="includes/endringer.php?slett_id=' . $kat_id .'">' ?>
         <div class="popup-divider">
-            <?php echo '<p class="white">Er du vikker på at du vil slette kategorien ' . $katnavn['kat_navn'] .  '?</p>' ?>
+            <?php echo '<p class="white">Er du vikker på at du vil slette kategorien ' . $sql_kat_navn .  '?</p>' ?>
         </div>
         <button type="submit" name="slett_kat_btn" class="button-lukk">Slett den</button>
         </form>

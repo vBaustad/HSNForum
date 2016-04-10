@@ -250,5 +250,7 @@ function sjekkSkjema() {
     }
 
     // Hvis alle 6 felter er riktige, send skjema!
-    return ok == 6;
+    if (ok == 6) {
+        return true;
+    }
 }

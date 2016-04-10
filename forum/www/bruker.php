@@ -67,7 +67,7 @@ if (isset($_GET['bruker']) && $_GET['bruker'] > 0) {
             if (innlogget() && $_GET['bruker'] == $_SESSION['bruker_id']) {
                 echo '<div>Epost: <p class="bruker_info_format">' . $row['bruker_mail'] . '</p></div>';
             }
-            echo '<div>Antal innlegg: <p class="bruker_info_format">' . tellInnlegg($conn, $bruker_id) . '</p></div>';
+            echo '<div>Antal innlegg: <p class="bruker_info_format">' . tellInnlegg($conn, "bruker", $bruker_id) . '</p></div>';
             echo '<div>Antal tråder: <p class="bruker_info_format">' . tellTraader($conn, $bruker_id) . '</p></div>';
             echo '<div>Medlem siden: <p class="bruker_info_format">' . datoSjekk($row['bruker_dato'])  . '</p></div>';
         echo '</div>';
