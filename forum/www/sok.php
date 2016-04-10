@@ -47,35 +47,35 @@ _END;
         }
         echo '</tbody></table><br>';
 
-        // Finner tråder
-        $sql = "SELECT ukat_id, tråd_id, tråd_tittel FROM tråd WHERE tråd_tittel LIKE ?";
-        $stmt_tråd = $conn->prepare($sql);
-        $stmt_tråd->bind_param("s", $soktekst);
-        $stmt_tråd->execute();
-        $stmt_tråd->bind_result($ukat_id, $tråd_id, $tråd_tittel);
-        $stmt_tråd->store_result();
+        // Finner traader
+        $sql = "SELECT ukat_id, traad_id, traad_tittel FROM traad WHERE traad_tittel LIKE ?";
+        $stmt_traad = $conn->prepare($sql);
+        $stmt_traad->bind_param("s", $soktekst);
+        $stmt_traad->execute();
+        $stmt_traad->bind_result($ukat_id, $traad_id, $traad_tittel);
+        $stmt_traad->store_result();
 
         echo <<<_END
             <table class="table table_sok table-striped">
                 <thead>
                     <tr>
                     <th class="rad-bredde"></th>
-                    <th><h2>Tråder</h2></th>
+                    <th><h2>traader</h2></th>
                     </tr>
                 </thead>
                 <tbody>
 _END;
-        while ($stmt_tråd->fetch()) {
+        while ($stmt_traad->fetch()) {
             echo <<<_END
                 <tr>
                     <td></td>
                     <td>
-                        <h4><a href="traad.php?ukat_id=$ukat_id&tråd_id=$tråd_id">$tråd_tittel</a><br></h4>
+                        <h4><a href="traad.php?ukat_id=$ukat_id&traad_id=$traad_id">$traad_tittel</a><br></h4>
                     </td>
                 </tr>
 _END;
         }
-        if ($stmt_tråd->num_rows < 1) {
+        if ($stmt_traad->num_rows < 1) {
             echo <<<_END
                 <tr>
                     <td></td>
@@ -125,7 +125,7 @@ _END;
         }
         echo '</tbody></table>';
         $stmt_bruker->close();
-        $stmt_tråd->close();
+        $stmt_traad->close();
         $stmt_ukat->close();
     }
 
@@ -172,37 +172,37 @@ _END;
         $stmt_bruker->close();
     }
 
-    // Finner tråder
+    // Finner traader
     if (isset($_POST['sok_select']) && $_POST['sok_select'] == 'traader') {
-        // Finner tråder
-        $sql = "SELECT ukat_id, tråd_id, tråd_tittel FROM tråd WHERE tråd_tittel LIKE ?";
-        $stmt_tråd = $conn->prepare($sql);
-        $stmt_tråd->bind_param("s", $soktekst);
-        $stmt_tråd->execute();
-        $stmt_tråd->bind_result($ukat_id, $tråd_id, $tråd_tittel);
-        $stmt_tråd->store_result();
+        // Finner traader
+        $sql = "SELECT ukat_id, traad_id, traad_tittel FROM traad WHERE traad_tittel LIKE ?";
+        $stmt_traad = $conn->prepare($sql);
+        $stmt_traad->bind_param("s", $soktekst);
+        $stmt_traad->execute();
+        $stmt_traad->bind_result($ukat_id, $traad_id, $traad_tittel);
+        $stmt_traad->store_result();
 
         echo <<<_END
             <table class="table table_sok table-striped">
                 <thead>
                     <tr>
                     <th class="rad-bredde"></th>
-                    <th><h2>Tråder</h2></th>
+                    <th><h2>traader</h2></th>
                     </tr>
                 </thead>
                 <tbody>
 _END;
-        while ($stmt_tråd->fetch()) {
+        while ($stmt_traad->fetch()) {
             echo <<<_END
                 <tr>
                     <td></td>
                     <td>
-                        <h4><a href="traad.php?ukat_id=$ukat_id&tråd_id=$tråd_id">$tråd_tittel</a><br></h4>
+                        <h4><a href="traad.php?ukat_id=$ukat_id&traad_id=$traad_id">$traad_tittel</a><br></h4>
                     </td>
                 </tr>
 _END;
         }
-        if ($stmt_tråd->num_rows < 1) {
+        if ($stmt_traad->num_rows < 1) {
             echo <<<_END
                 <tr>
                     <td></td>
@@ -213,7 +213,7 @@ _END;
 _END;
         }
         echo '</tbody></table>';
-        $stmt_tråd->close();
+        $stmt_traad->close();
     }
 
     // Finner underkategorier

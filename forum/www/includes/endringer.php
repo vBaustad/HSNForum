@@ -197,13 +197,13 @@ if (isset($_POST['nytt_bilde_submitt']) && innlogget()) {
     }
 }
 
-/* NY TRÅD */
+/* NY traad */
 if (isset($_POST['ny_traad_submitt']) && innlogget()) {
     $ukat_id = $_GET['ukat_id'];
     $traad_tittel = $_POST['ny_traad_navn'];
     $traad_innhold = $_POST['ny_traad_text'];
 
-    $sql = "INSERT INTO tråd(ukat_id, tråd_tittel, tråd_innhold, tråd_dato, bruker_navn, bruker_id) 
+    $sql = "INSERT INTO traad(ukat_id, traad_tittel, traad_innhold, traad_dato, bruker_navn, bruker_id) 
                    VALUES (?, ?, ?, NOW(), ?, ?)";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("isssi", $ukat_id, $traad_tittel, $traad_innhold, $_SESSION['bruker_navn'], $_SESSION['bruker_id']);
@@ -217,21 +217,21 @@ if (isset($_POST['ny_traad_submitt']) && innlogget()) {
 /* NYTT INNLEGG */
 if (isset($_POST['svar_btn']) && innlogget()) {
     $innlegg_innhold = $_POST['innlegg_innhold'];
-    $tråd_id = $_GET['traad_id'];
+    $traad_id = $_GET['traad_id'];
     $ukat_id = $_GET['ukat_id'];
     $bruker_id = $_SESSION['bruker_id'];
     $bruker_navn = $_SESSION['bruker_navn'];
 
-    $sql = "INSERT INTO innlegg(innlegg_innhold, innlegg_dato, tråd_id, ukat_id, bruker_id, bruker_navn) VALUES(?, NOW(), ?, ?, ?, ?)";
+    $sql = "INSERT INTO innlegg(innlegg_innhold, innlegg_dato, traad_id, ukat_id, bruker_id, bruker_navn) VALUES(?, NOW(), ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("siiis", $innlegg_innhold, $tråd_id, $ukat_id, $bruker_id, $bruker_navn);
+    $stmt->bind_param("siiis", $innlegg_innhold, $traad_id, $ukat_id, $bruker_id, $bruker_navn);
     $stmt->execute();
     $stmt->close();
 
-    header("Location: ../traad.php?ukat_id=$ukat_id&traad_id=$tråd_id");
+    header("Location: ../traad.php?ukat_id=$ukat_id&traad_id=$traad_id");
 }
 
-/* NY LIKE, TRÅD */
+/* NY LIKE, traad */
 if (isset($_GET['traad_id']) && isset($_GET['bruker_id']) && isset($_GET['bruker_navn']) && innlogget()) {
     echo likTraad($conn, $_GET['traad_id'], $_GET['bruker_id'], $_GET['bruker_navn']);
 }

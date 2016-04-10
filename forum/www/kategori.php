@@ -53,38 +53,38 @@ if ($stmt_ukat = $conn->prepare("SELECT kat_id, ukat_id, ukat_navn, ukat_beskriv
 
                 
                 // Teller antall tråder
-                $anttråder = tellTraader($conn, "ukat", $ukat_id);
+                $anttraader = tellTraader($conn, "ukat", $ukat_id);
 
                 // Teller antall innlegg
                 $antInnlegg = tellInnlegg($conn, "ukat", $ukat_id);
 
-                // Finner bruker som skrev siste tråd
-                $sisteTråd = sistAktivUkat($conn, "tråd", $ukat_id);
+                // Finner bruker som skrev siste traad
+                $sistetraad = sistAktivUkat($conn, "traad", $ukat_id);
 
                 // Finner bruker som skreve siste innlegg
                 $sisteInnlegg = sistAktivUkat($conn, "innlegg", $ukat_id);
 
-                if ($sisteInnlegg[0] > $sisteTråd[0]) {
+                if ($sisteInnlegg[0] > $sistetraad[0]) {
                     $siste_aktivitet = datoSjekk($sisteInnlegg[0]);
                     $siste_innlegg_navn = $sisteInnlegg[1];
                     $siste_innlegg_id = $sisteInnlegg[2];
                 } else {
-                    $siste_aktivitet = datoSjekk($sisteTråd[0]);
-                    $siste_innlegg_navn = $sisteTråd[1];
-                    $siste_innlegg_id = $sisteTråd[2];
+                    $siste_aktivitet = datoSjekk($sistetraad[0]);
+                    $siste_innlegg_navn = $sistetraad[1];
+                    $siste_innlegg_id = $sistetraad[2];
                 }
 
-                $antTråder = tellInnlegg($conn, "ukat", $ukat_id);
+                $anttraader = tellInnlegg($conn, "ukat", $ukat_id);
                 echo <<<_END
                     <tr>
                         <td class="center"><i class="$sql_ukat_ukat_img $sql_ukat_ukat_img_farge"></i></span></td>
                         <td><h4><a href="kategori.php?kat_id=$sql_ukat_kat_id&ukat_id=$sql_ukat_kat_id&ukat_navn=$ukat_navn">
                                                     $sql_ukat_ukat_navn</a><br><small>$sql_ukat_ukat_beskrivelse</small></h4></td>
-                        <td class="text-center skjul-liten skjul-medium"><a href="#">$anttråder</a></td>
+                        <td class="text-center skjul-liten skjul-medium"><a href="#">$anttraader</a></td>
                         <td class="text-center skjul-liten skjul-medium"><a href="#">$antInnlegg</a></td>
                         <td class="skjul-liten skjul-medium">
 _END;
-                if ($anttråder > 0 || $antInnlegg > 0) {
+                if ($anttraader > 0 || $antInnlegg > 0) {
                     echo <<<_END
                             av <a href="bruker.php?bruker=$siste_innlegg_id">$siste_innlegg_navn</a><br><small><i class="fa fa-clock-o"></i> $siste_aktivitet</small>
 _END;
@@ -99,7 +99,7 @@ _END;
         }
     }
     
-    /* Viser alle tråder i en underkateori */
+    /* Viser alle traader i en underkateori */
     if (isset($_GET['kat_id']) && isset($_GET['ukat_id'])) {
         $kat_id = $_GET['kat_id'];
         $ukat_id = $_GET['ukat_id'];
@@ -108,7 +108,7 @@ _END;
         if (innlogget() && bruker_level() == "admin") {
             echo <<<_END
             <a class="pull-right button-std mar-bot" id="ny_traad_btn" href="traad.php?kat_id=$kat_id&ukat_id=$ukat_id&nytraad">
-                <i class="fa fa-plus-square-o"></i> Ny tråd
+                <i class="fa fa-plus-square-o"></i> Ny traad
             </a>
             <a class="pull-right button-std mar-bot mar-right" id="slett_ukat_btn" href="#">
                 <i class="fa fa-minus-square-o"></i> Slett underkategori
@@ -118,40 +118,40 @@ _END;
         elseif (innlogget() && bruker_level() == "regular") {
             echo <<<_END
             <a class="pull-right button-std mar-bot" id="ny_traad_btn" href="traad.php?kat_id=$kat_id&ukat_id=$ukat_id&nytraad">
-                <i class="fa fa-plus-square-o"></i> Ny tråd
+                <i class="fa fa-plus-square-o"></i> Ny traad
             </a>
 _END;
         }
 
         echo $ukat_navn; // TODO: Erstatt denne med noe litt mer lekkert å se på :p
 
-        if ($stmt_tråd = $conn->prepare("SELECT tråd_id, ukat_id, tråd_tittel, tråd_dato, bruker_navn, bruker_id FROM tråd WHERE `ukat_id` = ?")) {
-            $stmt_tråd->bind_param("i", $ukat_id);
-            $stmt_tråd->execute();
-            $stmt_tråd->store_result();
-            $stmt_tråd->bind_result($sql_tråd_id, $sql_ukat_id, $sql_tråd_tittel, $sql_tråd_dato, $sql_bruker_navn, $sql_bruker_id);
+        if ($stmt_traad = $conn->prepare("SELECT traad_id, ukat_id, traad_tittel, traad_dato, bruker_navn, bruker_id FROM traad WHERE `ukat_id` = ?")) {
+            $stmt_traad->bind_param("i", $ukat_id);
+            $stmt_traad->execute();
+            $stmt_traad->store_result();
+            $stmt_traad->bind_result($sql_traad_id, $sql_ukat_id, $sql_traad_tittel, $sql_traad_dato, $sql_bruker_navn, $sql_bruker_id);
 
             echo <<<_END
                 <table class="main-table table forum table-striped">
                     <thead>
                         <tr>
                             <th class="rad-bredde"></th>
-                            <th><h2>Tråd navn</h2></th>
+                            <th><h2>tråd navn</h2></th>
                             <th class="rad-bredde-2x text-center skjul-liten skjul-medium">Antal svar</th>
                             <th class="rad-bredde-2x skjul-liten skjul-medium">Siste svar</th>
                         </tr>
                     </thead>
                 <tbody>
 _END;
-            while ($stmt_tråd->fetch()) {
+            while ($stmt_traad->fetch()) {
                 // Teller antall innlegg og siste svar
                 $sql = "SELECT COUNT(innlegg_id) AS antInnlegg, max(innlegg_dato) AS sisteInnlegg,
                             ( SELECT bruker_id WHERE innlegg_dato = max(innlegg_dato) ) as bruker_id,
                             ( SELECT bruker_navn WHERE innlegg_dato = max(innlegg_dato) ) as bruker_navn
-                            FROM innlegg WHERE tråd_id = ?";
+                            FROM innlegg WHERE traad_id = ?";
 
                 $stmt = $conn->prepare($sql);
-                $stmt->bind_param("i", $sql_tråd_id);
+                $stmt->bind_param("i", $sql_traad_id);
                 $stmt->execute();
                 $stmt->store_result();
                 $stmt->bind_result($sql_antInnlegg, $sql_sisteInnlegg, $sql_bruker_id, $sql_bruker_navn);
@@ -161,11 +161,11 @@ _END;
                 echo <<<_END
                     <tr>
                         <td></td>
-                        <td><h4><a href="traad.php?ukat_id=$ukat_id&traad_id=$sql_tråd_id">
-                                    $sql_tråd_tittel
+                        <td><h4><a href="traad.php?ukat_id=$ukat_id&traad_id=$sql_traad_id">
+                                    $sql_traad_tittel
                                 </a><br>
                                 <small><a href="#">$sql_bruker_navn</a>
-                                     @ $sql_tråd_dato
+                                     @ $sql_traad_dato
                                 </small></h4></td>
                         <td class="center">$sql_antInnlegg</td>
                         <td><h4 class="siste_svar">
@@ -201,7 +201,7 @@ require_once 'includes/footer.php';
     <div class="popup-container center">
         <?php echo '<form id="slett_kat_form" name="slett_kat_form" method="post" action="includes/endringer.php?slett_id=' . $kat_id .'">' ?>
         <div class="popup-divider">
-            <?php echo '<p class="white">Er du vikker på at du vil slette kategorien ' . $sql_kat_navn .  '?</p>' ?>
+            <?php echo '<p class="white">Er du sikker på at du vil slette kategorien ' . $sql_kat_navn .  '?</p>' ?>
         </div>
         <button type="submit" name="slett_kat_btn" class="button-lukk">Slett den</button>
         </form>
@@ -283,7 +283,7 @@ require_once 'includes/footer.php';
     <div class="popup-container center">
         <?php echo '<form id="slett_ukat_form" name="slett_ukat_form" method="post" action="includes/endringer.php?slett_ukat_id=' . $ukat_id .'&kat_id=' . $kat_id . '">' ?>
         <div class="popup-divider">
-            <?php echo '<p class="white">Er du vikker på at du vil slette underkategorien ' . $ukat_navn .  '?</p>' ?>
+            <?php echo '<p class="white">Er du sikker på at du vil slette underkategorien ' . $ukat_navn .  '?</p>' ?>
         </div>
         <button type="submit" name="slett_ukat_btn" class="button-lukk">Slett den</button>
         </form>
