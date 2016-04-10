@@ -1,7 +1,7 @@
 <?php
 require_once 'includes/db_connect.php';
 require_once 'includes/header.php';
-
+echo "lol";
 if (isset($_POST['sok_btn'])) {
     $soktekstRen = $_POST['sok_text'];
     $soktekst = "%" . $_POST['sok_text'] . "%";
@@ -10,31 +10,34 @@ if (isset($_POST['sok_btn'])) {
 
         // Finner brukere
         $sql = "SELECT bruker_navn, bruker_id FROM bruker WHERE bruker_navn LIKE ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("s", $soktekst);
-        $stmt->execute();
-        $res = $stmt->get_result();
-        $stmt->close();
+        $stmt_bruker = $conn->prepare($sql);
+        $stmt_bruker->bind_param("s", $soktekst);
+        $stmt_bruker->execute();
+        $stmt_bruker->bind_result($bruker_navn, $bruker_id);
+        $stmt_bruker->store_result();
 
-        echo '<table class="table table_sok table-striped">';
-        echo '<thead>';
-        echo '<tr>';
-        echo '<th class="rad-bredde"></th>';
-        echo '<th><h2>Brukere</h2></th>';
-        echo '</tr>';
-        echo '</thead>';
-        echo '<tbody>';
-        while ($row = mysqli_fetch_assoc($res)) {
-            echo '<tr>';
-            echo '<td></td>';
-
-            echo '<td><h4>';
-            echo '<a href="bruker.php?bruker=' . $row['bruker_id'] . '">' . $row['bruker_navn'] . '</a><br>';
-            echo '</h4></td>';
-            echo '</tr>';
-
+        echo <<<_END
+        <table class="table table_sok table-striped">
+            <thead>
+                <tr>
+                <th class="rad-bredde"></th>
+                <th><h2>Brukere</h2></th>
+                </tr>
+                </thead>
+            <tbody>
+_END;
+        while ($stmt_bruker->fetch()) {
+            echo <<<_END
+                <tr>
+                    <td></td>
+    
+                    <td><h4>
+                    <a href="bruker.php?bruker=$bruker_id">$bruker_navn</a><br>
+                    </h4></td>
+                </tr>
+_END;
         }
-        if ($res->num_rows < 1) {
+        if ($stmt_bruker->num_rows < 1) {
             echo '<tr>';
             echo '<td></td>';
             echo '<td><h4>';
@@ -42,53 +45,55 @@ if (isset($_POST['sok_btn'])) {
             echo '</h4></td>';
             echo '</tr>';
         }
-        echo '</tbody>';
-        echo '</table>';
-        echo "<br>";
+        echo '</tbody></table><br>';
 
         // Finner tråder
-        $sql = "SELECT ukat_id, tråd_id, tråd_tittel, tråd_innhold FROM tråd WHERE tråd_tittel LIKE ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("s", $soktekst);
-        $stmt->execute();
-        $res = $stmt->get_result();
-        $stmt->close();
+        $sql = "SELECT ukat_id, tråd_id, tråd_tittel FROM tråd WHERE tråd_tittel LIKE ?";
+        $stmt_tråd = $conn->prepare($sql);
+        $stmt_tråd->bind_param("s", $soktekst);
+        $stmt_tråd->execute();
+        $stmt_tråd->bind_result($ukat_id, $tråd_id, $tråd_tittel);
+        $stmt_tråd->store_result();
 
-        echo '<table class="table table_sok table-striped">';
-        echo '<thead>';
-        echo '<tr>';
-        echo '<th class="rad-bredde"></th>';
-        echo '<th><h2>Tråder</h2></th>';
-        echo '</tr>';
-        echo '</thead>';
-        echo '<tbody>';
-        while ($row = mysqli_fetch_assoc($res)) {
-            echo '<tr>';
-            echo '<td></td>';
-            echo '<td><h4>';
-            echo '<a href="traad.php?ukat_id=' . $row['ukat_id'] . '&tråd_id=' . $row['tråd_id'] . '">' . $row['tråd_tittel'] . '</a><br>';
-            echo '</h4></td>';
-            echo '</tr>';
-
+        echo <<<_END
+            <table class="table table_sok table-striped">
+                <thead>
+                    <tr>
+                    <th class="rad-bredde"></th>
+                    <th><h2>Tråder</h2></th>
+                    </tr>
+                </thead>
+                <tbody>
+_END;
+        while ($stmt_tråd->fetch()) {
+            echo <<<_END
+                <tr>
+                    <td></td>
+                    <td>
+                        <h4><a href="traad.php?ukat_id=$ukat_id&tråd_id=$tråd_id">$tråd_tittel</a><br></h4>
+                    </td>
+                </tr>
+_END;
         }
-        if ($res->num_rows < 1) {
-            echo '<tr>';
-            echo '<td></td>';
-            echo '<td><h4>';
-            echo 'Ingen treff på <i>' . $soktekstRen . '</i><br>';
-            echo '</h4></td>';
-            echo '</tr>';
+        if ($stmt_tråd->num_rows < 1) {
+            echo <<<_END
+                <tr>
+                    <td></td>
+                    <td>
+                    <h4>Ingen treff på <i>$soktekstRen</i><br></h4>
+                    </td
+                </tr>
+_END;
         }
-        echo '</tbody>';
-        echo '</table>';
+        echo '</tbody></table>';
 
         // Finner underkategorier
-        $sql = "SELECT ukat_navn FROM underkategori WHERE ukat_navn LIKE ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("s", $soktekst);
-        $stmt->execute();
-        $res = $stmt->get_result();
-        $stmt->close();
+        $sql = "SELECT ukat_id, kat_id, ukat_navn FROM underkategori WHERE ukat_navn LIKE ?";
+        $stmt_ukat = $conn->prepare($sql);
+        $stmt_ukat->bind_param("s", $soktekst);
+        $stmt_ukat->execute();
+        $stmt_ukat->bind_result($ukat_id, $kat_id, $ukat_navn);
+        $stmt_ukat->store_result();
 
         echo '<table class="table table_sok table-striped">';
         echo '<thead>';
@@ -98,15 +103,64 @@ if (isset($_POST['sok_btn'])) {
         echo '</tr>';
         echo '</thead>';
         echo '<tbody>';
-        while ($row = mysqli_fetch_assoc($res) || $res->num_rows < 0) {
-            echo '<tr>';
-            echo '<td></td>';
-            echo '<td><h4>';
-            echo '<a href="kategori.php?kat_id=' . $row['kat_id'] . '&ukat_id=' . $row['ukat_id'] . '">' . $row['ukat_navn'] . '</a><br>';
-            echo '</h4></td>';
-            echo '</tr>';
+        while ($stmt_ukat->fetch() || $stmt_ukat->num_rows < 0) {
+            echo <<<_END
+                <tr>
+                    <td></td>
+                    <td><h4>
+                    <a href="kategori.php?kat_id=$kat_id&ukat_id=$ukat_id">$ukat_navn</a><br>
+                    </h4></td>
+                </tr>
+_END;
         }
-        if ($res->num_rows < 1) {
+        if ($stmt_ukat->num_rows < 1) {
+            echo <<<_END
+                <tr>
+                    <td></td>
+                    <td><h4>
+                    Ingen treff på <i>$soktekstRen</i><br>
+                    </h4></td>
+                </tr>
+_END;
+        }
+        echo '</tbody></table>';
+        $stmt_bruker->close();
+        $stmt_tråd->close();
+        $stmt_ukat->close();
+    }
+
+    // Finner brukere
+    if (isset($_POST['sok_select']) && $_POST['sok_select'] == 'bruker') {
+        // Finner brukere
+        $sql = "SELECT bruker_navn, bruker_id FROM bruker WHERE bruker_navn LIKE ?";
+        $stmt_bruker = $conn->prepare($sql);
+        $stmt_bruker->bind_param("s", $soktekst);
+        $stmt_bruker->execute();
+        $stmt_bruker->bind_result($bruker_navn, $bruker_id);
+        $stmt_bruker->store_result();
+
+        echo <<<_END
+        <table class="table table_sok table-striped">
+            <thead>
+                <tr>
+                <th class="rad-bredde"></th>
+                <th><h2>Brukere</h2></th>
+                </tr>
+                </thead>
+            <tbody>
+_END;
+        while ($stmt_bruker->fetch()) {
+            echo <<<_END
+                <tr>
+                    <td></td>
+    
+                    <td><h4>
+                    <a href="bruker.php?bruker=$bruker_id">$bruker_navn</a><br>
+                    </h4></td>
+                </tr>
+_END;
+        }
+        if ($stmt_bruker->num_rows < 1) {
             echo '<tr>';
             echo '<td></td>';
             echo '<td><h4>';
@@ -114,64 +168,93 @@ if (isset($_POST['sok_btn'])) {
             echo '</h4></td>';
             echo '</tr>';
         }
-        echo '</tbody>';
-        echo '</table>';
-    }
-
-    // Finner brukere
-    if (isset($_POST['sok_select']) && $_POST['sok_select'] == 'bruker') {
-        $sql = "SELECT bruker_navn, bruker_id FROM bruker WHERE bruker_navn LIKE ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("s", $soktekst);
-        $stmt->execute();
-        $res = $stmt->get_result();
-        $stmt->close();
-
-        while ($row = mysqli_fetch_assoc($res)) {
-            echo '<table class="table table_sok table-striped">';
-                echo '<thead>';
-                    echo '<tr>';
-                        echo '<th class="rad-bredde"></th>';
-                        echo '<th><h2>Brukere</h2></th>';
-                    echo '</tr>';
-                echo '</thead>';
-                echo '<tbody>';
-                    echo '<tr>';
-                        echo '<td></td>';
-                        echo '<td><h4><a href="bruker.php?bruker=' . $row['bruker_id'] . '">' . $row['bruker_navn'] . '</a><br><h4></td>';
-                    echo '</tr>';
-                echo '</tbody>';
-            echo '</table>';
-        }
+        echo '</tbody></table><br>';
+        $stmt_bruker->close();
     }
 
     // Finner tråder
     if (isset($_POST['sok_select']) && $_POST['sok_select'] == 'traader') {
-        $sql = "SELECT tråd_tittel, tråd_innhold FROM tråd WHERE tråd_tittel LIKE ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("s", $soktekst);
-        $stmt->execute();
-        $res = $stmt->get_result();
-        $stmt->close();
+        // Finner tråder
+        $sql = "SELECT ukat_id, tråd_id, tråd_tittel FROM tråd WHERE tråd_tittel LIKE ?";
+        $stmt_tråd = $conn->prepare($sql);
+        $stmt_tråd->bind_param("s", $soktekst);
+        $stmt_tråd->execute();
+        $stmt_tråd->bind_result($ukat_id, $tråd_id, $tråd_tittel);
+        $stmt_tråd->store_result();
 
-        while ($row = mysqli_fetch_assoc($res)) {
-            echo $row['tråd_tittel'] . "<br>";
+        echo <<<_END
+            <table class="table table_sok table-striped">
+                <thead>
+                    <tr>
+                    <th class="rad-bredde"></th>
+                    <th><h2>Tråder</h2></th>
+                    </tr>
+                </thead>
+                <tbody>
+_END;
+        while ($stmt_tråd->fetch()) {
+            echo <<<_END
+                <tr>
+                    <td></td>
+                    <td>
+                        <h4><a href="traad.php?ukat_id=$ukat_id&tråd_id=$tråd_id">$tråd_tittel</a><br></h4>
+                    </td>
+                </tr>
+_END;
         }
-
+        if ($stmt_tråd->num_rows < 1) {
+            echo <<<_END
+                <tr>
+                    <td></td>
+                    <td>
+                    <h4>Ingen treff på <i>$soktekstRen</i><br></h4>
+                    </td
+                </tr>
+_END;
+        }
+        echo '</tbody></table>';
+        $stmt_tråd->close();
     }
 
     // Finner underkategorier
     if (isset($_POST['sok_select']) && $_POST['sok_select'] == 'ukategorier') {
-        $sql = "SELECT ukat_navn FROM underkategori WHERE ukat_navn LIKE ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("s", $soktekst);
-        $stmt->execute();
-        $res = $stmt->get_result();
-        $stmt->close();
+        $sql = "SELECT ukat_id, kat_id, ukat_navn FROM underkategori WHERE ukat_navn LIKE ?";
+        $stmt_ukat = $conn->prepare($sql);
+        $stmt_ukat->bind_param("s", $soktekst);
+        $stmt_ukat->execute();
+        $stmt_ukat->bind_result($ukat_id, $kat_id, $ukat_navn);
+        $stmt_ukat->store_result();
 
-        while ($row = mysqli_fetch_assoc($res)) {
-            echo $row['ukat_navn'] . "<br>";
+        echo '<table class="table table_sok table-striped">';
+        echo '<thead>';
+        echo '<tr>';
+        echo '<th class="rad-bredde"></th>';
+        echo '<th><h2>Underkategorier</h2></th>';
+        echo '</tr>';
+        echo '</thead>';
+        echo '<tbody>';
+        while ($stmt_ukat->fetch() || $stmt_ukat->num_rows < 0) {
+            echo <<<_END
+                <tr>
+                    <td></td>
+                    <td><h4>
+                    <a href="kategori.php?kat_id=$kat_id&ukat_id=$ukat_id">$ukat_navn</a><br>
+                    </h4></td>
+                </tr>
+_END;
         }
+        if ($stmt_ukat->num_rows < 1) {
+            echo <<<_END
+                <tr>
+                    <td></td>
+                    <td><h4>
+                    Ingen treff på <i>$soktekstRen</i><br>
+                    </h4></td>
+                </tr>
+_END;
+        }
+        echo '</tbody></table>';
+        $stmt_ukat->close();
     }
 }
 

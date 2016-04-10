@@ -2,19 +2,20 @@
 require_once 'db_connect.php';
 
 // TODO: Flytt likTraad og likInnlegg sammen, Bruk paramenter "$type" som i "harLikt" funksjonen!
-function likTraad($conn, $trå_id, $bruker_id, $bruker_navn) {
+function likTraad($conn, $tråd_id, $bruker_id, $bruker_navn) {
     // Sjekk først om han/hun har likt tråden.
     $sql = "SELECT tråd_id, bruker_id FROM likes WHERE bruker_id = ? AND tråd_id = ?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ii", $bruker_id, $trå_id);
+    $stmt->bind_param("ii", $bruker_id, $tråd_id);
     $stmt->execute();
     $res = $stmt->get_result();
     $stmt->close();
+
     // Brukeren har ikke likt tråden. Den kan likes
     if ($res->num_rows < 1) {
         $sql = "INSERT INTO likes (tråd_id, bruker_id, bruker_navn) VALUES(?, ?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("iis", $trå_id, $bruker_id, $bruker_navn);
+        $stmt->bind_param("iis", $tråd_id, $bruker_id, $bruker_navn);
         $stmt->execute();
         $stmt->close();
         return true;
@@ -22,19 +23,21 @@ function likTraad($conn, $trå_id, $bruker_id, $bruker_navn) {
         return false;
     }
 }
-function likInnlegg($conn, $trå_id, $innlegg_id, $bruker_id, $bruker_navn) {
+
+function likInnlegg($conn, $tråd_id, $innlegg_id, $bruker_id, $bruker_navn) {
     // Sjekk først om han/hun har likt innlegget.
     $sql = "SELECT tråd_id, innlegg_id, bruker_id FROM likes WHERE bruker_id = ? AND tråd_id = ? AND innlegg_id = ?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("iii", $bruker_id, $trå_id, $innlegg_id);
+    $stmt->bind_param("iii", $bruker_id, $tråd_id, $innlegg_id);
     $stmt->execute();
     $res = $stmt->get_result();
     $stmt->close();
+
     // Brukeren har ikke likt tråden. Den kan likes
     if ($res->num_rows < 1) {
         $sql = "INSERT INTO likes (tråd_id, innlegg_id, bruker_id, bruker_navn) VALUES(?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("iiis", $trå_id, $innlegg_id, $bruker_id, $bruker_navn);
+        $stmt->bind_param("iiis", $tråd_id, $innlegg_id, $bruker_id, $bruker_navn);
         $stmt->execute();
         $stmt->close();
         return "Du har nå likt dette innlegget";
@@ -42,6 +45,7 @@ function likInnlegg($conn, $trå_id, $innlegg_id, $bruker_id, $bruker_navn) {
         return "Du kan kun like 1 gang";
     }
 }
+
 function getLikes($conn, $innlegg_id, $tråd_id) {
     // Hvis innlegg er null, da teller vi likes i en tråd
     if ($innlegg_id == null) {
@@ -52,9 +56,11 @@ function getLikes($conn, $innlegg_id, $tråd_id) {
         $res = $stmt->get_result();
         $row = $res->fetch_assoc();
         $stmt->close();
+
         $antLikes = $row['antLikes'];
         if (harLikt($conn, "traad", $innlegg_id, $tråd_id, $_SESSION['bruker_id']) == true) {
             $antLikes -= 1;
+
             if ($antLikes > 0) {
                 return $antLikes . " andre liker dette";
             } else {
@@ -76,10 +82,12 @@ function getLikes($conn, $innlegg_id, $tråd_id) {
         $stmt->execute();
         $res = $stmt->get_result();
         $row = $res->fetch_assoc();
+
         $antLikes = $row['antLikes'];
         if (harLikt($conn, "innlegg", $innlegg_id, $tråd_id, $_SESSION['bruker_id']) == true) {
             $antLikes -= 1;
         }
+
         if ($antLikes > 0) {
             return $antLikes . " liker dette";
         } else {
@@ -87,6 +95,7 @@ function getLikes($conn, $innlegg_id, $tråd_id) {
         }
     }
 }
+
 function harLikt ($conn, $type, $innlegg_id, $tråd_id, $bruker_id) {
     if ($type = "traad") {
         $sql = "SELECT innlegg_id, tråd_id, bruker_id FROM likes WHERE bruker_id = ? AND tråd_id = ?";
@@ -95,6 +104,7 @@ function harLikt ($conn, $type, $innlegg_id, $tråd_id, $bruker_id) {
         $stmt->execute();
         $res = $stmt->get_result();
         $stmt->close();
+
         if ($res->num_rows >= 1) {
             return true;
         } else {
@@ -107,6 +117,7 @@ function harLikt ($conn, $type, $innlegg_id, $tråd_id, $bruker_id) {
         $stmt->execute();
         $res = $stmt->get_result();
         $stmt->close();
+
         if ($res->num_rows >= 1) {
             return true;
         } else {
@@ -115,67 +126,38 @@ function harLikt ($conn, $type, $innlegg_id, $tråd_id, $bruker_id) {
     } else {
         return false;
     }
+
+
 }
 
 function innleggIdag($conn, $bruker_id){
+    $dagensdato = date("d-m-Y");
 
-    $dato = DATE('Y-m-d') . '%';
+    $sql ="SELECT COUNT(innlegg_id) AS innleggIdag FROM innlegg WHERE bruker_id = '$bruker_id' AND innlegg_dato = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $dagensdato);
+    $stmt->execute();
+    $res = $stmt->get_result();
+    $row = $res->fetch_assoc();
+    $stmt->close();
 
-    if($stmt = $conn->prepare("SELECT COUNT(*) AS innleggIdag FROM innlegg WHERE bruker_id = ? AND innlegg_dato LIKE ?")) {
-
-        $stmt->bind_param("ss", $bruker_id, $dato);
-        $stmt->execute();
-        $stmt->store_result();
-
-        //Bind results
-        $stmt->bind_result($sql_innleggIdag);
-
-        //fetch value
-        $stmt->fetch();
-
-        //close statement
-        $stmt->close();
-
-
-        return $sql_innleggIdag;
-
-    }
+    return $row['innleggIdag'];
 }
 
 function aktiveBrukere($conn, $sistAktiv){
-    $dagensDato = DATE("Y-m-d");
-    $formatDato = DATE("Y-m-d", strtotime($sistAktiv));
 
+    $formatDato = date("Y-m-d G", strtotime($sistAktiv));
+    $dagensDato = date("Y-m-d G");
 
     if ($formatDato == $dagensDato) {
 
-        $sistAktiv = DATE("Y-m-d H" . '%');
-
-
-        if($stmt = $conn->prepare("SELECT COUNT(*) AS aktiveBrukere FROM bruker WHERE bruker_sist_aktiv LIKE ?")){
-            //Bind parameters
-            $stmt->bind_param("s", $sistAktiv);
-
-            $stmt->execute();
-            $stmt->store_result();
-
-            //Bind results
-            $stmt->bind_result($sql_aktiveBrukere);
-
-            //fetch value
-            $stmt->fetch();
-
-            //close statement
-            $stmt->close();
-
-            return $sql_aktiveBrukere;
-        }
-
+        $sql = mysqli_query($conn, "SELECT COUNT(bruker_id) AS aktiveBrukere FROM bruker WHERE bruker_sist_aktiv = '$sistAktiv'");
+        $row = mysqli_fetch_assoc($sql);
     }
-
+    return $row['aktiveBrukere'];
 }
 
-function sistAktiv($conn, $bruker_id) {
+function setAktiv($conn, $bruker_id) {
     $sql = "UPDATE bruker SET bruker_sist_aktiv = NOW() WHERE bruker_id = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $bruker_id);
@@ -183,28 +165,96 @@ function sistAktiv($conn, $bruker_id) {
     $stmt->close();
 }
 
-function tellInnlegg($conn, $bruker_id) {
-    $sql = "SELECT COUNT(innlegg_id) AS antInnlegg FROM innlegg WHERE bruker_id = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $bruker_id);
-    $stmt->execute();
-    $res = $stmt->get_result();
-    $row = $res->fetch_assoc();
-    $stmt->close();
+function tellInnlegg($conn, $type, $id) {
+    if ($type == "bruker") {
+        $sql = "SELECT COUNT(innlegg_id) AS antInnlegg FROM innlegg WHERE bruker_id = ?";
+        $sql = $conn->prepare($sql);
+        $sql->bind_param("i", $id);
+        $sql->execute();
+        $sql->bind_result($sql_antInnlegg);
+        $sql->fetch();
+        return $sql_antInnlegg;
+        $stmt->close();
+    } 
+    
+    elseif ($type == "ukat") {
+        $sql = $conn->prepare("SELECT COUNT(innlegg_id) as antInnlegg FROM innlegg WHERE ukat_id = ?");
+        $sql->bind_param("i", $id);
+        $sql->execute();
+        $sql->store_result();
+        $sql->bind_result($sql_antInnlegg);
+        $sql->fetch();
+        $sql->close();
+        return $sql_antInnlegg;
+    }
 
-    return $row['antInnlegg'];
+    elseif ($type == "traad") {
+        $sql = $conn->prepare("SELECT COUNT(innlegg_id) as antInnlegg FROM innlegg WHERE tråd_id = ?");
+        $sql->bind_param("i", $id);
+        $sql->execute();
+        $sql->store_result();
+        $sql->bind_result($sql_antInnlegg);
+        $sql->fetch();
+        return $sql_antInnlegg;
+        $antinnlegg->close();
+    }
+    
+    else {
+        return false;
+    }
 }
 
-function tellTraader($conn, $bruker_id) {
-    $sql = "SELECT COUNT(tråd_id) AS antTråder FROM tråd WHERE bruker_id = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $bruker_id);
-    $stmt->execute();
-    $res = $stmt->get_result();
-    $row = $res->fetch_assoc();
-    $stmt->close();
+function tellTraader($conn, $type, $id) {
+    if ($type = "bruker") {
+        $sql = "SELECT COUNT(tråd_id) AS antTråder FROM tråd WHERE bruker_id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $stmt->store_result();
+        $stmt->bind_result($sq_antTråder);
+        $stmt->fetch();
+        $stmt->close();
+        return $sq_antTråder;
+    }
+    elseif ($type = "ukat") {
+        $anttråd = $conn->prepare("SELECT COUNT(tråd_id) as antPosts FROM tråd WHERE ukat_id = ?");
+        $anttråd->bind_param("i", id);
+        $anttråd->execute();
+        $anttråd->store_result();
+        $anttråd->bind_result($sql_antTråder);
+        $anttråd->fetch();
+        $anttråd->close();
+        return $sql_antTråder;
+    }
+    else {
+        return false;
+    }
+}
 
-    return $row['antTråder'];
+function sistAktivUkat ($conn, $type, $id) {
+    if ($type == "tråd") {
+        $siste_traad = $conn->prepare("SELECT tråd_dato, bruker_navn, bruker_id FROM tråd WHERE ukat_id = ? ORDER BY tråd_dato DESC LIMIT 1");
+        $siste_traad->bind_param("i", $id);
+        $siste_traad->execute();
+        $siste_traad->store_result();
+        $siste_traad->bind_result($sql_traad_tråd_dato, $sql_traad_bruker_navn, $sql_traad_bruker_id);
+        $siste_traad->fetch();
+
+        return array ($sql_traad_tråd_dato, $sql_traad_bruker_navn, $sql_traad_bruker_id);
+    }
+    elseif ($type == "innlegg") {
+        $siste_innlegg = $conn->prepare("SELECT innlegg_dato, bruker_navn, bruker_id FROM innlegg WHERE ukat_id = ? ORDER BY innlegg_dato DESC LIMIT 1");
+        $siste_innlegg->bind_param("i", $id);
+        $siste_innlegg->execute();
+        $siste_innlegg->store_result();
+        $siste_innlegg->bind_result($sql_innlegg_dato, $sql_innlegg_bruker_navn, $sql_innlegg_bruker_id);
+        $siste_innlegg->fetch();
+
+        return array ($sql_innlegg_dato, $sql_innlegg_bruker_navn, $sql_innlegg_bruker_id);
+    }
+    else {
+        return false;
+    }
 }
 
 function hentBilde($conn, $bruker_id) {
@@ -220,15 +270,15 @@ function hentBilde($conn, $bruker_id) {
 }
 
 function datoSjekk ($dato) {
-    $formatDato = date("Y-m-d H:i:s", strtotime($dato));
+    $formatDato = date("Y-m-d G:i:s", strtotime($dato));
 
     $dagensdato = date("d-m-Y");
     $meldingsdato = date("d-m-Y", strtotime($formatDato));
 
     if ($dagensdato == $meldingsdato) {
         // Finner time
-        $posttime = date("H", strtotime($dato));
-        $currtime = date("H");
+        $posttime = date("G", strtotime($dato));
+        $currtime = date("G");
 
         $postMin = date("i" , strtotime($dato));
         $currMin = date("i");
@@ -269,7 +319,7 @@ function send_email($info) {
     $epost = $info['epost'];
     $nokkel = $info['nokkel'];
     $curpath = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-    $bekreftbruker = str_replace("registrer", "includes/bekreftbruker", $curpath);
+    $bekreftbruker = str_replace("registrer", "bekreftbruker", $curpath);
 
     // Creating the message
     $melding = '<!DOCTYPE html PUBLIC>';

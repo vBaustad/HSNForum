@@ -117,14 +117,11 @@ _END;
         $passordhash = hash('ripemd160', "$salt1$passord$salt2");
 
         // Legg til bruker i databasen
-        $sql = "INSERT INTO bruker (bruker_navn, bruker_pass, bruker_mail, bruker_dato, bruker_level, bruker_aktiv, bruker_fornavn, bruker_etternavn)
-                                    VALUES(?, ?, ?, NOW(), '1', '0', ?, ?)";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("sssss", $brukernavn, $passordhash, $epost, $fornavn, $etternavn);
-        $stmt->execute();
+        if ($stmt = $conn->prepare("INSERT INTO bruker (bruker_navn, bruker_pass, bruker_mail, bruker_dato, bruker_level, bruker_aktiv, bruker_fornavn, bruker_etternavn)
+                                    VALUES(?, ?, ?, NOW(), '1', '0', ?, ?)")) {
+            $stmt->bind_param("sssss", $brukernavn, $passordhash, $epost, $fornavn, $etternavn);
+            $stmt->execute();
 
-
-        if ($sql) {
             // Henter den nye IDen som nettopp ble laget i databasen
             $bruker_id = mysqli_insert_id($conn);
 
@@ -133,10 +130,11 @@ _END;
             $nokkel = md5($nokkel);
 
             // Legger brukeren til i "bekreft" tabellen
-            $bekreft = mysqli_query($conn, "INSERT INTO bekreft (nokkel, bruker_mail, bruker_id)
-                                VALUES('$nokkel','$epost', '$bruker_id')");
+            if ($bekreft = $conn->prepare("INSERT INTO bekreft (nokkel, bruker_mail, bruker_id, dato)
+                                           VALUES(?, ?, ?, NOW())")) {
+                $bekreft->bind_param("ssi", $nokkel, $epost, $bruker_id);
+                $bekreft->execute();
 
-            if ($bekreft) {
                 //Forbreder informasjon som skal sendes til send_mail
                 $info = array(
                     'brukernavn' => $brukernavn,

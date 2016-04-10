@@ -1,4 +1,7 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors',1);
+
 require_once 'functions.php';
 session_start();
 
@@ -10,7 +13,7 @@ $conn->set_charset("utf8");
 
 // Brukeren blir aktiv
 if (isset($_SESSION['bruker_id'])) {
-    sistAktiv($conn, $_SESSION['bruker_id']);
+    setAktiv($conn, $_SESSION['bruker_id']);
 }
 
 // Check connection

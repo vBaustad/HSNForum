@@ -1,14 +1,15 @@
 <?php
 require_once(__DIR__ . '/includes/functions.php');
 require_once(__DIR__ . '/includes/db_connect.php');
+require_once ('index.php');
+require_once ('includes/header.php');
 
 if (isset($_POST['logginn-btn'])) {
-    // Forhindrer SQL injection med escape string -- Bytt til prepared statement! - Trenger ikke prepared statement her, da queryen kun er SELECT
     $salt1 = 'dkn?';
     $salt2 = '$l3*!';
-    $passord = mysqli_real_escape_string($conn, $_POST["passord_logginn"]);
+    $passord = $_POST["passord_logginn"];
 
-    $hentbrukernavn = mysqli_real_escape_string($conn, $_POST["brukernavn_logginn"]);
+    $hentbrukernavn = $_POST["brukernavn_logginn"];
     $brukernavn = ucfirst($hentbrukernavn);
     $passordhash = hash('ripemd160', "$salt1$passord$salt2");
 
@@ -17,36 +18,60 @@ if (isset($_POST['logginn-btn'])) {
     $stmt = $conn->prepare($finn_bruker);
     $stmt->bind_param("s", $brukernavn);
     $stmt->execute();
-    $res = $stmt->get_result();
-    $row = $res->fetch_assoc();
-    $stmt->close();
+    $stmt->store_result();
+    $stmt->bind_result($sql_bruker_id, $sql_bruker_pass, $sql_bruker_navn, $sql_bruker_aktiv, $sql_bruker_level);
+    $stmt->fetch();
+    $numrows = $stmt->num_rows;
 
     // Bruker finnes
-    if ($res->num_rows == 1) {
+    if ($numrows == 1) {
         // Passord stemmer med bruker
-        if ($row['bruker_pass'] == $passordhash && $row['bruker_navn'] == $brukernavn) {
-            // Hvis bruker_aktiv = 1
-            if ($row['bruker_aktiv'] == '1') {
-                sistAktiv($conn, $row["bruker_id"]);
+        if ($sql_bruker_pass == $passordhash && $sql_bruker_navn == $brukernavn) {
+            // Hvis bruker_aktiv = 1. Sett sessions og logg inn!
+            if ($sql_bruker_aktiv == '1') {
+                setAktiv($conn, $sql_bruker_id);
 
                 $_SESSION['innlogget'] = true;
-                $_SESSION["bruker_navn"] = $row["bruker_navn"];
-                $_SESSION["bruker_id"] = $row["bruker_id"];
-                $_SESSION["bruker_level"] = $row["bruker_level"];
+                $_SESSION["bruker_navn"] = $sql_bruker_navn;
+                $_SESSION["bruker_id"] = $sql_bruker_id;
+                $_SESSION["bruker_level"] = $sql_bruker_level;
 
                 // Tilbake til index.php
-                header("Location: index.php");
-                die();
+                die("<script>location.href = 'index.php'</script>");
+            }
+            // Bruker er ikke aktiv
+            else {
+                echo <<<_END
+                    <script type="text/javascript">
+                        $(document).ready(function() {
+                            $("#logginn-box").show();
+                            document.getElementById('ikkeAktiv').style.display = "block";
+                            document.getElementById('brukernavn_logginn').value = "$brukernavn";
+                            document.getElementById('ikkeAktiv').innerHTML = "Brukeren $brukernavn er ikke aktivert. Sjekk eposten din!";
+                            document.getElementById('brukernavn_logginn').style.border = 'solid 3px #e35152';
+                        });
+                    </script>
+_END;
             }
         }
+        // Feil passord
+        else {
+            echo "passord matcher ikke";
+            echo <<<_END
+                <script type="text/javascript">
+                    $(document).ready(function() {
+                        $("#logginn-box").show();
+                        document.getElementById('feilPass').style.display = "block";
+                        document.getElementById('brukernavn_logginn').value = "$brukernavn";
+                        document.getElementById('feilPass').innerHTML = "Feil passord. Prøv igjen!";
+                        document.getElementById('passord_logginn').style.border = 'solid 3px #e35152';
+                    });
+                </script>
+_END;
+        }
     }
-
-
-    require_once(__DIR__ . '/index.php');
-    require_once(__DIR__ . '/includes/header.php');
-
     // Bruker finnes ikke
-    if ($finnnes = $res->num_rows == 0) {
+    else {
         echo <<<_END
             <script type="text/javascript">
                 $(document).ready(function() {
@@ -54,36 +79,6 @@ if (isset($_POST['logginn-btn'])) {
                     document.getElementById('ikkeAktiv').style.display = "block";
                     document.getElementById('brukernavn_logginn').value = "$brukernavn";
                     document.getElementById('ikkeAktiv').innerHTML = "Kunne ikke finne bruker $brukernavn!";
-                    document.getElementById('brukernavn_logginn').style.border = 'solid 3px #e35152';
-                });
-            </script>
-_END;
-    }
-
-    // Feil passord
-    if ($row['bruker_pass'] != $passordhash && $row['bruker_navn'] == $brukernavn) {
-        echo <<<_END
-            <script type="text/javascript">
-                $(document).ready(function() {
-                    $("#logginn-box").show();
-                    document.getElementById('feilPass').style.display = "block";
-                    document.getElementById('brukernavn_logginn').value = "$brukernavn";
-                    document.getElementById('feilPass').innerHTML = "Feil passord. Prøv igjen!";
-                    document.getElementById('passord_logginn').style.border = 'solid 3px #e35152';
-                });
-            </script>
-_END;
-    }
-
-    // Hvis bruker IKKE er aktiv
-    if ($row['bruker_aktiv'] == '0') {
-        echo <<<_END
-            <script type="text/javascript">
-                $(document).ready(function() {
-                    $("#logginn-box").show();
-                    document.getElementById('ikkeAktiv').style.display = "block";
-                    document.getElementById('brukernavn_logginn').value = "$brukernavn";
-                    document.getElementById('ikkeAktiv').innerHTML = "Brukeren $brukernavn er ikke aktivert. Sjekk eposten din!";
                     document.getElementById('brukernavn_logginn').style.border = 'solid 3px #e35152';
                 });
             </script>
