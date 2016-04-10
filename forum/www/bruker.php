@@ -35,8 +35,8 @@ if (isset($_GET['bruker']) && $_GET['bruker'] > 0) {
 
     /* Kaller på metodene som henter bilde, teller innlegg, teller tråder, og sjekker dato brukeren regisrerte seg*/
     $profilbilde = hentBilde($conn, $bruker_id);
-    $ant_innlegg = tellInnlegg($conn, $bruker_id);
-    $ant_traader = tellTraader($conn, $bruker_id);
+    $ant_innlegg = tellInnlegg($conn, "bruker", $bruker_id);
+    $ant_traader = tellTraader($conn, "bruker", $bruker_id);
     $medlem_dato = datoSjekk($sql_bruker_dato);
 
 echo <<<_END

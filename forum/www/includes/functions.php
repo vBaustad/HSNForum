@@ -131,30 +131,61 @@ function harLikt ($conn, $type, $innlegg_id, $tråd_id, $bruker_id) {
 }
 
 function innleggIdag($conn, $bruker_id){
-    $dagensdato = date("d-m-Y");
 
-    $sql ="SELECT COUNT(innlegg_id) AS innleggIdag FROM innlegg WHERE bruker_id = '$bruker_id' AND innlegg_dato = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("s", $dagensdato);
-    $stmt->execute();
-    $res = $stmt->get_result();
-    $row = $res->fetch_assoc();
-    $stmt->close();
+    $dato = DATE('Y-m-d') . '%';
 
-    return $row['innleggIdag'];
+    if($stmt = $conn->prepare("SELECT COUNT(*) AS innleggIdag FROM innlegg WHERE bruker_id = ? AND innlegg_dato LIKE ?")) {
+
+        $stmt->bind_param("ss", $bruker_id, $dato);
+        $stmt->execute();
+        $stmt->store_result();
+
+        //Bind results
+        $stmt->bind_result($sql_innleggIdag);
+
+        //fetch value
+        $stmt->fetch();
+
+        //close statement
+        $stmt->close();
+
+
+        return $sql_innleggIdag;
+
+    }
 }
 
 function aktiveBrukere($conn, $sistAktiv){
+    $dagensDato = DATE("Y-m-d");
+    $formatDato = DATE("Y-m-d", strtotime($sistAktiv));
 
-    $formatDato = date("Y-m-d G", strtotime($sistAktiv));
-    $dagensDato = date("Y-m-d G");
 
     if ($formatDato == $dagensDato) {
 
-        $sql = mysqli_query($conn, "SELECT COUNT(bruker_id) AS aktiveBrukere FROM bruker WHERE bruker_sist_aktiv = '$sistAktiv'");
-        $row = mysqli_fetch_assoc($sql);
+        $sistAktiv = DATE("Y-m-d H" . '%');
+
+
+        if($stmt = $conn->prepare("SELECT COUNT(*) AS aktiveBrukere FROM bruker WHERE bruker_sist_aktiv LIKE ?")){
+            //Bind parameters
+            $stmt->bind_param("s", $sistAktiv);
+
+            $stmt->execute();
+            $stmt->store_result();
+
+            //Bind results
+            $stmt->bind_result($sql_aktiveBrukere);
+
+            //fetch value
+            $stmt->fetch();
+
+            //close statement
+            $stmt->close();
+
+            return $sql_aktiveBrukere;
+        }
+
     }
-    return $row['aktiveBrukere'];
+
 }
 
 function setAktiv($conn, $bruker_id) {
