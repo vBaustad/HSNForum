@@ -26,7 +26,7 @@ if (isset($_GET['ukat_id']) && isset($_GET['traad_id'])) {
     $innlegg_res = $stmt->get_result();
     $stmt->close();
 
-    // Fnner ant innlegg
+    // Finner ant innlegg
     $sql = "SELECT COUNT('tråd_id') as antInnlegg FROM innlegg WHERE tråd_id = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $tråd_id);
@@ -86,8 +86,7 @@ if (isset($_GET['ukat_id']) && isset($_GET['traad_id'])) {
                         echo '</div>';
 
                         echo '<ol class="likepost pull-right clearfix">';
-                            /* TODO: Sjekk erinnlogget() */
-                            if (harLikt($conn, "traad", null, $tråd_id, $_SESSION['bruker_id']) == false) {
+                            if (harLikt($conn, null, "traad", $tråd_id, $_SESSION['bruker_id']) == false) {
                                 echo '<li id="likepost_btn"><a href="includes/endringer.php?
                                                                 traad_id=' . $tråd_id . '
                                                                 &bruker_id=' . $_SESSION['bruker_id'] . '
