@@ -6,13 +6,12 @@ if (innlogget() == true) {
     $bruker_navn = $_SESSION['bruker_navn'];
     $bruker_id = $_SESSION['bruker_id'];
 
-    if (isset($_GET['melding']) != "" && !empty($_GET['melding'])) {
+    if (isset($_GET['melding']) && !empty($_GET['melding'])) {
         $msg_melding_get = $_GET['melding'];
         // Bruk av smileyface
         $msg_melding = str_replace(":)", "<i class=\"fa fa-smile-o\"></i>", $msg_melding_get);
         // Fjerner bruk av HTML tags
         $msg_melding_stripped = strip_tags($msg_melding, '<i><b><u>');
-
         $bruker_level = bruker_level();
 
         $sql = "INSERT INTO chat (`bruker_navn`, `bruker_status`, `bruker_id`, `msg_melding`, `msg_dato`)
@@ -20,7 +19,6 @@ if (innlogget() == true) {
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("ssis", $bruker_navn, $bruker_level, $bruker_id, $msg_melding_stripped);
         $stmt->execute();
-
     }
 
     // Ingen data fra bruker. Kan trygt bruker mysqli_query her.
