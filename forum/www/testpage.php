@@ -16,21 +16,22 @@
 require_once 'includes/db_connect.php';
 require_once 'includes/functions.php';
 
-if ($stmt = $conn->prepare("SELECT bruker_id, bruker_navn FROM bruker")) {
-    $stmt->execute();
-    $stmt->store_result();
-    $stmt->bind_result($brukerid, $brukernavn);
-    echo '<div id="meldinger">';
-    while ($stmt->fetch()) {
-        echo $brukerid . ' ' . $brukernavn . '<br>';
-    }
-    echo '</div>';
-}
 
+$id = '3';
 
+$stmt_antTraader = $conn->prepare("SELECT COUNT(traad_id) AS anttraader FROM traad WHERE ukat_id = ?");
+$stmt_antTraader->bind_param("i", $id);
+$stmt_antTraader->execute();
+$stmt_antTraader->store_result();
+$stmt_antTraader->bind_result($sql_anttraader);
+$stmt_antTraader->fetch();
 
-echo '<input type="text" id="bruker" name="bruker">
-          <input type="button" id="test_send" class="button-std" value="SEND" onclick="test()" >';
+echo $sql_anttraader;
+
+echo "<br>";
+
+echo tellTraader($conn, "ukat", $id);
+
 ?>
 
 

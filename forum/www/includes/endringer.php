@@ -84,7 +84,7 @@ if (isset($_POST['slett_ukat_btn']) && $_SESSION['bruker_level'] == '2') {
 if (isset($_POST['slett_traad_btn'])) {
     $traad_id = $_GET['slett_traad_id'];
     $ukat_id = $_GET['ukat_id'];
-    $kat_id = $_GET['kat_id'];
+    $kat_id = hvorErJeg($conn, "ukat", $ukat_id)[0];
     
     if ($stmt = $conn->prepare("DELETE FROM traad WHERE traad_id = ?")) {
         $stmt->bind_param("i", $traad_id);
@@ -233,13 +233,14 @@ if (isset($_POST['nytt_bilde_submitt']) && innlogget()) {
 /* NY TRÅD */
 if (isset($_POST['ny_traad_submitt']) && innlogget()) {
     $ukat_id = $_GET['ukat_id'];
-    $traad_tittel = $_POST['ny_traad_navn'];
-    $traad_innhold = $_POST['ny_traad_text'];
+
+    $tittel = strip_tags($_POST['ny_traad_navn'], '<i><b><u>');
+    $innhold = strip_tags($_POST['ny_traad_text'], '<i><b><u>');
 
     $sql = "INSERT INTO traad(ukat_id, traad_tittel, traad_innhold, traad_dato, bruker_navn, bruker_id) 
                    VALUES (?, ?, ?, NOW(), ?, ?)";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("isssi", $ukat_id, $traad_tittel, $traad_innhold, $_SESSION['bruker_navn'], $_SESSION['bruker_id']);
+    $stmt->bind_param("isssi", $ukat_id, $tittel, $innhold, $_SESSION['bruker_navn'], $_SESSION['bruker_id']);
     $stmt->execute();
     $stmt->close();
     $traad_id = mysqli_insert_id($conn);
@@ -249,11 +250,11 @@ if (isset($_POST['ny_traad_submitt']) && innlogget()) {
 
 /* NYTT INNLEGG */
 if (isset($_POST['svar_btn']) && innlogget()) {
-    $innlegg_innhold = $_POST['innlegg_innhold'];
     $traad_id = $_GET['traad_id'];
     $ukat_id = $_GET['ukat_id'];
     $bruker_id = $_SESSION['bruker_id'];
     $bruker_navn = $_SESSION['bruker_navn'];
+    $innlegg_innhold = strip_tags($_POST['innlegg_innhold'], '<i><b><u>');
 
     $sql = "INSERT INTO innlegg(innlegg_innhold, innlegg_dato, traad_id, ukat_id, bruker_id, bruker_navn) VALUES(?, NOW(), ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
@@ -272,25 +273,4 @@ if (isset($_GET['traad_id']) && isset($_GET['bruker_id']) && isset($_GET['bruker
 /* NY LIKE, INNLEGG */
 if (isset($_GET['traad_id']) && isset($_GET['innlegg_id']) && isset($_GET['bruker_id']) && isset($_GET['bruker_navn']) && innlogget()) {
     echo likInnlegg($conn, $_GET['traad_id'], $_GET['innlegg_id'], $_GET['bruker_id'], $_GET['bruker_navn']);
-}
-
-
-/*TEST*/
-if (isset($_GET['nybruker'])) {
-    $brukernavn = $_GET['nybruker'];
-
-    if ($stmt = $conn->prepare("INSERT INTO bruker(bruker_navn) VALUES(?) ")) {
-        $stmt->bind_param("s", $brukernavn);
-        $stmt->execute();
-        $stmt->close();
-    }
-
-    if ($stmt = $conn->prepare("SELECT bruker_id, bruker_navn FROM bruker")) {
-        $stmt->execute();
-        $stmt->store_result();
-        $stmt->bind_result($brukerid, $brukernavn);
-        while ($stmt->fetch()) {
-            echo '<br>' . $brukerid . ' ' . $brukernavn;
-        }
-    }
 }

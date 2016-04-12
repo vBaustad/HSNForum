@@ -1,6 +1,6 @@
 <?php
-require_once(__DIR__ . '/includes/functions.php');
-require_once(__DIR__ . '/includes/db_connect.php');
+require_once ('includes/functions.php');
+require_once ('includes/db_connect.php');
 ?>
 
 <script src="js/chatbox.js" xmlns="http://www.w3.org/1999/xhtml"></script>
@@ -9,7 +9,7 @@ require_once(__DIR__ . '/includes/db_connect.php');
         $.ajaxSetup({cache:false});
         setInterval(function () {
             $("#meldinger").load('includes/chat.php');
-        }, 1000);
+        }, 2000);
 
         $("#chat_msg_text").keyup(function(event){
             if(event.keyCode == 13){
@@ -55,7 +55,6 @@ _EOL;
         $ant_innlegg = tellInnlegg($conn, "bruker", $bruker_id);
         $ant_traader = tellTraader($conn, "bruker", $bruker_id);
 
-        $profilbilde = hentBilde($conn, $bruker_id);
         $bruker_siden = date("d-m-Y", strtotime($sql_bruker_dato));
 
         $traad_idag = aktivitetIdag($conn, "traad" ,$bruker_id);
@@ -67,11 +66,11 @@ _EOL;
 
         echo <<<_EOL
         <div class="textarea pull-right skjul-liten skjul-medium">
-            <h1>Velkommen $sql_bruker_fornavn !</h1>
-            <div class="clearfix"></div><img style="float:right" class="avatar_forum" src="img/profilbilder/$profilbilde">
+            <h1>Velkommen $sql_bruker_fornavn!</h1>
+            <div class="clearfix"></div>
                 <p>Medlem siden: $bruker_siden </p>
                 <p>Aktivitet i dag: $aktivitet_idag </p>
-                <p>Antall aktive brukere: $aktive_brukere</p>
+                <p>Antall aktive brukere i dag: $aktive_brukere</p>
                 <p>Karma: $karma </p>
             </div>
         </div>

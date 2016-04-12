@@ -3,7 +3,7 @@ require_once 'includes/db_connect.php';
 require_once 'includes/header.php';
 require_once 'includes/boxes.php';
 
-
+// TODO: Fikse ordentlig svar på opplastingav bilde. med header
 if (isset($_GET['bruker']) && $_GET['bruker'] > 0) {
     $bruker_id = $_GET['bruker'];
 
@@ -21,7 +21,6 @@ if (isset($_GET['bruker']) && $_GET['bruker'] > 0) {
 
         //close statement
         $stmt -> close();
-
     }
     
 

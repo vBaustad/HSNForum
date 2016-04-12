@@ -256,25 +256,24 @@ function tellInnlegg($conn, $type, $id) {
 }
 
 function tellTraader($conn, $type, $id) {
-    if ($type = "bruker") {
-        $sql = "SELECT COUNT(traad_id) AS anttraader FROM traad WHERE bruker_id = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("i", $id);
-        $stmt->execute();
-        $stmt->store_result();
-        $stmt->bind_result($sql_anttraader);
-        $stmt->fetch();
-        $stmt->close();
+    if ($type == "bruker") {
+        $stmt_antTraader = $conn->prepare("SELECT COUNT(traad_id) AS anttraader FROM traad WHERE bruker_id = ?");
+        $stmt_antTraader->bind_param("i", $id);
+        $stmt_antTraader->execute();
+        $stmt_antTraader->store_result();
+        $stmt_antTraader->bind_result($sql_anttraader);
+        $stmt_antTraader->fetch();
+        $stmt_antTraader->close();
         return $sql_anttraader;
     }
-    elseif ($type = "ukat") {
-        $anttraad = $conn->prepare("SELECT COUNT(traad_id) as antPosts FROM traad WHERE ukat_id = ?");
-        $anttraad->bind_param("i", id);
-        $anttraad->execute();
-        $anttraad->store_result();
-        $anttraad->bind_result($sql_anttraader);
-        $anttraad->fetch();
-        $anttraad->close();
+    elseif ($type == "ukat") {
+        $stmt_antTraader = $conn->prepare("SELECT COUNT(traad_id) AS anttraader FROM traad WHERE ukat_id = ?");
+        $stmt_antTraader->bind_param("i", $id);
+        $stmt_antTraader->execute();
+        $stmt_antTraader->store_result();
+        $stmt_antTraader->bind_result($sql_anttraader);
+        $stmt_antTraader->fetch();
+        $stmt_antTraader->close();
         return $sql_anttraader;
     }
     else {
@@ -303,6 +302,38 @@ function sistAktivUkat ($conn, $type, $id) {
 
         return array ($sql_innlegg_dato, $sql_innlegg_bruker_navn, $sql_innlegg_bruker_id);
     }
+    else {
+        return false;
+    }
+}
+
+function hvorErJeg ($conn, $type, $id) {
+    if ($type == "kat") {
+        if ($stmt = $conn->prepare("SELECT kat_navn FROM kategori WHERE kat_id = ?")) {
+            $stmt->bind_param("i", $id);
+            $stmt->execute();
+            $stmt->store_result();
+            $stmt->bind_result($sql_kat_navn);
+            $stmt->fetch();
+            $stmt->close();
+
+            return $sql_kat_navn;
+        }
+    }
+
+    elseif ($type == "ukat") {
+        if ($stmt = $conn->prepare("SELECT kat_id, ukat_navn FROM underkategori WHERE ukat_id = ?")) {
+            $stmt->bind_param("i", $id);
+            $stmt->execute();
+            $stmt->store_result();
+            $stmt->bind_result($sql_kat_id, $sql_ukat_navn);
+            $stmt->fetch();
+            $stmt->close();
+
+            return array ($sql_kat_id, $sql_ukat_navn);
+        }
+    }
+
     else {
         return false;
     }

@@ -18,6 +18,7 @@ $(document).ready(function () {
         var getID = $(this).attr('id');
         var faclass = ".bildeID" + getID;
         var rowclass = ".radID" + getID;
+        // alert("rowclass = " + rowclass + " faclass = " + faclass + " getID = " + getID); //TODO: fjernes etter testing.
         $(rowclass).toggle();
         $(faclass).toggleClass('fa-caret-square-o-down').toggleClass('fa-caret-square-o-up');
         $(this).parent().toggleClass('tablehide');
@@ -63,7 +64,7 @@ function visbox(box) {
     $(document).ready(function () {
         $(box).show();
     })
-}
+} //TODO: Hva gjør egentlig denne? lol...
 
 function chat() {
     var melding = document.getElementById('chat_msg_text').value;
@@ -77,7 +78,7 @@ function chat() {
                 document.getElementById("meldinger").innerHTML = xmlhttp.responseText;
             }
         };
-        xmlhttp.open("GET", "includes/chat.php?innlegg_innhold="+melding, true);
+        xmlhttp.open("GET", "includes/chat.php?melding="+melding, true);
         xmlhttp.send();
     }
     // Tømmer input field.
@@ -99,19 +100,3 @@ function slettPost(id) {
         location.reload();
     });
 }
-
-/*
-function test() {
-    alert ("HEY");
-    var brukernavn = document.getElementById("bruker").value;
-    alert (brukernavn);
-    var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function () {
-        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-            document.getElementById("meldinger").innerHTML = xmlhttp.responseText;
-        }
-    };
-    xmlhttp.open("GET", "includes/testpage.php?nybruker="+brukernavn, true);
-    xmlhttp.send();
-    location.reload();
-}*/

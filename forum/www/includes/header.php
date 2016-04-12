@@ -20,7 +20,7 @@ require_once (__DIR__ . '/db_connect.php');
     <link rel="stylesheet" type="text/css" href="css/stylesheet.css">
     <link rel="stylesheet" type="text/css" href="css/stylesheet-m.css">
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="js/jquery-1.12.3.min.js"></script>
 </head>
 <body>
 
@@ -57,17 +57,22 @@ require_once (__DIR__ . '/db_connect.php');
 
 <div class="container">
     <div class="page-header">
-        <h1 class="pull-left"><a id="logo-text" href="index.php"><b>FORUM</b> FOR <i>HSN</i> STUDENTER</a></h1>
+        <h1 class="pull-left">
+            <a id="logo-text" href="index.php"><b>FORUM</b> FOR <span class="purple">HSN</span> STUDENTER</a><br>
+            <small>Noe annet her...</small>
+        </h1>
         <div class="pull-right">
             <?php
             if (innlogget() == true) {
-                echo    '<ol class="breadcrumb pull-right clearfix">';
-                echo        '<li><i class="fa fa-user pad-right"></i><a id="profil-img" href="bruker.php?bruker=' . $_SESSION['bruker_id'] . '">' . $_SESSION['bruker_navn'] . "</a></li> ";
+                $bilde = hentBilde($conn, $_SESSION['bruker_id']);
+                echo    '<ol class="sti panel pull-right clearfix">';
+                echo        '<li><img class="avatar_panel" src="img/profilbilder/' . $bilde . '">';
+                echo            '<a id="profil-img" href="bruker.php?bruker=' . $_SESSION['bruker_id'] . '">' . $_SESSION['bruker_navn'] . "</a></li> ";
                 echo        '<li><a id="logg_ut" href="includes/loggut.php">Logg ut</a></li>';
                 echo    '</ol>';
             }
             else {
-                echo    '<ol class="breadcrumb pull-right">';
+                echo    '<ol class="sti panel pull-right">';
                 echo        '<li><a id="logg_inn" href="#" data-rel="popup">Logg inn</a></li>';
                 echo        '<li><a id="registrer" href="#" data-rel="popup">Registrer deg</a></li>';
                 echo    '</ol>';

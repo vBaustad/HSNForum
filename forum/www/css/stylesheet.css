@@ -86,6 +86,7 @@ html {
 #chat_msg_text {
     width: 100%;
     display: block;
+    outline: none;
     box-shadow: none;
     padding: 10px;
     margin-left: -5px;
@@ -101,13 +102,9 @@ html {
     overflow: hidden;
     padding: 0 15px;
     height: 41px;
-    background-color: #7fa0e0;
-    color: white;
     border: none;
     border-radius: 0;
-    text-align: center;
-    text-decoration: none;
-    cursor: pointer;
+    outline: none;
 }
 
 #chat_laster {
@@ -401,31 +398,54 @@ html {
     border-bottom: 1px solid #dbdbdb;
 }
 
-.breadcrumb {
+.panel {
+    background-color: #b3c3e8 !important;
+}
+
+.panel a {
+    color: #3a3a3a !important;
+}
+
+.panel > li + li:before {
+    content: "|" !important;
+    color: #3a3a3a !important;
+}
+
+.avatar_panel {
+    margin: 0 8px -6px -5px;
+    padding: 0;
+    width: 23px;
+    height: 23px;
+    object-fit: cover;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
+
+.sti {
     padding: 8px 15px;
-    margin-bottom: 20px;
     list-style: none;
-    background-color: #f5f5f5;
+    background-color: rgba(173, 184, 217, 1);
     border-radius: 4px;
 }
 
-.breadcrumb > li {
+.sti > li {
     display: inline-block;
 }
 
-.breadcrumb > li + li:before {
+.sti > li + li:before {
     padding: 0 5px;
-    color: #ccc;
-    content: "/\00a0";
+    color: #ffffff;
+    content: "/";
 }
 
-.breadcrumb a {
+.sti a {
     text-decoration: none;
-    color: #aad;
+    color: #393955;
     font-size: .85em;
 }
 
-.breadcrumb a:hover {
+.sti a:hover {
     text-decoration: underline;
 }
 
@@ -504,20 +524,29 @@ html {
 }
 
 .purple {
-    color: #800080 !important;
+    color: #4646a5 !important;
 }
 
 /* BUTTONS */
 .button-std {
     display: inline-block;
     padding: 7px 14px;
-    background-color: #7fa0e0;
+    background-color: #4646a5;
     color: white;
     border: none;
     border-radius: 3px;
     text-align: center;
     text-decoration: none;
     cursor: pointer;
+}
+
+.button-std:hover {
+    background: #38387c;
+    -webkit-transition: background .3s;
+    -moz-transition: background .3s;
+    -ms-transition: background .3s;
+    -o-transition: background .3s;
+    transition: background .3s;
 }
 
 /* TEXT */
@@ -563,12 +592,8 @@ html {
     font-family: inherit;
     font-weight: 500;
     line-height: 1.7em;
-    color: inherit
-}
-
-th .th_text a {
-    text-decoration: underline;
-    color: #3f45c6;
+    color: inherit;
+    height: 50px;
 }
 
 h1 {
@@ -633,7 +658,7 @@ table {
 }
 
 th {
-    background: #bfbfbf;
+    background: rgba(155, 165, 255, 1);
 }
 
 th:nth-child(1) {
@@ -682,16 +707,16 @@ tbody > tr > td > a:hover {
     padding: 8px;
     line-height: 1.4;
     vertical-align: top;
-    border-top: 1px solid #ddd;
+    border-top: 1px solid #dbe5ff;
 }
 
 .table > thead > tr > th {
     vertical-align: bottom;
-    border-bottom: 2px solid #ddd;
+    border-bottom: 2px solid #6662d6;
 }
 
 .table > caption + thead > tr:first-child > td, .table > caption + thead > tr:first-child > th, .table > colgroup + thead > tr:first-child > td, .table > colgroup + thead > tr:first-child > th, .table > thead:first-child > tr:first-child > td, .table > thead:first-child > tr:first-child > th {
-    border-top: 0
+    border-top: 0;
 }
 
 .table-striped > tbody > tr:nth-of-type(odd) {
@@ -699,11 +724,11 @@ tbody > tr > td > a:hover {
 }
 
 .table-striped > tbody > tr:nth-of-type(even) {
-    background-color: #ddd;
+    background-color: #f0f0f0;
 }
 
 .table-striped > tbody > tr:hover {
-    background-color: #eee;
+    background-color: #e0e9ff;
 }
 
 .forum .fa {
