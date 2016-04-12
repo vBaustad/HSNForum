@@ -23,7 +23,8 @@ if ($stmt_ukat = $conn->prepare("SELECT kat_id, ukat_id, ukat_navn, ukat_beskriv
     $finnkatnavn->bind_result($sql_kat_navn);
     $finnkatnavn->fetch();
 
-    echo $sql_kat_navn;
+    echo $sql_kat_navn; // TODO: erstatt med noe bedre å se på!
+    
     /* Viser alle underkategorier*/
     if (isset($_GET['kat_id']) && !isset($_GET['ukat_id'])) {
 
@@ -103,7 +104,6 @@ _END;
     if (isset($_GET['kat_id']) && isset($_GET['ukat_id'])) {
         $kat_id = $_GET['kat_id'];
         $ukat_id = $_GET['ukat_id'];
-        $ukat_navn = (str_replace("_", " ", $_GET['ukat_navn']));
 
         if (innlogget() && bruker_level() == "admin") {
             echo <<<_END
@@ -123,13 +123,11 @@ _END;
 _END;
         }
 
-        echo $ukat_navn; // TODO: Erstatt denne med noe litt mer lekkert å se på :p
-
         if ($stmt_traad = $conn->prepare("SELECT traad_id, ukat_id, traad_tittel, traad_dato, bruker_navn, bruker_id FROM traad WHERE `ukat_id` = ?")) {
             $stmt_traad->bind_param("i", $ukat_id);
             $stmt_traad->execute();
             $stmt_traad->store_result();
-            $stmt_traad->bind_result($sql_traad_id, $sql_ukat_id, $sql_traad_tittel, $sql_traad_dato, $sql_bruker_navn, $sql_bruker_id);
+            $stmt_traad->bind_result($sql_traad_id, $sql_traad_ukat_id, $sql_traad_tittel, $sql_traad_dato, $sql_traad_bruker_navn, $sql_traad_bruker_id);
 
             echo <<<_END
                 <table class="main-table table forum table-striped">
@@ -157,14 +155,14 @@ _END;
                 $stmt->bind_result($sql_antInnlegg, $sql_sisteInnlegg, $sql_bruker_id, $sql_bruker_navn);
                 $stmt->fetch();
                 $stmt->close();
-
+                
                 echo <<<_END
                     <tr>
                         <td></td>
                         <td><h4><a href="traad.php?ukat_id=$ukat_id&traad_id=$sql_traad_id">
                                     $sql_traad_tittel
                                 </a><br>
-                                <small><a href="#">$sql_bruker_navn</a>
+                                <small><a href="#">$sql_traad_bruker_navn</a>
                                      @ $sql_traad_dato
                                 </small></h4></td>
                         <td class="center">$sql_antInnlegg</td>
@@ -286,6 +284,26 @@ require_once 'includes/footer.php';
             <?php echo '<p class="white">Er du sikker på at du vil slette underkategorien ' . $ukat_navn .  '?</p>' ?>
         </div>
         <button type="submit" name="slett_ukat_btn" class="button-lukk">Slett den</button>
+        </form>
+    </div>
+</div>
+
+<!-- SLETT TRÅD -->
+<div id="slett_traad">
+    <div class="popup-header center">
+        <div class="pull-left" style="width: 80%">
+            <h2 class="white icon-user pull-right"><i class="fa fa-minus-square-o"></i> Slette underkategori?</h2>
+        </div>
+        <div class="pull-right half" style="width: 20%;">
+            <i class="box-icon-lukk fa fa-times fa-2x red pull-right"></i>
+        </div>
+    </div>
+    <div class="popup-container center">
+        <?php echo '<form id="slett_ukat_form" name="slett_ukat_form" method="post" action="includes/endringer.php?slett_ukat_id=' . $ukat_id .'&kat_id=' . $kat_id . '">' ?>
+        <div class="popup-divider">
+            <?php echo '<p class="white">Er du sikker på at du vil slette tråden ' . $ukat_navn .  '?</p>' ?>
+        </div>
+        <button type="submit" name="slett_traad_btn" class="button-lukk">Slett den</button>
         </form>
     </div>
 </div>

@@ -80,6 +80,39 @@ if (isset($_POST['slett_ukat_btn']) && $_SESSION['bruker_level'] == '2') {
     }
 }
 
+/* SLETTE TRÅDER */
+if (isset($_POST['slett_traad_btn']) && $_SESSION['bruker_level'] == '2') {
+    $traad_id = $_GET['slett_traad_id'];
+    $ukat_id = $_GET['ukat_id'];
+    $kat_id = $_GET['kat_id'];
+    
+    if ($stmt = $conn->prepare("DELETE FROM traad WHERE traad_id = ?")) {
+        $stmt->bind_param("i", $traad_id);
+        $stmt->execute();
+        $stmt->close();
+        
+        header("Location: ../kategori.php?kat_id=$kat_id&ukat_id=$ukat_id", true, 301);
+        exit;
+    }
+    else {
+        echo "kunne ikke slette ukat.";
+    }
+}
+
+/* SLETTE INNLEGG */
+if (isset($_GET['innlegg_id']) && $_SESSION['bruker_level'] == '2') {
+    $innlegg_id = $_GET['innlegg_id'];
+
+    if ($stmt =  $conn-> prepare("DELETE FROM innlegg WHERE innlegg_id = ?")) {
+        $stmt->bind_param("i", $innlegg_id);
+        $stmt->execute();
+        $stmt->close();
+    }
+    else {
+        echo "kunne ikke slette innlegg.";
+    }
+}
+
 /* NY EPOST */
 if (isset($_POST['ny_epost_submitt']) && innlogget()) {
     $bruker_id = $_SESSION['bruker_id'];
@@ -231,7 +264,7 @@ if (isset($_POST['svar_btn']) && innlogget()) {
     header("Location: ../traad.php?ukat_id=$ukat_id&traad_id=$traad_id");
 }
 
-/* NY LIKE, traad */
+/* NY LIKE, TRÅD */
 if (isset($_GET['traad_id']) && isset($_GET['bruker_id']) && isset($_GET['bruker_navn']) && innlogget()) {
     echo likTraad($conn, $_GET['traad_id'], $_GET['bruker_id'], $_GET['bruker_navn']);
 }

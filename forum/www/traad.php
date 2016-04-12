@@ -8,6 +8,10 @@ if (isset($_GET['ukat_id']) && isset($_GET['traad_id'])) {
     $ukad_id = $_GET['ukat_id'];
     $traad_id = $_GET['traad_id'];
 
+    if (innlogget() == true && bruker_level() == "admin") {
+        echo '<a class="pull-right button-std mar-bot" id="slett_traad_btn" href="#"><i class="fa fa-minus-square-o"></i> Slett tråd</a><div class="clearfix"></div>';
+    }
+
     // Finner sideNr
     $curr_side = isset($_GET['side']) ? intval($_GET['side']) : 1;
 
@@ -59,6 +63,7 @@ if (isset($_GET['ukat_id']) && isset($_GET['traad_id'])) {
     $bilde = hentBilde($conn, $traad_bruker_id);
     $datosjekk = datoSjekk($traad_traad_dato);
     $likes = getLikes($conn, null, $traad_id);
+
     echo <<<_END
         </div>
         <div class="traadtop"><h3>$traad_traad_tittel<br><small>Skrevet av 
@@ -114,6 +119,7 @@ _END;
     while ($stmt_pagedata->fetch()) {
         $bilde = hentBilde($conn, $pagedata_bruker_id);
         $dato = datoSjekk($pagedata_innlegg_dato);
+
         echo <<<_END
             <div class="table-row traadspacer"></div>
             <div class="table-row">
@@ -127,12 +133,21 @@ _END;
                     <small>Echo mer om bruker her!</small>
                 </div>
                 <div class="table-cell traadright">
+_END;
+                if (innlogget() == true && bruker_level() == "admin") {
+                        echo <<<_END
+                            <input type="button" class="pull-right button-std mar-bot mar-right" id="$pagedata_innlegg_id" 
+                                   value="slett innlegg" onclick="slettPost(id)">
+                            <div class="clearfix"></div>
+_END;
+                    }
+                echo <<<_END
+                
                     <i class="fa fa-clock-o"></i> $dato<p class="traad_mobile"> av <a href="#">$traad_bruker_navn</a></p>
                     <div class="innlegg_innhold">
                         $pagedata_innlegg_innhold
                     </div>
-                </div>
-            </div>
+                </div></div>
 _END;
     }
     $stmt_pagedata->close();
@@ -168,25 +183,41 @@ _END;
 }
 ?>
 
-<!-- SLETT UNDERKATEGORI -->
-<div id="slett_traad" style="display: none">
+<!-- SLETT TRÅD -->
+<div id="slett_traad">
     <div class="popup-header center">
-        <div class="pull-left" style="width: 80%">
-            <h2 class="white icon-user pull-right"><i class="fa fa-minus-square-o"></i> Slette underkategori?</h2>
+        <div class="pull-left" style="width: 70%">
+            <h2 class="white icon-user pull-right"><i class="fa fa-minus-square-o"></i> Slette kategori?</h2>
         </div>
-        <div class="pull-right half" style="width: 20%;">
+        <div class="pull-right half" style="width: 30%;">
             <i class="box-icon-lukk fa fa-times fa-2x red pull-right"></i>
         </div>
     </div>
     <div class="popup-container center">
-        <?php echo '<form id="slett_ukat_form" name="slett_ukat_form" method="post" action="includes/endringer.php?slett_ukat_id='
-                        . $ukat_id .'&kat_id='
-                        . $kat_id . '">' ?>
+        <?php echo '<form id="slett_kat_form" name="slett_kat_form" method="post" action="includes/endringer.php?slett_traad_id=' . $traad_id .'&kat_id=' . $kat_id . '&ukat_id=' . $ukad_id . '">' ?>
         <div class="popup-divider">
-            <?php echo '<p class="white">Er du vikker på at du vil slette underkategorien ' . $ukat_navn .  '?</p>' ?>
+            <?php echo '<p class="white">Er du sikker på at du vil slette tråden ' . $traad_traad_tittel .  '?</p>' ?>
         </div>
-        <button type="submit" name="slett_ukat_btn" class="button-lukk">Slett den</button>
-        <?php echo '</form>' ?>;
+        <button type="submit" name="slett_traad_btn" class="button-lukk">Slett den</button>
+        </form>
+    </div>
+</div>
+
+<!-- SLETT INNLEGG -->
+<div id="slett_innlegg">
+    <div class="popup-header center">
+        <div class="pull-left" style="width: 70%">
+            <h2 class="white icon-user pull-right"><i class="fa fa-minus-square-o"></i> Slette innlegg?</h2>
+        </div>
+        <div class="pull-right half" style="width: 30%;">
+            <i class="box-icon-lukk fa fa-times fa-2x red pull-right"></i>
+        </div>
+    </div>
+    <div class="popup-container center">
+        <div class="popup-divider">
+            <p class="white">Er du sikker på at du vil slette dette innlegget?</p>
+        </div>
+        <button type="submit" name="slett_innlegg_btn" id="slett_innlegg_btn" class="button-lukk">Slett den</button>
     </div>
 </div>
 

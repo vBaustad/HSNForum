@@ -199,7 +199,7 @@ html {
     vertical-align: middle;
 }
 
-.endringer_box, .registrer-box-success, #registrer-mail-sendt, .registrer-box-loading, #registrer-box, #logginn-box, #registrer-feil, #ny_kat, #slett_kat, #slett_ukat, #ny_ukat {
+.endringer_box, .registrer-box-success, #slett_traad, #slett_innlegg, #registrer-mail-sendt, .registrer-box-loading, #registrer-box, #logginn-box, #registrer-feil, #ny_kat, #slett_kat, #slett_ukat, #ny_ukat {
     display: none;
     position: fixed;
     margin-right: auto;
@@ -881,6 +881,7 @@ tbody > tr > td > a:hover {
 }
 
 /* TRÅD.php */
+
 #likepost_btn {
     cursor: pointer;
 }

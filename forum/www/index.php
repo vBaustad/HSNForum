@@ -45,8 +45,6 @@ _END;
         // Ramser opp alle underkategorier
         while ($stmt_ukat->fetch()) {
             $ukat_id = $sql_ukat_id;
-            // For HTML validering
-            $ukat_navn = (str_replace(" ", "_", $sql_ukat_navn));
 
             // Teller antall traader
             $anttraad = $conn->prepare("SELECT COUNT(traad_id) as anttraader FROM traad WHERE ukat_id = ?");
@@ -115,7 +113,7 @@ _END;
                 <td class="center"><i class="$sql_ukat_img$sql_ukat_img_farge"></i>
                 </td>
                 <td><h4>
-                    <a href="kategori.php?kat_id=$sql_kat_id&ukat_id=$sql_ukat_id&ukat_navn=$ukat_navn">$sql_ukat_navn</a><br>
+                    <a href="kategori.php?kat_id=$sql_kat_id&ukat_id=$sql_ukat_id">$sql_ukat_navn</a><br>
                         <small>$sql_ukat_beskrivelse</small>
                 </h4></td>
 

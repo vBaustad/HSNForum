@@ -68,7 +68,7 @@ function visbox(box) {
 function chat() {
     var melding = document.getElementById('chat_msg_text').value;
     if (melding == "") {
-        return;
+        return false;
     }
     else {
         var xmlhttp = new XMLHttpRequest();
@@ -76,9 +76,26 @@ function chat() {
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                 document.getElementById("meldinger").innerHTML = xmlhttp.responseText;
             }
-        }
-        xmlhttp.open("GET", "includes/chat.php?innlegg_innhold="+melding+"&", true);
+        };
+        xmlhttp.open("GET", "includes/chat.php?innlegg_innhold="+melding, true);
         xmlhttp.send();
     }
-    // document.getElementById('chat_msg_text').value = '';
+    // Tømmer input field.
+    document.getElementById('chat_msg_text').value = '';
+}
+
+function slettPost(id) {
+    $("#slett_innlegg").show();
+
+    $("#slett_innlegg_btn").click(function () {
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                document.getElementById("meldinger").innerHTML = xmlhttp.responseText;
+            }
+        };
+        xmlhttp.open("GET", "includes/endringer.php?innlegg_id="+id, true);
+        xmlhttp.send();
+        location.reload();
+    });
 }
