@@ -287,23 +287,3 @@ require_once 'includes/footer.php';
         </form>
     </div>
 </div>
-
-<!-- SLETT TRÅD -->
-<div id="slett_traad">
-    <div class="popup-header center">
-        <div class="pull-left" style="width: 80%">
-            <h2 class="white icon-user pull-right"><i class="fa fa-minus-square-o"></i> Slette underkategori?</h2>
-        </div>
-        <div class="pull-right half" style="width: 20%;">
-            <i class="box-icon-lukk fa fa-times fa-2x red pull-right"></i>
-        </div>
-    </div>
-    <div class="popup-container center">
-        <?php echo '<form id="slett_ukat_form" name="slett_ukat_form" method="post" action="includes/endringer.php?slett_ukat_id=' . $ukat_id .'&kat_id=' . $kat_id . '">' ?>
-        <div class="popup-divider">
-            <?php echo '<p class="white">Er du sikker på at du vil slette tråden ' . $ukat_navn .  '?</p>' ?>
-        </div>
-        <button type="submit" name="slett_traad_btn" class="button-lukk">Slett den</button>
-        </form>
-    </div>
-</div>
