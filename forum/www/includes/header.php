@@ -43,9 +43,11 @@ require_once (__DIR__ . '/db_connect.php');
             $("#slett_kat_btn").click(function () {
                 $("#slett_kat").show();
             });
+            
             $("#slett_traad_btn").click(function () {
                 $("#slett_traad").show();
             });
+
             $("#slett_post_btn").click(function () {
                 $("#slett_post").show();
             });

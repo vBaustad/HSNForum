@@ -8,9 +8,7 @@ if (isset($_GET['ukat_id']) && isset($_GET['traad_id'])) {
     $ukad_id = $_GET['ukat_id'];
     $traad_id = $_GET['traad_id'];
 
-    if (innlogget() == true && bruker_level() == "admin") {
-        echo '<a class="pull-right button-std mar-bot" id="slett_traad_btn" href="#"><i class="fa fa-minus-square-o"></i> Slett tråd</a><div class="clearfix"></div>';
-    }
+
 
     // Finner sideNr
     $curr_side = isset($_GET['side']) ? intval($_GET['side']) : 1;
@@ -24,6 +22,8 @@ if (isset($_GET['ukat_id']) && isset($_GET['traad_id'])) {
                        $traad_traad_innhold, $traad_traad_dato, $traad_bruker_navn, $traad_bruker_id);
     $stmt_traad->fetch();
     $stmt_traad->close();
+
+
 
     $innlegg_sql = "SELECT innlegg_id, traad_id, innlegg_innhold, innlegg_dato, ukat_id, bruker_id, bruker_navn FROM innlegg WHERE traad_id = ?";
     $stmt_innlegg = $conn->prepare($innlegg_sql);
@@ -45,6 +45,10 @@ if (isset($_GET['ukat_id']) && isset($_GET['traad_id'])) {
 
     // ???
     $forste_innlegg = ($curr_side - 1) * $innlegg_per_side;
+
+    if (innlogget() && bruker_level() == "admin" || innlogget() && $traad_bruker_id == $_SESSION['bruker_id'] ) {
+        echo '<a class="pull-right button-std mar-bot" name="slett_traad_btn" id="slett_traad_btn" href="#"><i class="fa fa-minus-square-o"></i> Slett tråd</a><div class="clearfix"></div>';
+    }
 
     // Viser ut sideLinks
     echo '<div class="pull-right">';
@@ -134,7 +138,7 @@ _END;
                 </div>
                 <div class="table-cell traadright">
 _END;
-                if (innlogget() == true && bruker_level() == "admin") {
+                if (innlogget() == true && bruker_level() == "admin" || innlogget() && $pagedata_bruker_id == $_SESSION['bruker_id']) {
                         echo <<<_END
                             <input type="button" class="pull-right button-std mar-bot mar-right" id="$pagedata_innlegg_id" 
                                    value="slett innlegg" onclick="slettPost(id)">
@@ -194,11 +198,11 @@ _END;
         </div>
     </div>
     <div class="popup-container center">
-        <?php echo '<form id="slett_kat_form" name="slett_kat_form" method="post" action="includes/endringer.php?slett_traad_id=' . $traad_id .'&kat_id=' . $kat_id . '&ukat_id=' . $ukad_id . '">' ?>
+        <?php echo '<form id="slett_kat_form" name="slett_kat_form" method="post" action="includes/endringer.php?slett_traad_id=' . $traad_id  . '&ukat_id=' . $ukad_id . '">' ?>
         <div class="popup-divider">
             <?php echo '<p class="white">Er du sikker på at du vil slette tråden ' . $traad_traad_tittel .  '?</p>' ?>
         </div>
-        <button type="submit" name="slett_traad_btn" class="button-lukk">Slett den</button>
+        <button type="submit" name="slett_traad_btn" id="slett_traad_btn" class="button-lukk">Slett den</button>
         </form>
     </div>
 </div>
@@ -220,6 +224,49 @@ _END;
         <button type="submit" name="slett_innlegg_btn" id="slett_innlegg_btn" class="button-lukk">Slett den</button>
     </div>
 </div>
+
+<script type="text/javascript">
+<?php
+
+    $ukad_id = $_GET['ukat_id'];
+    $traad_id = $_GET['traad_id'];
+
+    $traad_sql = "SELECT bruker_id FROM traad WHERE ukat_id = ? AND traad_id = ?";
+    $stmt_traad = $conn->prepare($traad_sql);
+    $stmt_traad->bind_param("ii", $ukad_id, $traad_id);
+    $stmt_traad->execute();
+    $stmt_traad->store_result();
+    $stmt_traad->bind_result($traad_bruker_id);
+    $stmt_traad->fetch();
+    $stmt_traad->close();
+
+    $traad_sql = "SELECT bruker_id FROM innlegg WHERE ukat_id = ? AND innlegg_id = ?";
+    $stmt_traad = $conn->prepare($traad_sql);
+    $stmt_traad->bind_param("ii", $ukad_id, $innlegg_id);
+    $stmt_traad->execute();
+    $stmt_traad->store_result();
+    $stmt_traad->bind_result($innlegg_bruker_id);
+    $stmt_traad->fetch();
+    $stmt_traad->close();
+?>
+
+<?php   if (innlogget() && $traad_bruker_id == $_SESSION['bruker_id'])  { ?>
+         $(document).ready(function() {
+
+             $("#slett_traad_btn").click(function () {
+                 $("#slett_traad").show();
+             });
+         });
+    <?php } ?>
+<?php if (innlogget() && $innlegg_bruker_id == $_SESSION['bruker_id'])  { ?>
+        $(document).ready(function() {
+
+            $("#slett_post_btn").click(function () {
+                $("#slett_post").show();
+            });
+        });
+    <?php } ?>
+</script>
 
 <?php
 require_once 'includes/footer.php';

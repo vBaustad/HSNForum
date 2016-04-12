@@ -81,7 +81,7 @@ if (isset($_POST['slett_ukat_btn']) && $_SESSION['bruker_level'] == '2') {
 }
 
 /* SLETTE TRÅDER */
-if (isset($_POST['slett_traad_btn']) && $_SESSION['bruker_level'] == '2') {
+if (isset($_POST['slett_traad_btn'])) {
     $traad_id = $_GET['slett_traad_id'];
     $ukat_id = $_GET['ukat_id'];
     $kat_id = $_GET['kat_id'];
@@ -100,7 +100,7 @@ if (isset($_POST['slett_traad_btn']) && $_SESSION['bruker_level'] == '2') {
 }
 
 /* SLETTE INNLEGG */
-if (isset($_GET['innlegg_id']) && $_SESSION['bruker_level'] == '2') {
+if (isset($_GET['innlegg_id'])) {
     $innlegg_id = $_GET['innlegg_id'];
 
     if ($stmt =  $conn-> prepare("DELETE FROM innlegg WHERE innlegg_id = ?")) {
@@ -230,7 +230,7 @@ if (isset($_POST['nytt_bilde_submitt']) && innlogget()) {
     }
 }
 
-/* NY TÅD */
+/* NY TRÅD */
 if (isset($_POST['ny_traad_submitt']) && innlogget()) {
     $ukat_id = $_GET['ukat_id'];
     $traad_tittel = $_POST['ny_traad_navn'];
