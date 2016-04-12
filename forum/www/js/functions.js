@@ -99,3 +99,19 @@ function slettPost(id) {
         location.reload();
     });
 }
+
+/*
+function test() {
+    alert ("HEY");
+    var brukernavn = document.getElementById("bruker").value;
+    alert (brukernavn);
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function () {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            document.getElementById("meldinger").innerHTML = xmlhttp.responseText;
+        }
+    };
+    xmlhttp.open("GET", "includes/testpage.php?nybruker="+brukernavn, true);
+    xmlhttp.send();
+    location.reload();
+}*/

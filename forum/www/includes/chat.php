@@ -36,11 +36,11 @@ if (innlogget() == true) {
             $postdm = "I dag ";
         }
 
-        echo '  <div class="melding_rad">
+        echo '<div class="melding_rad">
                 <p class="chat_bnavn ' . $row['bruker_status'] . '">' . $row['bruker_navn']  . ' </p>
                 <p class="chat_dato">' . $postdm . $postgis . '</p> <br>
                 <p class="chat_msg">' . $row['msg_melding'] . '</p>
-            </div><br><hr class="hr-chat">';
+              </div><br><hr class="hr-chat">';
     }
 }
 

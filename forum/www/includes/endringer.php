@@ -273,3 +273,24 @@ if (isset($_GET['traad_id']) && isset($_GET['bruker_id']) && isset($_GET['bruker
 if (isset($_GET['traad_id']) && isset($_GET['innlegg_id']) && isset($_GET['bruker_id']) && isset($_GET['bruker_navn']) && innlogget()) {
     echo likInnlegg($conn, $_GET['traad_id'], $_GET['innlegg_id'], $_GET['bruker_id'], $_GET['bruker_navn']);
 }
+
+
+/*TEST*/
+if (isset($_GET['nybruker'])) {
+    $brukernavn = $_GET['nybruker'];
+
+    if ($stmt = $conn->prepare("INSERT INTO bruker(bruker_navn) VALUES(?) ")) {
+        $stmt->bind_param("s", $brukernavn);
+        $stmt->execute();
+        $stmt->close();
+    }
+
+    if ($stmt = $conn->prepare("SELECT bruker_id, bruker_navn FROM bruker")) {
+        $stmt->execute();
+        $stmt->store_result();
+        $stmt->bind_result($brukerid, $brukernavn);
+        while ($stmt->fetch()) {
+            echo '<br>' . $brukerid . ' ' . $brukernavn;
+        }
+    }
+}

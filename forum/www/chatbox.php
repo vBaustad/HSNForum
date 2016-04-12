@@ -38,7 +38,7 @@ if( innlogget() ) {
             </div>
             <div class="chatbox-bottom">
                 <div class="chat_footer">
-                    <input type="button" id="chat_send" class="button-std pull-right" value="SEND" onclick="chat()" />
+                    <input type="button" id="chat_send" class="button-std pull-right" value="SEND" onclick="chat()" >
                     <span id="inline_fix"><input type="text" name="chat_msg_text" id="chat_msg_text" class="pull-left" placeholder="Si hei..."/></span>
                 </div>
             </div>
