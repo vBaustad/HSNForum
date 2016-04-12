@@ -34,7 +34,7 @@ if (isset($_GET['ukat_id']) && isset($_GET['traad_id'])) {
     $antInnlegg = tellInnlegg($conn, "traad", 1);
 
     // TODO: Gå gjennom kode og forstå!!!
-    $innlegg_per_side = 10;
+    $innlegg_per_side = 5;
 
     // Finner antall sider vi må vise
     $side_teller = ceil($antInnlegg / $innlegg_per_side);
@@ -140,7 +140,7 @@ _END;
         </div>
         <form name="form_svar" action="includes/endringer.php?ukat_id=$ukad_id&traad_id=$traad_id" method="post">
             <textarea name="innlegg_innhold" id="innlegg_innhold" placeholder="Har du noe spennende å bidra med..?"></textarea>
-            <input type="submit" name="svar_btn" id="svar_btn" class="std_btn" value="Svar">
+            <input type="submit" name="svar_btn" id="svar_btn" class="std_btn" value="Svar" onclick="post()">
         </form>
 _END;
 }

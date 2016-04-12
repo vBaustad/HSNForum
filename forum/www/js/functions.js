@@ -64,3 +64,21 @@ function visbox(box) {
         $(box).show();
     })
 }
+
+function chat() {
+    var melding = document.getElementById('chat_msg_text').value;
+    if (melding == "") {
+        return;
+    }
+    else {
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                document.getElementById("meldinger").innerHTML = xmlhttp.responseText;
+            }
+        }
+        xmlhttp.open("GET", "includes/chat.php?innlegg_innhold="+melding+"&", true);
+        xmlhttp.send();
+    }
+    // document.getElementById('chat_msg_text').value = '';
+}

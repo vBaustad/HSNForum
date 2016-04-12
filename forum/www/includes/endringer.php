@@ -197,7 +197,7 @@ if (isset($_POST['nytt_bilde_submitt']) && innlogget()) {
     }
 }
 
-/* NY traad */
+/* NY TÅD */
 if (isset($_POST['ny_traad_submitt']) && innlogget()) {
     $ukat_id = $_GET['ukat_id'];
     $traad_tittel = $_POST['ny_traad_navn'];
