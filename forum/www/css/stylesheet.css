@@ -4,6 +4,12 @@ html {
     overflow-y: scroll;
 }
 
+body {
+    display: flex;
+    min-height: 96vh;
+    flex-direction: column;
+}
+
 /* SØK */
 .table_sok thead tr th {
     padding: 0 !important;
@@ -11,10 +17,6 @@ html {
 
 .table_sok tbody tr td {
     padding: 0 !important;
-}
-
-.sok_form {
-
 }
 
 .sok_text, #sok_btn {
@@ -386,6 +388,30 @@ html {
 }
 
 /* MAIN */
+#velkomstBoks {
+    width: 100%;
+    padding-bottom: 15px;
+}
+
+.velkommen_text {
+    float: left;
+    width: 45%;
+}
+
+.velkommen_bilde_container {
+    float: right;
+    width: 50%;
+    overflow: hidden;
+    margin-bottom: 12px;
+}
+
+.velkommen_bilde {
+    padding: 0;
+    width: 580px;
+    height: 200px;
+    object-fit: cover;
+}
+
 .box-icon-lukk {
     margin-right: 3px;
     margin-top: -5px;
@@ -395,7 +421,8 @@ html {
     padding-right: 15px;
     padding-left: 15px;
     margin-right: auto;
-    margin-left: auto
+    margin-left: auto;
+    flex: 1;
 }
 
 .page-header {
@@ -1062,12 +1089,71 @@ thead > tr:first-child > th {
 
 /* FOOTER */
 footer {
+    width: 100%;
     clear: both;
-    background: #7fa0e0;
+    background: #4646a5;
+    color: #ffffff;
     height: auto;
-    margin-top: 10px;
-    padding-right: 15px;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-flow: row wrap;
+    flex-flow: row wrap;
+    text-align: center;
+}
+
+footer > * {
     padding-left: 15px;
+    flex: 1 100%;
+}
+
+#footerleft {
+    flex: 2;
+    order: 1;
+}
+
+#footermiddle {
+    flex: 1;
+    order: 2;
+}
+
+#footerright {
+    flex: 1;
+    order: 3;
+}
+
+.footer {
+    padding-right: 15px;
+}
+
+.footer_left_text {
+    text-align: left;
+}
+
+#footerleft > ul {
+    margin-top: 0;
+}
+
+.footer-li {
+    padding-left: 0;
+    list-style: none;
+    text-align: left;
+}
+
+.footer-li li a {
+    text-decoration: none;
+    color: #ffffff;
+}
+
+.footer-li li a:hover {
+    text-decoration: underline;
+    color: #cbcdff;
+}
+
+.footer-li li:first-child {
+    font-weight: 700;
 }
 
 /* POSITIONING ELEMENTS */

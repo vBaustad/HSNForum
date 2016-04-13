@@ -82,12 +82,16 @@ _EOL;
 } else {
     echo <<<_EOL
         <div id="velkomstBoks">
-           <h1>Velkommen til HSNForum!</h1>
-                <p>Velkommen til Høgskolen i Sørøst-Norge. Vi ønsker at alle studenter skal ha muligheten til å få så mye hjelp som mulig med studiene også utenfor forelesingene. 
-                    Forumet skal hjelpe studenter ved å gjøre det enkelt å stille spørsmål angående timeplaner, skoleoppgaver eller oppretting av studiegrupper. 
-                    Registrer deg ved å klikke øverst i høyre hjørne. For å kunne ta i bruk forumet krever vi at du er student ved HSN og har registrert deg med en gyldig student-epost. 
-                </p>
+            <h1>Velkommen til HSNForum!</h1>
+            <div class="velkommen_bilde_container">
+                <img class="velkommen_bilde" alt="HSN Forum" src="img/student.jpg">
+            </div>
+            <p class="velkommen_text">Velkommen til Høgskolen i Sørøst-Norge. Vi ønsker at alle studenter skal ha muligheten til å få så mye hjelp som mulig med studiene også utenfor forelesingene. 
+                Forumet skal hjelpe studenter ved å gjøre det enkelt å stille spørsmål angående timeplaner, skoleoppgaver eller oppretting av studiegrupper. 
+                Registrer deg ved å klikke øverst i høyre hjørne. For å kunne ta i bruk forumet krever vi at du er student ved HSN og har registrert deg med en gyldig student-epost. 
+            </p>
         </div>
+        <div class="clearfix"></div>
 _EOL;
 
 }

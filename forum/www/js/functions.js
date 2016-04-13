@@ -18,7 +18,6 @@ $(document).ready(function () {
         var getID = $(this).attr('id');
         var faclass = ".bildeID" + getID;
         var rowclass = ".radID" + getID;
-        // alert("rowclass = " + rowclass + " faclass = " + faclass + " getID = " + getID); //TODO: fjernes etter testing.
         $(rowclass).toggle();
         $(faclass).toggleClass('fa-caret-square-o-down').toggleClass('fa-caret-square-o-up');
         $(this).parent().toggleClass('tablehide');

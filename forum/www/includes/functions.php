@@ -320,7 +320,6 @@ function hvorErJeg ($conn, $type, $id) {
             return $sql_kat_navn;
         }
     }
-
     elseif ($type == "ukat") {
         if ($stmt = $conn->prepare("SELECT kat_id, ukat_navn FROM underkategori WHERE ukat_id = ?")) {
             $stmt->bind_param("i", $id);
@@ -333,9 +332,8 @@ function hvorErJeg ($conn, $type, $id) {
             return array ($sql_kat_id, $sql_ukat_navn);
         }
     }
-
     else {
-        return false;
+        return "index.php";
     }
 }
 

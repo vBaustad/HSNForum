@@ -2,6 +2,7 @@
 require_once 'includes/db_connect.php';
 require_once 'includes/header.php';
 require_once 'chatbox.php';
+require_once 'includes/boxes.php';
 
 if ($stmt_ukat = $conn->prepare("SELECT kat_id, ukat_id, ukat_navn, ukat_beskrivelse, ukat_img, ukat_img_farge FROM underkategori WHERE `kat_id` = ?")) {
 
@@ -95,7 +96,7 @@ _END;
     }
 
     /* Viser alle traader i en underkateori */
-    if (isset($_GET['kat_id']) && isset($_GET['ukat_id'])) {
+    if (isset($_GET['kat_id']) && isset($_GET['ukat_id']) && innlogget()) {
         $ukat_id = $_GET['ukat_id'];
         $ukatnavn = hvorErJeg($conn, "ukat", $ukat_id)[1];
 
@@ -181,6 +182,10 @@ _END;
             }
                 echo '</tbody></table>';
         }
+    }
+    // Brukere som ikke er logget inn kan ikke se dette.
+    else if (isset($_GET['kat_id']) && isset($_GET['ukat_id']) && innlogget() == false) {
+        echo '<ol class="sti red center"><li>Du må være logget inn for å se dette</li></ol>';
     }
 
 }
