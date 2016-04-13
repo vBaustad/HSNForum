@@ -17,7 +17,7 @@ if (isset($_GET['bnavn']) && $_GET['bnavn'] != "") {
         exit();
     }
     else {
-        echo 'Brukernavnet <b>' . $bnavn . '</b> er ledig';
+        echo 'Brukernavnet <b>' . $bnavn . '</b> er ledig!';
         exit();
     }
 }
@@ -38,7 +38,6 @@ if (isset($_GET['epost']) && $_GET['epost'] != "") {
         exit();
     }
     else {
-        echo 'Eposten <b>' . $epost . '</b> er ledig';
         exit();
     }
 

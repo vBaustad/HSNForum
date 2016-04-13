@@ -1,7 +1,7 @@
 <?php
 require_once 'includes/db_connect.php';
 require_once 'includes/header.php';
-echo "lol";
+
 if (isset($_POST['sok_btn'])) {
     $soktekstRen = $_POST['sok_text'];
     $soktekst = "%" . $_POST['sok_text'] . "%";
@@ -30,7 +30,6 @@ _END;
             echo <<<_END
                 <tr>
                     <td></td>
-    
                     <td><h4>
                     <a href="bruker.php?bruker=$bruker_id">$bruker_navn</a><br>
                     </h4></td>

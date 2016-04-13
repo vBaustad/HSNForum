@@ -4,7 +4,7 @@ require_once 'includes/header.php';
 require_once 'includes/boxes.php';
 
 // Lister alle innlegg i en traad
-if (isset($_GET['ukat_id']) && isset($_GET['traad_id'])) {
+if (isset($_GET['ukat_id']) && isset($_GET['traad_id']) && innlogget()) {
     $ukat_id = $_GET['ukat_id'];
     $traad_id = $_GET['traad_id'];
 
@@ -92,7 +92,7 @@ _END;
                 <div class="table-row">
                     <div class="table-cell center traadleft skjul-liten">
                         <a href="bruker.php?bruker=$traad_bruker_id">
-                            <img class="avatar_forum" src="img/profilbilder/$bilde">
+                            <img alt="profilbilde" class="avatar_forum" src="img/profilbilder/$bilde">
                             <div class="clearfix"></div>
                             $traad_bruker_navn
                         </a>
@@ -108,11 +108,12 @@ _END;
 _END;
                             /* TODO: Sjekk erinnlogget() */
                             if (harLikt($conn, "traad", null, $traad_id, $_SESSION['bruker_id']) == false) {
-                                echo '<li id="likepost_btn"><a href="includes/endringer.php?
-                                                                traad_id=' . $traad_id . '
-                                                                &bruker_id=' . $_SESSION['bruker_id'] . '
-                                                                &bruker_navn=' . $_SESSION['bruker_navn'] . '" /> 
-                                                                <i class="fa fa-thumbs-up"></i> Lik</a></li>';
+                                echo '<li id="likepost_btn">
+                                            <a href="includes/endringer.php?traad_id='
+                                                . $traad_id . '&bruker_id='
+                                                . $_SESSION['bruker_id'] . '&bruker_navn='
+                                                . $_SESSION['bruker_navn'] . '"> 
+                                        <i class="fa fa-thumbs-up"></i> Lik</a></li>';
                             } else {
                                 echo "Du og ";
                             }
@@ -142,8 +143,8 @@ _END;
             <div class="table-row traadspacer"></div>
             <div class="table-row">
                 <div class="table-cell center traadleft skjul-liten">
-                    <a href="bruker.php?bruker=' . $pagedata_bruker_id . '">
-                        <img class="avatar_forum" src="img/profilbilder/$bilde">
+                    <a href="bruker.php?bruker=$pagedata_bruker_id">
+                        <img alt="avatar" class="avatar_forum" src="img/profilbilder/$bilde">
                         <div class="clearfix"></div>
                         $pagedata_bruker_navn
                     </a>
@@ -176,10 +177,12 @@ _END;
             <input type="submit" name="svar_btn" id="svar_btn" class="std_btn" value="Svar" onclick="post()">
         </form>
 _END;
+} else {
+    echo "Du må logge inn for å lese dette.";
 }
 
 // Hvis vi skal lage ny tråd
-if (isset($_GET['kat_id']) && isset($_GET['ukat_id']) && isset($_GET['nytraad'])) {
+if (isset($_GET['kat_id']) && isset($_GET['ukat_id']) && isset($_GET['nytraad']) && innlogget()) {
     $kat_id = $_GET['kat_id'];
     $ukat_id = $_GET['ukat_id'];
 
@@ -216,7 +219,7 @@ _END;
         <div class="popup-divider">
             <?php echo '<p class="white">Er du sikker på at du vil slette tråden ' . $traad_traad_tittel .  '?</p>' ?>
         </div>
-        <button type="submit" name="slett_traad_btn" id="slett_traad_btn" class="button-lukk">Slett den</button>
+        <button type="submit" name="slett_traad_submit" id="slett_traad_submit" class="button-lukk">Slett den</button>
         </form>
     </div>
 </div>

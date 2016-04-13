@@ -12,6 +12,9 @@ function valNavn(verdi) {
 }
 
 function valEpost(verdi) {
+    // var ptn = /^(([0-9]{6})+@+(student)+.|([a-zA-Z]+.+[a-zA-Z]+@))+(hit|usn|hbv)+.(no)$/;
+
+    // Brukes for testing-purposes
     var ptn = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return ptn.test(verdi)
 }
@@ -20,11 +23,19 @@ function lengde(verdi, min, max) {
     return (verdi.length >= min && verdi.length <= max);
 }
 
+
 function valPassord(verdi) {
-    var ptn1 = /[a-z]+/;
-    var ptn2 = /[A-Z]+/;
-    var ptn3 = /[0-9]+/;
-    return lengde(verdi, 6, 10) && ptn1.test(verdi) && ptn2.test(verdi) && ptn3.test(verdi);
+    /*
+     * RegEx forklart
+     * Passordet MÅ inneholde:
+     * x antall karakterer mellom a-z (lower case)
+     * x antall karakterer mellom a-z (upper case)
+     * x antall siffer mellom 0-9
+     * All of the above er KRAV. De må til sammen tilsvare en lengde på 6+
+     * Det godtaes også noen spesialtegn som (!, @, $, ?, %, *, og &). Dise er ikke påkrevet.
+     * */
+    var ptn = /^(?=.*[a-z])(?=.*[A-Z])(?=.+[0-9])[a-zA-Z0-9$@$!%*?&]{6,}$/;
+    return ptn.test(verdi);
 }
 
 /*                                    */
@@ -60,23 +71,23 @@ function sjekkBNavn(verdi) {
         }
         else {
             if (resultat.indexOf("er ledig") >= 0) {
-                document.getElementById('sjekkBnavn').style.display = "none";
+                document.getElementById('sjekkBnavn').style.display = "";
             }
 
             if (ptn.test(document.getElementById(verdi).value) && bnavn != "") {
                 document.getElementById(verdi).style.border = 'solid 3px #60bb80';
+                document.getElementById("bnavnErr").innerHTML = '';
             }
             else if (!ptn.test(document.getElementById(verdi).value) && bnavn != "") {
                 document.getElementById(verdi).style.border = 'solid 3px #e35152';
-                document.getElementById("bnavnErr").innerHTML = 'Feil brukernavn';
+                document.getElementById("bnavnErr").innerHTML = 'Ugyldige karakterer!';
             }
         }
     }
 }
 
-// Dårlig regEx (f.eks: ! er lov)!
 function sjekkFNavn(verdi) {
-    var ptn = /^[A-Za-z -']+$/;
+    var ptn = /^[A-Za-z0-9øæåØÆÅ]+$/;
     var fnavn = document.getElementById(verdi).value;
 
     if (fnavn == "") {
@@ -96,9 +107,8 @@ function sjekkFNavn(verdi) {
     }
 }
 
-// Dårlig regEx (f.eks: ! er lov)!
 function sjekkENavn(verdi) {
-    var ptn = /^[A-Za-z -']+$/;
+    var ptn = /^[A-Za-z0-9øæåØÆÅ]+$/;
     var enavn = document.getElementById(verdi).value;
 
     if (enavn == "") {
@@ -119,7 +129,15 @@ function sjekkENavn(verdi) {
 }
 
 function sjekkEpost(verdi) {
-    // LAG MIN EGEN REGEX!
+    /*
+     * RegEx forklart
+     * Enten:    6 på rad mellom 0-9 + "@" + ordet "student" etterfulgt av punktum.
+     * Eller:    x antall bokstaver a-z etterfulgt av punktum etterfulgt av x antall bokstaver igjen a-z + "@"
+     * Deretter: hit eller usn eller hbn etterfulgt av punktum etterfulgt av "no"
+     * */
+    // var ptn = /^(([0-9]{6})+@+(student)+.|([a-zA-Z]+.+[a-zA-Z]+@))+(hit|usn|hbv)+.(no)$/;
+
+    // Brukes for testing-purposes
     var ptn = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
     var epost = document.getElementById("epost_reg").value;
@@ -147,7 +165,7 @@ function sjekkEpost(verdi) {
         }
         else {
             if (resultat.indexOf("er ledig") >= 0) {
-                document.getElementById('sjekkEpost').style.display = "none";
+                document.getElementById('sjekkEpost').style.display = "";
             }
 
             if (ptn.test(document.getElementById(verdi).value)) {
@@ -163,6 +181,7 @@ function sjekkEpost(verdi) {
     }
 }
 
+// For validering ved endring av epost
 function sjekkEpostTo(verdi) {
     var epost1 = document.getElementById('epost_reg').value;
     var epost2 = document.getElementById('epost_reg_two').value;
@@ -186,16 +205,23 @@ function sjekkPass(verdi) {
     var ptn2 = /[A-Z]+/;
     var ptn3 = /[0-9]+/;
 
-    if (ptn1.test(document.getElementById(verdi).value)
-        && ptn2.test(document.getElementById(verdi).value)
-        && ptn3.test(document.getElementById(verdi).value)) {
-        document.getElementById('passErr').style.display = "none";
-        document.getElementById(verdi).style.border = 'solid 3px #60bb80';
-        return true;
-    }
-    else {
+    var pw = document.getElementById(verdi).value;
+    if (pw == 0) {
+        document.getElementById("passErr").innerHTML = "Epost kan ikke være blank";
         document.getElementById(verdi).style.border = 'solid 3px #e35152';
-        document.getElementById('passErr').style.display = "block";
+    } else {
+        if (ptn1.test(document.getElementById(verdi).value)
+            && ptn2.test(document.getElementById(verdi).value)
+            && ptn3.test(document.getElementById(verdi).value)) {
+            document.getElementById("passErr").innerHTML = "";
+            document.getElementById(verdi).style.border = 'solid 3px #60bb80';
+            return true;
+        }
+        else {
+            document.getElementById('passErr').innerHTML = "Passordet må ha en minst stor bokstag og ett tall";
+            document.getElementById(verdi).style.border = 'solid 3px #e35152';
+            document.getElementById('passErr').style.display = "block";
+        }
     }
 }
 
@@ -204,12 +230,12 @@ function sjekkPassTo(verdi) {
     var pass2 = document.getElementById('pass_two_reg').value;
 
     if (pass2 == pass1) {
-        document.getElementById('passTwoErr').style.display = "none";
+        document.getElementById('passTwoErr').innerHTML = "";
         document.getElementById(verdi).style.border = "solid 3px #60bb80";
         return true;
     } else {
         document.getElementById(verdi).style.border = "solid 3px #e35152";
-        document.getElementById('passTwoErr').style.display = "block";
+        document.getElementById('passTwoErr').innerHTML = "Passordene er ikke like!";
     }
 }
 

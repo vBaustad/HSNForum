@@ -20,6 +20,7 @@ html {
 .sok_text, #sok_btn {
     padding:6px 15px 6px 15px;
     border-radius: 2px;
+    outline-color: #4949b8;
 }
 
 .sok_text {
@@ -601,35 +602,31 @@ h1 {
     font-size: 1.9em;
 }
 
-.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+h1, h2, h3, h4 {
     font-family: inherit;
     font-weight: 500;
     line-height: 1.1;
     color: inherit
 }
 
-.h1 .small, .h1 small, .h2 .small, .h2 small, .h3 .small, .h3 small, .h4 .small, .h4 small, .h5 .small, .h5 small, .h6 .small, .h6 small, h1 .small, h1 small, h2 .small, h2 small, h3 .small, h3 small, h4 .small, h4 small, h5 .small, h5 small, h6 .small, h6 small {
+h1 small, h3 small, h4 small {
     font-weight: 400;
     line-height: 1;
-    color: #777;
+    color: #696969;
 }
 
-.h1, .h2, .h3, h1, h2, h3 {
+h1, h2, h3 {
     margin-top: 20px;
     margin-bottom: 10px;
 }
 
-.h1 .small, .h1 small, .h2 .small, .h2 small, .h3 .small, .h3 small, h1 .small, h1 small, h2 .small, h2 small, h3 .small, h3 small {
+h1 small, h2, h2 small, h3 small {
     font-size: 65%;
 }
 
-.h4, .h5, .h6, h4, h5, h6 {
+h4 {
     margin-top: 10px;
     margin-bottom: 10px;
-}
-
-.h4 .small, .h4 small, .h5 .small, .h5 small, .h6 .small, .h6 small, h4 .small, h4 small, h5 .small, h5 small, h6 .small, h6 small {
-    font-size: 75%;
 }
 
 /* HR */
@@ -703,7 +700,7 @@ tbody > tr > td > a:hover {
     margin-bottom: 20px;
 }
 
-.table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
+.table > tbody > tr > td, .table > tbody > tr > th, .table > thead > tr > td, .table > thead > tr > th {
     padding: 8px;
     line-height: 1.4;
     vertical-align: top;
@@ -715,7 +712,8 @@ tbody > tr > td > a:hover {
     border-bottom: 2px solid #6662d6;
 }
 
-.table > caption + thead > tr:first-child > td, .table > caption + thead > tr:first-child > th, .table > colgroup + thead > tr:first-child > td, .table > colgroup + thead > tr:first-child > th, .table > thead:first-child > tr:first-child > td, .table > thead:first-child > tr:first-child > th {
+/* Fjerner "skygge" øverst table head */
+thead > tr:first-child > th {
     border-top: 0;
 }
 
@@ -729,11 +727,6 @@ tbody > tr > td > a:hover {
 
 .table-striped > tbody > tr:hover {
     background-color: #e0e9ff;
-}
-
-.forum .fa {
-    width: 1em;
-    text-align: center;
 }
 
 .rad-bredde-icon {

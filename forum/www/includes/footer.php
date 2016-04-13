@@ -7,6 +7,6 @@
         </div>
         <div class="clearfix"></div>
     </footer>
-</div> <!-- /Container  -->
+</div> <!-- Container  -->
 </body>
 </html>

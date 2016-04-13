@@ -72,7 +72,7 @@ _END;
 
                 echo <<<_END
                     <tr>
-                        <td class="center"><i class="$sql_ukat_ukat_img $sql_ukat_ukat_img_farge"></i></span></td>
+                        <td class="center"><i class="$sql_ukat_ukat_img $sql_ukat_ukat_img_farge"></i></td>
                         <td><h4><a href="kategori.php?kat_id=$sql_ukat_kat_id&ukat_id=$sql_ukat_ukat_id">
                                                     $sql_ukat_ukat_navn</a><br><small>$sql_ukat_ukat_beskrivelse</small></h4></td>
                         <td class="text-center skjul-liten skjul-medium"><a href="#">$anttraader</a></td>
@@ -131,7 +131,7 @@ _END;
             $stmt_traad->bind_result($sql_traad_id, $sql_traad_ukat_id, $sql_traad_tittel, $sql_traad_dato, $sql_traad_bruker_navn, $sql_traad_bruker_id);
 
             echo <<<_END
-                <table class="main-table table forum table-striped">
+                <table class="main-table table table-striped">
                     <thead>
                         <tr>
                             <th class="rad-bredde"></th>
@@ -166,8 +166,8 @@ _END;
                                 <small><a href="#">$sql_traad_bruker_navn</a>
                                      @ $sql_traad_dato
                                 </small></h4></td>
-                        <td class="center">$sql_antInnlegg</td>
-                        <td><h4 class="siste_svar">
+                        <td class="center skjul-liten skjul-medium">$sql_antInnlegg</td>
+                        <td class="skjul-liten skjul-medium"><h4 class="siste_svar">
 _END;
                     if ($sql_sisteInnlegg != NULL) {
                         echo '<a href="bruker.php?bruker='
@@ -175,7 +175,7 @@ _END;
                                                         . $sql_bruker_navn . '</a></h4>
                         <small><i class="fa fa-clock-o"></i> ' . datoSjekk($sql_sisteInnlegg) . '</small>';
                     } else {
-                        echo 'ingen svar enda';
+                        echo 'ingen svar enda</h4>';
                     }
                     echo '</td></tr>';
             }
@@ -184,7 +184,6 @@ _END;
     }
 
 }
-require_once 'includes/footer.php';
 ?>
 
 <!-- SLETT KATEGORI -->
@@ -205,7 +204,7 @@ require_once 'includes/footer.php';
         <button type="submit" name="slett_kat_btn" class="button-lukk">Slett den</button>
         </form>
     </div>
-</div>
+</div> <!--slett_kat-->
 
 <!-- NY UNDERKATEGORI -->
 <div id="ny_ukat">
@@ -267,7 +266,7 @@ require_once 'includes/footer.php';
             <input type="submit" name="ny_ukat_btn" id="ny_ukat_submit" value="LEGG TIL">
         </form>
     </div>
-</div>
+</div> <!--ny-ukat-->
 
 <!-- SLETT UNDERKATEGORI -->
 <div id="slett_ukat">
@@ -288,4 +287,7 @@ require_once 'includes/footer.php';
         <button type="submit" name="slett_ukat_btn" class="button-lukk">Slett den</button>
         </form>
     </div>
-</div>
+</div> <!--slett-ukat-->
+
+<?php
+require_once 'includes/footer.php';

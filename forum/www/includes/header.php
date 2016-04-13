@@ -66,7 +66,7 @@ require_once (__DIR__ . '/db_connect.php');
             if (innlogget() == true) {
                 $bilde = hentBilde($conn, $_SESSION['bruker_id']);
                 echo    '<ol class="sti panel pull-right clearfix">';
-                echo        '<li><img class="avatar_panel" src="img/profilbilder/' . $bilde . '">';
+                echo        '<li><img alt="profilbilde" class="avatar_panel" src="img/profilbilder/' . $bilde . '">';
                 echo            '<a id="profil-img" href="bruker.php?bruker=' . $_SESSION['bruker_id'] . '">' . $_SESSION['bruker_navn'] . "</a></li> ";
                 echo        '<li><a id="logg_ut" href="includes/loggut.php">Logg ut</a></li>';
                 echo    '</ol>';
@@ -81,13 +81,13 @@ require_once (__DIR__ . '/db_connect.php');
             <form class="sok_form pull-right clearfix" method="post" action="sok.php">
                 <input name="sok_text" class="sok_text" type="search" placeholder="Søk i forumet...">
                 <select name="sok_select" class="sok_select">
-                    <option selected value="hele">Hele forumet</option>
+                    <option value="hele" selected>Hele forumet</option>
                     <option value="bruker">Brukere</option>
                     <option value="traader">Tråder</option>
                     <option value="ukategorier">Underkategorier</option>
                 </select>
                 <input type="submit" id="sok_btn" name="sok_btn" value="Søk">
             </form>
-        </div>
+        </div> <!--pull-right-->
         <div class="clearfix"></div>
-    </div>
+    </div> <!--Page-header-->

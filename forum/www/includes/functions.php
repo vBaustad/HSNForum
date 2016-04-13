@@ -25,7 +25,7 @@ function likTraad($conn, $traad_id, $bruker_id, $bruker_navn) {
 }
 
 function likInnlegg($conn, $traad_id, $innlegg_id, $bruker_id, $bruker_navn) {
-    // Sjekk først om han/hun har likt innlegget.
+    // Sjekk først om bruker har likt innlegget.
     $sql = "SELECT traad_id, innlegg_id, bruker_id FROM likes WHERE bruker_id = ? AND traad_id = ? AND innlegg_id = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("iii", $bruker_id, $traad_id, $innlegg_id);

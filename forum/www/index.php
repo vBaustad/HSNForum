@@ -1,5 +1,3 @@
-<script src="js/functions.js"></script>
-
 <?php
 require_once 'includes/db_connect.php';
 require_once 'includes/header.php';
@@ -21,7 +19,7 @@ if ($stmt = $conn->prepare("SELECT kat_id, kat_navn FROM kategori")) {
     while ($stmt->fetch()) {
         // Printer ut table head. Hver tbody begynner med en egen generert class slik at jquery kan identifisere radene og skjule de etter behov.
         echo <<<_END
-        <table class="main-table table forum table-striped">
+        <table class="main-table table table-striped">
             <thead>
                  <tr>
                       <th id="$sq_kat_id" class="center skjul_tbody_btn rad-bredde-icon">
@@ -77,12 +75,12 @@ _END;
                 <td class="center"><i class="$sql_ukat_img$sql_ukat_img_farge"></i>
                 </td>
                 <td><h4>
-                    <a href="kategori.php?kat_id=$sql_kat_id&ukat_id=$sql_ukat_id">$sql_ukat_navn</a><br>
+                    <a href="kategori.php?kat_id=$sql_kat_id&#38;ukat_id=$sql_ukat_id">$sql_ukat_navn</a><br>
                         <small>$sql_ukat_beskrivelse</small>
                 </h4></td>
 
                 <td class="text-center skjul-liten skjul-medium">
-                    <a href="kategori.php?kat_id=$sql_kat_id&ukat_id=$sql_ukat_id">$anttraad</a>
+                    <a href="kategori.php?kat_id=$sql_kat_id&#38;ukat_id=$sql_ukat_id">$anttraad</a>
                 </td>
 
                 <td class="text-center skjul-liten skjul-medium">

@@ -22,7 +22,8 @@ if (innlogget() == true) {
     }
 
     // Ingen data fra bruker. Kan trygt bruker mysqli_query her.
-    $hentData = mysqli_query($conn, "SELECT * FROM (SELECT * FROM chat ORDER BY msg_dato DESC LIMIT 30) AS resultat ORDER BY msg_dato ASC");
+    // $hentData = mysqli_query($conn, "SELECT * FROM (SELECT * FROM chat ORDER BY msg_dato DESC LIMIT 30) AS resultat ORDER BY msg_dato ASC");
+    $hentData = mysqli_query($conn, "SELECT * FROM chat ORDER BY msg_dato DESC");
 
     while ($row = mysqli_fetch_assoc($hentData)) {
         $dagensdato = date("y-d/m");
