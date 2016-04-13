@@ -83,17 +83,9 @@ _EOL;
     echo <<<_EOL
         <div id="velkomstBoks">
            <h1>Velkommen til HSNForum!</h1>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc dolor purus, lobortis vitae turpis vitae, 
-                    eleifend convallis orci. Sed ac lectus rutrum, suscipit nisi ut, iaculis ligula. Suspendisse pellentesque pharetra ipsum ultrices tincidunt.
-                     Mauris pellentesque magna quis elit mattis, vel rutrum purus ullamcorper. Nulla ut urna a urna euismod dignissim. Phasellus at sapien vitae dui pharetra sollicitudin non sit amet nisi. 
-                     Vestibulum a diam at odio rhoncus aliquam eget non sem. Fusce at quam eget ante dignissim laoreet. Donec eleifend convallis semper. Nunc nec risus ut sapien scelerisque malesuada. 
-                     Praesent sollicitudin nisi et quam viverra, in venenatis ipsum tristique. Cras neque orci, bibendum eu nisl in, varius pellentesque mauris.
-                    
-                    Ut ut scelerisque purus. Aenean pretium velit sed tellus ullamcorper porttitor. Suspendisse varius neque eget semper bibendum. 
-                    Cras consequat tortor at magna consectetur porttitor. Duis congue hendrerit nibh, sed maximus est placerat sed. Integer non tempus leo, ut venenatis quam. 
-                    Curabitur eget quam sagittis, laoreet libero eu, cursus eros. Donec ullamcorper gravida dolor. Curabitur et ex placerat, tempus augue non, tristique purus. 
-                    Ut molestie mauris nisi, ut molestie turpis commodo sit amet. Sed malesuada finibus nibh ut mattis. Nulla pretium feugiat leo, vitae dapibus sapien suscipit vitae.
-                    Nulla elementum pulvinar diam ac suscipit. Nam ut velit nec lectus sodales suscipit placerat sit amet magna.
+                <p>Velkommen til Høgskolen i Sørøst-Norge. Vi ønsker at alle studenter skal ha muligheten til å få så mye hjelp som mulig med studiene også utenfor forelesingene. 
+                    Forumet skal hjelpe studenter ved å gjøre det enkelt å stille spørsmål angående timeplaner, skoleoppgaver eller oppretting av studiegrupper. 
+                    Registrer deg ved å klikke øverst i høyre hjørne. For å kunne ta i bruk forumet krever vi at du er student ved HSN og har registrert deg med en gyldig student-epost. 
                 </p>
         </div>
 _EOL;
