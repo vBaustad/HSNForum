@@ -6,7 +6,7 @@ require_once 'db_connect.php';
 <!-- Feilkoder -->
 <div id="registrer-feil">
     <div class="popup-header center">
-        <h2 class="popup-header-text icon-error white"><i class="fa fa-exclamation-triangle"></i> Uff da...</h2>
+        <h3 class="popup-header-text icon-error white"><i class="fa fa-exclamation-triangle"></i> Uff da...</h3>
         <hr class="hr-popup">
     </div>
 
@@ -14,7 +14,7 @@ require_once 'db_connect.php';
         <p class="white">Det oppstod en feil under registreringen.<br>Venligst prøv igjen...</p>
         <p class="white">Skulle problemet fortsette, ta <a class="link-light" href="#">kontakt</a> med administrator
             og oppgi denne feilkoden:</p>
-        <h2 style="display: none" id="feilkode" class="white"></h2>
+        <h3 style="display: none" id="feilkode" class="white"></h3>
         <button name="button-avbryt" type="submit" class="button-lukk"> Lukk</button>
     </div>
 </div>
@@ -22,7 +22,7 @@ require_once 'db_connect.php';
 <!-- Mail sendt -->
 <div id="registrer-mail-sendt">
     <div class="popup-header center">
-        <h2 class="white"><i class="fa fa-check-square-o"></i> Mail sendt!</h2>
+        <h3 class="white"><i class="fa fa-check-square-o"></i> Mail sendt!</h3>
     </div>
 
     <div class="popup-container center">
@@ -36,7 +36,7 @@ require_once 'db_connect.php';
 <div id="registrer-box">
     <div class="popup-header center">
         <div class="pull-left" style="width: 70%">
-            <h2 class="white icon-user pull-right"><i class="fa fa-user-plus"></i> Registrer deg!</h2>
+            <h3 class="white pull-right"><i class="fa fa-user-plus"></i> Registrer deg!</h3>
         </div>
         <div class="pull-right half" style="width: 30%;">
             <i class="registrer-icon-lukk fa fa-times fa-2x red pull-right"></i>
@@ -88,8 +88,8 @@ require_once 'db_connect.php';
 <!-- Logginn.php -->
 <div id="logginn-box">
     <div class="popup-header center">
-        <div class="pull-left" style="width: 70%">
-            <h2 class="white pull-right"><i class="fa fa-sign-in"></i> Logg inn</h2>
+        <div class="pull-left" style="width: 65%">
+            <h3 class="white pull-right"><i class="fa fa-sign-in"></i> Logg inn</h3>
         </div>
         <div class="pull-right half" style="width: 30%;">
             <i class="box-icon-lukk fa fa-times fa-2x red pull-right"></i>
@@ -118,7 +118,7 @@ require_once 'db_connect.php';
 <!-- Bruker laget -->
 <div class="registrer-box-success">
     <div class="popup-header center">
-        <h2 class="popup-header-text icon-success white"> Registrering fullført!</h2>
+        <h3 class="popup-header-text icon-success white"> Registrering fullført!</h3>
         <hr class="hr-popup">
     </div>
 
@@ -133,7 +133,7 @@ require_once 'db_connect.php';
 <div id="ny_kat">
     <div class="popup-header center">
         <div class="pull-left" style="width: 70%">
-            <h2 class="white icon-user pull-right"><i class="fa fa-plus-square-o"></i> Legg til kategori</h2>
+            <h3 class="white icon-user pull-right"><i class="fa fa-plus-square-o"></i> Legg til kategori</h3>
         </div>
         <div class="pull-right half" style="width: 30%;">
             <i class="box-icon-lukk fa fa-times fa-2x red pull-right"></i>

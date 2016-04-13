@@ -145,8 +145,8 @@ _END;
             while ($stmt_traad->fetch()) {
                 // Teller antall innlegg og siste svar
                 $sql = "SELECT COUNT(innlegg_id) AS antInnlegg, max(innlegg_dato) AS sisteInnlegg,
-                            ( SELECT bruker_id WHERE innlegg_dato = max(innlegg_dato) ) as bruker_id,
-                            ( SELECT bruker_navn WHERE innlegg_dato = max(innlegg_dato) ) as bruker_navn
+                            ( SELECT bruker_id FROM innlegg WHERE innlegg_dato = ( SELECT max(innlegg_dato) FROM innlegg)) as bruker_id,
+                            ( SELECT bruker_navn FROM innlegg WHERE  innlegg_dato = ( SELECT max(innlegg_dato ) FROM innlegg )) as bruker_navn
                             FROM innlegg WHERE traad_id = ?";
 
                 $stmt = $conn->prepare($sql);
@@ -190,7 +190,7 @@ _END;
 <div id="slett_kat">
     <div class="popup-header center">
         <div class="pull-left" style="width: 70%">
-            <h2 class="white icon-user pull-right"><i class="fa fa-minus-square-o"></i> Slette kategori?</h2>
+            <h3 class="white icon-user pull-right"><i class="fa fa-minus-square-o"></i> Slette kategori?</h3>
         </div>
         <div class="pull-right half" style="width: 30%;">
             <i class="box-icon-lukk fa fa-times fa-2x red pull-right"></i>
@@ -199,7 +199,7 @@ _END;
     <div class="popup-container center">
         <?php echo '<form id="slett_kat_form" name="slett_kat_form" method="post" action="includes/endringer.php?slett_id=' . $kat_id .'">' ?>
         <div class="popup-divider">
-            <?php echo '<p class="white">Er du sikker på at du vil slette kategorien ' . $sql_kat_navn .  '?</p>' ?>
+            <?php echo '<p class="white">Er du sikker på at du vil slette kategorien ' . $katnavn .  '?</p>' ?>
         </div>
         <button type="submit" name="slett_kat_btn" class="button-lukk">Slett den</button>
         </form>
@@ -210,7 +210,7 @@ _END;
 <div id="ny_ukat">
     <div class="popup-header center">
         <div class="pull-left" style="width: 80%">
-            <h2 class="white icon-user pull-right"><i class="fa fa-plus-square-o"></i> Legg til underkategori</h2>
+            <h3 class="white icon-user pull-right"><i class="fa fa-plus-square-o"></i> Legg til underkategori</h3>
         </div>
         <div class="pull-right half" style="width: 20%;">
             <i class="box-icon-lukk fa fa-times fa-2x red pull-right"></i>
@@ -272,7 +272,7 @@ _END;
 <div id="slett_ukat">
     <div class="popup-header center">
         <div class="pull-left" style="width: 80%">
-            <h2 class="white icon-user pull-right"><i class="fa fa-minus-square-o"></i> Slette underkategori?</h2>
+            <h3 class="white icon-user pull-right"><i class="fa fa-minus-square-o"></i> Slette underkategori?</h3>
         </div>
         <div class="pull-right half" style="width: 20%;">
             <i class="box-icon-lukk fa fa-times fa-2x red pull-right"></i>

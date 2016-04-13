@@ -344,11 +344,12 @@ function hentBilde($conn, $bruker_id) {
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $bruker_id);
     $stmt->execute();
-    $res = $stmt->get_result();
-    $row = $res->fetch_assoc();
+    $stmt->store_result();
+    $stmt->bind_result($bruker_bilde);
+    $stmt->fetch();
     $stmt->close();
 
-    return $row['bruker_bilde'];
+    return $bruker_bilde;
 }
 
 function datoSjekk ($dato) {

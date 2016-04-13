@@ -177,7 +177,7 @@ _END;
             <input type="submit" name="svar_btn" id="svar_btn" class="std_btn" value="Svar" onclick="post()">
         </form>
 _END;
-} else {
+} else if (innlogget() == false) {
     echo "Du må logge inn for å lese dette.";
 }
 

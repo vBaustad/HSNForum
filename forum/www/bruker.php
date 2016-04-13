@@ -62,7 +62,7 @@ _END;
         if (isset($_GET['nytt_pass']) && $_GET['nytt_pass'] == 1) {
 echo <<<_END
             <div class="endringer_box">
-                <div class="popup-header center">';
+                <div class="popup-header center">
                     <div class="pull-left" style="width: 80%">
                         <h2 class="endringer_box_h2 white pull-right"><i class="fa fa-check-square-o"></i> Passord endret!</h2>
                     </div>
@@ -79,7 +79,7 @@ echo <<<_END
             <div class="endringer_box">
                 <div class="popup-header center">
                     <div class="pull-left" style="width: 80%">
-                        <h2 class="endringer_box_h2 white pull-right"><i class="fa fa-check-square-o"></i> Epost endret!</h2>
+                        <h3 class="endringer_box_h2 white pull-right"><i class="fa fa-check-square-o"></i> Epost endret!</h3>
                     </div>
                     <div class="pull-right" style="width: 20%;">
                         <i class="box-icon-lukk fa fa-times fa-2x red pull-right"></i>
@@ -92,7 +92,7 @@ _END;
     /*Om bruker*/
 echo <<<_END
         <div id="bruker_info">
-            <h2>Om $sql_bruker_navn </h2>
+            <h3>Om $sql_bruker_navn </h3>
             <div>Navn: <p class="bruker_info_format">$sql_bruker_fornavn $sql_bruker_etternavn </p></div>
 _END;
             if (innlogget() && $_GET['bruker'] == $_SESSION['bruker_id']) {

@@ -151,32 +151,35 @@ if (isset($_POST['nytt_pass_submitt']) && innlogget()) {
     $salt1 = 'dkn?';
     $salt2 = '$l3*!';
 
-    $passord = mysqli_real_escape_string($conn, $_POST['curr_pass']);
+    $passord = $_POST['curr_pass'];
     $passordhash = hash('ripemd160', "$salt1$passord$salt2");
 
-    $new_pass = mysqli_real_escape_string($conn, $_POST['new_pass']);
+    $new_pass = $_POST['new_pass'];
     $new_passhash = hash('ripemd160', "$salt1$new_pass$salt2");
 
-    $sql = "SELECT bruker_pass FROM bruker WHERE bruker_pass = ? AND bruker_id = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("si", $passordhash, $bruker_id);
-    $stmt->execute();
-    $res = $stmt->get_result();
-    $stmt->close();
+    if ($stmt = $conn->prepare("SELECT bruker_pass FROM bruker WHERE bruker_pass = ? AND bruker_id = ?")) {
+        $stmt->bind_param("si", $passordhash, $bruker_id);
+        $stmt->execute();
+        $stmt->store_result();
+        $stmt->bind_result($bruker_pass);
+        $stmt->fetch();
+        $numrows = $stmt->num_rows;
 
-    if ($res->num_rows > 0) {
-        $sql = "UPDATE bruker SET bruker_pass = ? WHERE bruker_id = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("si", $new_passhash, $bruker_id);
+        if ($numrows > 0) {
+            $sql = "UPDATE bruker SET bruker_pass = ? WHERE bruker_id = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("si", $new_passhash, $bruker_id);
 
-        if ($stmt->execute()) {
-            $stmt->close();
-            header("Location: ../bruker.php?bruker=$bruker_id&nytt_pass=1");
+            if ($stmt->execute()) {
+                $stmt->close();
+                header("Location: ../bruker.php?bruker=$bruker_id&nytt_pass=1");
+            } else {
+                echo "Kunen ikke oppdatere passord";
+            }
         } else {
-            echo "Kunen ikke oppdatere passord";
+            echo "feil passord. Prøve igjen";
         }
-    } else {
-        echo "feil passord. Prøve igjen";
+        $stmt->close();
     }
 }
 
