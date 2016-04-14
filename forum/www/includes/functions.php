@@ -3,15 +3,15 @@ require_once 'db_connect.php';
 
 function likTraad($conn, $traad_id, $bruker_id, $bruker_navn) {
     // Sjekk først om han/hun har likt traaden.
-    $sql = "SELECT traad_id, bruker_id FROM likes WHERE bruker_id = ? AND traad_id = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ii", $bruker_id, $traad_id);
-    $stmt->execute();
-    $res = $stmt->get_result();
-    $stmt->close();
+    $sql = "SELECT traad_id, bruker_id FROM likes WHERE bruker_id = ? AND traad_id = ? AND innlegg_id IS NULL";
+    $stmt_sjekk = $conn->prepare($sql);
+    $stmt_sjekk->bind_param("ii", $bruker_id, $traad_id);
+    $stmt_sjekk->execute();
+    $stmt_sjekk->store_result();
+    $stmt_sjekk->bind_result($traad_id, $bruker_id);
 
     // Brukeren har ikke likt traaden. Den kan likes
-    if ($res->num_rows < 1) {
+    if ($stmt_sjekk->num_rows < 1) {
         $sql = "INSERT INTO likes (traad_id, bruker_id, bruker_navn) VALUES(?, ?, ?)";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("iis", $traad_id, $bruker_id, $bruker_navn);
@@ -21,6 +21,7 @@ function likTraad($conn, $traad_id, $bruker_id, $bruker_navn) {
     } else {
         return false;
     }
+    $stmt->close();
 }
 
 function likInnlegg($conn, $traad_id, $innlegg_id, $bruker_id, $bruker_navn) {
@@ -54,7 +55,6 @@ function getLikes($conn, $innlegg_id, $traad_id) {
         $stmt->execute();
         $res = $stmt->get_result();
         $row = $res->fetch_assoc();
-        $stmt->close();
 
         $antLikes = $row['antLikes'];
         if (harLikt($conn, "traad", $innlegg_id, $traad_id, $_SESSION['bruker_id']) == true) {
@@ -72,6 +72,7 @@ function getLikes($conn, $innlegg_id, $traad_id) {
                 return "ingen har likt dette enda";
             }
         }
+        $stmt->close();
     }
     // Teller likes i innlegg
     else {
@@ -91,13 +92,9 @@ function getLikes($conn, $innlegg_id, $traad_id) {
             } else {
                 return "0 andre liker dette";
             }
-        }
-
-        if ($antLikes > 0) {
-            return $antLikes . " liker dette";
         } else {
             if ($antLikes > 0) {
-                return $antLikes . " andre liker dette";
+                return $antLikes . " liker dette";
             } else {
                 return "ingen har likt dette enda";
             }
@@ -106,37 +103,37 @@ function getLikes($conn, $innlegg_id, $traad_id) {
 }
 
 function harLikt ($conn, $type, $innlegg_id, $traad_id, $bruker_id) {
-    if ($type = "traad") {
-        $sql = "SELECT innlegg_id, traad_id, bruker_id FROM likes WHERE bruker_id = ? AND traad_id = ?";
+    if ($type == "traad") {
+        $sql = "SELECT innlegg_id, traad_id, bruker_id FROM likes WHERE bruker_id = ? AND traad_id = ? AND innlegg_id IS NULL";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("ii", $bruker_id, $traad_id);
         $stmt->execute();
-        $res = $stmt->get_result();
-        $stmt->close();
+        $stmt->store_result();
+        $stmt->bind_result($innlegg_id, $traad_id, $bruker_id);
 
-        if ($res->num_rows >= 1) {
+        if ($stmt->num_rows >= 1) {
             return true;
         } else {
             return false;
         }
-    } elseif ($type = "innlegg") {
+        $stmt->close();
+    }
+
+    if ($type == "innlegg") {
         $sql = "SELECT innlegg_id, traad_id, bruker_id FROM likes WHERE bruker_id = ? AND traad_id = ? AND innlegg_id = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("iii", $bruker_id, $traad_id, $innlegg_id);
         $stmt->execute();
-        $res = $stmt->get_result();
-        $stmt->close();
+        $stmt->store_result();
+        $stmt->bind_result($innlegg_id, $traad_id, $bruker_id);
 
-        if ($res->num_rows >= 1) {
+        if ($stmt->num_rows >= 1) {
             return true;
         } else {
             return false;
         }
-    } else {
-        return false;
+        $stmt->close();
     }
-
-
 }
 
 function aktivitetIdag($conn, $type, $bruker_id){

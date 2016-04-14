@@ -17,7 +17,6 @@ if (isset($_GET['ukat_id']) && isset($_GET['traad_id']) && innlogget()) {
             <li><a href="kategori.php?kat_id=$kat_id">$katnavn</a></li>
             <li><a href="kategori.php?kat_id=$kat_id&ukat_id=$ukat_id">$ukatnavn</a></li>            
         </ol>
-        <div class="clearfix"></div>
 _END;
 
     // Finner sideNr
@@ -82,7 +81,6 @@ _END;
     $traadlikes = getLikes($conn, null, $traad_id);
     $traad_innhold = strip_tags($traad_traad_innhold, '<i><b><u>');
 
-
     if ($stmt = $conn->prepare("SELECT bruker_dato FROM bruker WHERE bruker_id = ?")) {
         $stmt->bind_param("i", $traad_bruker_id);
         $stmt->execute();
@@ -92,10 +90,7 @@ _END;
         $stmt->close();
     }
 
-
     $bruker_siden_traad = date("d-m-Y", strtotime($bruker_dato));
-
-
     echo <<<_END
         </div>
         <div class="traadtop"><h3>$traad_traad_tittel<br><small>Skrevet av 
@@ -147,12 +142,7 @@ _END;
     $stmt_pagedata->store_result();
     $stmt_pagedata->bind_result($pagedata_innlegg_id, $pagedata_traad_id, $pagedata_innlegg_innhold, $pagedata_innlegg_dato,
                                 $pagedata_ukat_id, $pagedata_bruker_id, $pagedata_bruker_navn);
-
-
-
-
-
-
+    
     while ($stmt_pagedata->fetch()) {
         $bilde = hentBilde($conn, $pagedata_bruker_id);
         $dato = datoSjekk($pagedata_innlegg_dato);
@@ -202,15 +192,17 @@ _END;
 _END;
                     }
                         echo '<ol class="likepost">';
+
                             if (harLikt($conn, "innlegg", $pagedata_innlegg_id, $traad_id, $_SESSION['bruker_id']) == false) {
-                                echo '<li id="likinnlegg_btn">
-                                                                <a href="includes/endringer.php?traad_id='
+                                echo '<li id="likinnlegg_btn"><a href="includes/endringer.php?traad_id='
                                     . $traad_id . '&innlegg_id='
                                     . $pagedata_innlegg_id . '&bruker_id='
                                     . $_SESSION['bruker_id'] . '&bruker_navn='
                                     . $_SESSION['bruker_navn'] . '&likinnlegg=true"> 
                                                             <i class="fa fa-thumbs-up"></i> Lik</a></li><li>' . $innlegglikes . '</li>';
-                            } else {
+                            }
+
+                            else {
                                 echo '<li>Du og ' . $innlegglikes . '</li>';
                             }
                             echo '</ol>';

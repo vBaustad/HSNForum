@@ -306,8 +306,7 @@ if (isset($_POST['svar_btn']) && innlogget()) {
 }
 
 /* NY LIKE, TRÅD */
-if (isset($_GET['liktraad']) && isset($_GET['traad_id']) && isset($_GET['bruker_id']) && isset($_GET['bruker_navn']) && innlogget()) {
-
+if (isset($_GET['liktraad']) && !isset($_GET['likinnlegg']) && isset($_GET['traad_id']) && isset($_GET['bruker_id']) && isset($_GET['bruker_navn']) && innlogget()) {
     $traad_id = $_GET['traad_id'];
     $ukat_id = hvorErJeg($conn, "traad", $traad_id)[0];
     likTraad($conn, $_GET['traad_id'], $_GET['bruker_id'], $_GET['bruker_navn']);
@@ -315,9 +314,7 @@ if (isset($_GET['liktraad']) && isset($_GET['traad_id']) && isset($_GET['bruker_
 }
 
 /* NY LIKE, INNLEGG */
-if (isset($_GET['likinnlegg']) && isset($_GET['traad_id']) && isset($_GET['innlegg_id']) && isset($_GET['bruker_id']) && isset($_GET['bruker_navn']) && innlogget()) {
-    echo "Lol";
-    echo "tråd id = " . $_GET['traad_id'] . " innlegg_id = " . $_GET['innlegg_id'] . " bruker id = " . $_GET['bruker_id'] . " brukernavn = " . $_GET['bruker_navn'];
+if ( isset($_GET['likinnlegg']) && !isset($_GET['liktraad']) && isset($_GET['traad_id']) && isset($_GET['innlegg_id']) && isset($_GET['bruker_id']) && isset($_GET['bruker_navn']) && innlogget()) {
     $traad_id = $_GET['traad_id'];
     $ukat_id = hvorErJeg($conn, "traad", $traad_id)[0];
     likInnlegg($conn, $_GET['traad_id'], $_GET['innlegg_id'], $_GET['bruker_id'], $_GET['bruker_navn']);
