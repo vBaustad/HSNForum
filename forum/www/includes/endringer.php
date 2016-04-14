@@ -81,7 +81,8 @@ if (isset($_POST['slett_ukat_btn']) && $_SESSION['bruker_level'] == '2') {
 }
 
 /* SLETTE TRÅDER */
-if (isset($_POST['slett_traad_btn'])) {
+if (isset($_POST['slett_traad_submit'])) {
+    echo "Lol";
     $traad_id = $_GET['slett_traad_id'];
     $ukat_id = $_GET['ukat_id'];
     $kat_id = hvorErJeg($conn, "ukat", $ukat_id)[0];
@@ -184,22 +185,21 @@ if (isset($_POST['nytt_pass_submitt']) && innlogget()) {
 }
 
 /* NYTT PROFILBILDE */
-if (isset($_POST['nytt_bilde_submitt']) && innlogget()) {
+if (isset($_POST['nytt_bilde_submitt']) && isset($_FILES['upload_file']) && innlogget()) {
     $img_fil = basename($_FILES['upload_file']['name']);
     $img_fil_type = pathinfo($img_fil, PATHINFO_EXTENSION);
     $uploadok = 1;
-
+    $bruker_id = $_SESSION['bruker_id'];
     $sjekk_filtype = getimagesize($_FILES['upload_file']['tmp_name']);
-    if ($sjekk_filtype !== false ) {
+
+    if ($sjekk_filtype != false) {
         echo "Filen er ett bilde - " . $sjekk_filtype['mime'] . ".<br>";
     } else {
-        echo "Filen er ikke ett bilde<br>";
         $uploadok = 0;
     }
 
     // Hvis filen er større en 5MB
-    if ($_FILES['upload_file']['size'] > 5000000) {
-        echo "Filen er for stor!<br>";
+    if ($_FILES['upload_file']['size'] > 2000000) {
         $uploadok = 0;
     }
 
@@ -210,7 +210,7 @@ if (isset($_POST['nytt_bilde_submitt']) && innlogget()) {
     }
 
     if ($uploadok == 0) {
-        echo "Kunne ikke laste opp filen";
+        header("Location: ../bruker.php?bruker=$bruker_id&feil=1");
     } else {
         // Setter bilenavn = bruker_id
         $bruker_id = $_SESSION['bruker_id'];
@@ -219,16 +219,41 @@ if (isset($_POST['nytt_bilde_submitt']) && innlogget()) {
 
         // Laster opp og plaserer filen.
         if (move_uploaded_file($_FILES["upload_file"]["tmp_name"], "../img/profilbilder/" . $nyfilnavn)) {
-            echo "Filen " . basename($_FILES['upload_file']['name']) . " Har blitt opplastet!<br>";
             $bildefil = $nyfilnavn;
-            echo $bildefil;
             $sql = "UPDATE bruker SET bruker_bilde = ? WHERE bruker_id = ?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param("si", $bildefil, $bruker_id);
             $stmt->execute();
 
+            header("Location: ../bruker.php?bruker=$bruker_id");
+            exit();
+
         } else {
-            echo "noe gikk galt...<br>";
+            header("Location: ../bruker.php?bruker=$bruker_id&feil=1");
+        }
+    }
+}
+
+/* GI/FJERN RETTIGHETER */
+if (isset($_POST['endre_rettigheter_submit']) && innlogget() && bruker_level() == 'admin') {
+    $bruker_id = $_GET['bruker_id'];
+    $bruker_level = $_GET['bruker_level'];
+
+    // FJERN rettigheter
+    if ($bruker_level == '2') {
+        if ($stmt = $conn->prepare("UPDATE bruker SET bruker_level = '1' WHERE bruker_id = ? ")) {
+            $stmt->bind_param("i", $bruker_id);
+            $stmt->execute();
+            $stmt->close();
+        }
+    }
+
+    // GI rettigheter
+    if ($bruker_level == '1') {
+        if ($stmt = $conn->prepare("UPDATE bruker SET bruker_level = '2' WHERE bruker_id = ? ")) {
+            $stmt->bind_param("i", $bruker_id);
+            $stmt->execute();
+            $stmt->close();
         }
     }
 }

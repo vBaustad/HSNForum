@@ -7,22 +7,24 @@ require_once 'includes/boxes.php';
 if (isset($_GET['bruker']) && $_GET['bruker'] > 0) {
     $bruker_id = $_GET['bruker'];
 
+    $stmt = $conn->prepare("SELECT bruker_level FROM bruker WHERE bruker_id = ?");
+    $stmt->bind_param("i", $bruker_id);
+    $stmt->execute();
+    $stmt->store_result();
+    $stmt->bind_result($bruker_level);
+    $stmt->fetch();
+    $brukerlevel = $bruker_level;
+    $stmt->close();
+
     if($stmt = $conn->prepare("SELECT bruker_navn, bruker_fornavn, bruker_etternavn, bruker_bilde, bruker_dato, bruker_mail FROM bruker WHERE bruker_id = ? ")){
         // Bind parameters
         $stmt -> bind_param("i", $bruker_id);
         $stmt -> execute();
         $stmt -> store_result();
-
-        //Bind results
         $stmt -> bind_result($sql_bruker_navn, $sql_bruker_fornavn, $sql_bruker_etternavn, $sql_bruker_bilde, $sql_bruker_dato, $sql_bruker_mail);
-
-        //fetch value
         $stmt -> fetch();
-
-        //close statement
         $stmt -> close();
     }
-    
 
     if (innlogget() && $_GET['bruker'] == $_SESSION['bruker_id']) {
         $header_text = "Min profil";
@@ -38,7 +40,7 @@ if (isset($_GET['bruker']) && $_GET['bruker'] > 0) {
     $ant_traader = tellTraader($conn, "bruker", $bruker_id);
     $medlem_dato = datoSjekk($sql_bruker_dato);
 
-echo <<<_END
+        echo <<<_END
        <div class="bruker_profilbilde_container">
             <img class="bruker_profilbilde" src="img/profilbilder/$profilbilde  ">
             <h1> $header_text </h1>
@@ -50,8 +52,11 @@ echo <<<_END
         <ul id="bruker_endringer">
             <li id="om_bruker"><i class="fa fa-user"></i>Om $sql_bruker_navn</li>
 _END;
+    if (innlogget() && bruker_level() == 'admin' && $_GET['bruker'] != $_SESSION['bruker_id']) {
+        echo '<li id="endre_rettigheter"><i class="fa fa-star"></i>Endre rettigheter</li>';
+    }
         if (innlogget() && $_GET['bruker'] == $_SESSION['bruker_id']) {
-echo <<<_END
+        echo <<<_END
             <li id="endre_pass"><i class="fa fa-key"></i>Endre passord</li>
             <li id="endre_epost"><i class="fa fa-envelope"></i>Endre epost</li>
             <li id="endre_bilde"><i class="fa fa-picture-o"></i>Endre profilbilde</li>
@@ -59,8 +64,9 @@ _END;
         }
         echo '</ul>';
 
+        // Nytt passord bekreftelse
         if (isset($_GET['nytt_pass']) && $_GET['nytt_pass'] == 1) {
-echo <<<_END
+        echo <<<_END
             <div class="endringer_box">
                 <div class="popup-header center">
                     <div class="pull-left" style="width: 80%">
@@ -74,12 +80,13 @@ echo <<<_END
 _END;
         }
 
+        // Ny epost bekreftelse
         if (isset($_GET['ny_epost']) && $_GET['ny_epost'] == 1) {
-echo <<<_END
+        echo <<<_END
             <div class="endringer_box">
                 <div class="popup-header center">
                     <div class="pull-left" style="width: 80%">
-                        <h3 class="endringer_box_h2 white pull-right"><i class="fa fa-check-square-o"></i> Epost endret!</h3>
+                        <h2 class="endringer_box_h2 white pull-right"><i class="fa fa-check-square-o"></i> Epost endret!</h2>
                     </div>
                     <div class="pull-right" style="width: 20%;">
                         <i class="box-icon-lukk fa fa-times fa-2x red pull-right"></i>
@@ -89,10 +96,28 @@ echo <<<_END
 _END;
         }
 
+    // Opplasting av nytt profilbilde feilet. Fil format.
+    if (isset($_GET['feil']) && $_GET['feil'] == 1) {
+        echo <<<_END
+            <div class="endringer_box">
+                <div class="popup-header center">
+                    <div class="pull-left" style="width: 80%">
+                        <h2 class="endringer_box_h2 white pull-right"><i class="fa fa-exclamation-triangle"></i> Noe gikk galt!</h2>
+                    </div>
+                    <div class="pull-right" style="width: 20%;">
+                        <i class="box-icon-lukk fa fa-times fa-2x red pull-right"></i>
+                    </div>
+                </div>
+                    <p class="popup-feil white center">Bildet du prøvde å laste opp har enten ikke riktig format eller er for stort. <br><br>
+                    Kun jpg, gif eller png er tillatt! Bildet kan heller ikke være større enn 2MB</p>
+            </div>
+_END;
+    }
+
     /*Om bruker*/
-echo <<<_END
+        echo <<<_END
         <div id="bruker_info">
-            <h3>Om $sql_bruker_navn </h3>
+            <h2>Om $sql_bruker_navn </h2>
             <div>Navn: <p class="bruker_info_format">$sql_bruker_fornavn $sql_bruker_etternavn </p></div>
 _END;
             if (innlogget() && $_GET['bruker'] == $_SESSION['bruker_id']) {
@@ -107,9 +132,8 @@ _END;
 _END;
 
 
-
     /* HTML-kode for å endre passord, endre epost, og endre/legge til profilbilde. */
-echo <<<_END
+        echo <<<_END
         <div id="endre_pass_box">
             <h2>Endre passord</h2>
             <form id="endre_pass_form" name="endre_pass_form" method="post" action="includes/endringer.php" onsubmit="return sjekkSkjema()">
@@ -136,7 +160,7 @@ echo <<<_END
     
 
         <div id="endre_epost_box">
-        <h2>Endre epost</h2>
+            <h2>Endre epost</h2>
 
            <form id="endre_epost_form" name="endre_epost_form" method="post" action="includes/endringer.php" onsubmit="return sjekkSkjema()">
                 <div class="form_divider">
@@ -168,7 +192,26 @@ echo <<<_END
                 <input type="submit" name="nytt_bilde_submitt" id="nytt_bilde_submitt" value="LAST OPP">
             </form>
         </div>
-        <div class="clearfix"></div>
+        
+        <div id="endre_rettigheter_box">
+            <h2>Gi/endre rettigheter</h2>
+            <form id="endre_pass_form" name="endre_pass_form" method="post" action="includes/endringer.php?bruker_id=$bruker_id&bruker_level=$brukerlevel">
+                
+_END;
+                if ($brukerlevel == 1) {
+                    echo <<<_END
+                    <h4>Ved å gi $brukernavn administrative rettigheter, vil han/hun ha mulighet til å:<br>
+                        Slette innlegg, tråder, underkategorier, og kategorier.
+                    </h4>
+                    <input type="submit" name="endre_rettigheter_submit" id="endre_rettigheter_submit" value="GI RETTIGHETER">
+_END;
+                } else {
+                    echo '<input type="submit" name="endre_rettigheter_submit" id="endre_rettigheter_submit" value="FJERN RETTIGHETER">';
+                }
+            echo <<<_END
+            </form>
+        </div>
+    <div class="clearfix"></div>
     </div>
 _END;
 

@@ -201,8 +201,11 @@ _END;
     }
     $stmt_pagedata->close();
     echo <<<_END
+    
         </div>
-        <form name="form_svar" action="includes/endringer.php?ukat_id=$ukat_id&traad_id=$traad_id" method="post">
+        <div id="innleggErr" class="red clearfix"></div>
+        <form name="form_svar" action="includes/endringer.php?ukat_id=$ukat_id&traad_id=$traad_id" method="post" onsubmit="return innleggVal()">
+            
             <textarea name="innlegg_innhold" id="innlegg_innhold" placeholder="Har du noe spennende å bidra med..?"></textarea>
             <input type="submit" name="svar_btn" id="svar_btn" class="std_btn" value="Svar" onclick="post()">
         </form>
@@ -217,8 +220,10 @@ if (isset($_GET['kat_id']) && isset($_GET['ukat_id']) && isset($_GET['nytraad'])
     $ukat_id = $_GET['ukat_id'];
 
     echo <<<_END
-    <form action="includes/endringer.php?kat_id=$kat_id&ukat_id=$ukat_id" method="post">
-        <input type="text" name="ny_traad_navn" id="ny_traad_navn" class="std_input mar-bot" placeholder="traadnavn">
+    <form action="includes/endringer.php?kat_id=$kat_id&ukat_id=$ukat_id" method="post" onsubmit="return traadVal()">
+        <span id="TittelErr"></span>
+        <input type="text" name="ny_traad_navn" id="ny_traad_navn" class="std_input mar-bot" placeholder="Trådnavn">
+        <span id="InnholdErr"></span>
         <textarea name="ny_traad_text" id="ny_traad_text" class="std_input" placeholder="Hva har du på hjertet...?"></textarea>
 
         <div id="traad_buttons" clasS="pull-right">
@@ -238,7 +243,7 @@ _END;
 <div id="slett_traad">
     <div class="popup-header center">
         <div class="pull-left" style="width: 70%">
-            <h2 class="white icon-user pull-right"><i class="fa fa-minus-square-o"></i> Slette kategori?</h2>
+            <h2 class="white icon-user pull-right"><i class="fa fa-minus-square-o"></i> Slette tråd?</h2>
         </div>
         <div class="pull-right half" style="width: 30%;">
             <i class="box-icon-lukk fa fa-times fa-2x red pull-right"></i>
@@ -246,10 +251,10 @@ _END;
     </div>
     <div class="popup-container center">
         <?php echo '<form id="slett_kat_form" name="slett_kat_form" method="post" action="includes/endringer.php?slett_traad_id=' . $traad_id  . '&ukat_id=' . $ukat_id . '">' ?>
-        <div class="popup-divider">
-            <?php echo '<p class="white">Er du sikker på at du vil slette tråden ' . $traad_traad_tittel .  '?</p>' ?>
-        </div>
-        <button type="submit" name="slett_traad_submit" id="slett_traad_submit" class="button-lukk">Slett den</button>
+            <div class="popup-divider">
+                <?php echo '<p class="white">Er du sikker på at du vil slette tråden ' . $traad_traad_tittel .  '?</p>' ?>
+            </div>
+            <button type="submit" name="slett_traad_submit" id="slett_traad_submit" class="button-lukk">Slett den</button>
         </form>
     </div>
 </div>

@@ -164,7 +164,7 @@ _END;
                         <td><h4><a href="traad.php?ukat_id=$ukat_id&traad_id=$sql_traad_id">
                                     $sql_traad_tittel
                                 </a><br>
-                                <small><a href="#">$sql_traad_bruker_navn</a>
+                                <small><a href="bruker.php?bruker=$sql_traad_bruker_id">$sql_traad_bruker_navn</a>
                                      @ $sql_traad_dato
                                 </small></h4></td>
                         <td class="center skjul-liten skjul-medium">$sql_antInnlegg</td>
@@ -225,10 +225,10 @@ _END;
     <div class="popup-container center">
         <?php echo '<form id="ny_ukat_form" name="ny_ukat_form" method="post" action="includes/endringer.php?kat_id=' . $kat_id . '">' ?>
             <div class="popup-divider">
-                <input type="text" name="ny_ukat_navn" id="ny_kat_navn" placeholder="Kategori navn" class="popup-input">
+                <input type="text" name="ny_ukat_navn" id="ny_ukat_navn" placeholder="Kategori navn" class="popup-input">
             </div>
             <div class="popup-divider">
-                <input type="text" name="ny_ukat_besk" id="ny_kat_besk" placeholder="Kategori beskrivelse" class="popup-input">
+                <input type="text" name="ny_ukat_besk" id="ny_ukat_besk" placeholder="Kategori beskrivelse" class="popup-input">
             </div>
             <div class="popup-divider">
                 <select name="ny_ukat_img" class="popup-select">
