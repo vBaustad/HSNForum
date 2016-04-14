@@ -1,7 +1,6 @@
 <?php
 require_once 'db_connect.php';
 
-// TODO: Flytt likTraad og likInnlegg sammen, Bruk paramenter "$type" som i "harLikt" funksjonen!
 function likTraad($conn, $traad_id, $bruker_id, $bruker_navn) {
     // Sjekk først om han/hun har likt traaden.
     $sql = "SELECT traad_id, bruker_id FROM likes WHERE bruker_id = ? AND traad_id = ?";
@@ -86,12 +85,22 @@ function getLikes($conn, $innlegg_id, $traad_id) {
         $antLikes = $row['antLikes'];
         if (harLikt($conn, "innlegg", $innlegg_id, $traad_id, $_SESSION['bruker_id']) == true) {
             $antLikes -= 1;
+
+            if ($antLikes > 0) {
+                return $antLikes . " andre liker dette";
+            } else {
+                return "0 andre liker dette";
+            }
         }
 
         if ($antLikes > 0) {
             return $antLikes . " liker dette";
         } else {
-            return "0 likes";
+            if ($antLikes > 0) {
+                return $antLikes . " andre liker dette";
+            } else {
+                return "ingen har likt dette enda";
+            }
         }
     }
 }
@@ -333,15 +342,15 @@ function hvorErJeg ($conn, $type, $id) {
         }
     }
     elseif ($type == "traad") {
-        if ($stmt = $conn->prepare("SELECT traad_tittel FROM traad WHERE traad_id = ?")) {
+        if ($stmt = $conn->prepare("SELECT traad_tittel, ukat_id FROM traad WHERE traad_id = ?")) {
             $stmt->bind_param("i", $id);
             $stmt->execute();
             $stmt->store_result();
-            $stmt->bind_result($sql_traad_id);
+            $stmt->bind_result($sql_traad_id, $ukat_id);
             $stmt->fetch();
             $stmt->close();
 
-            return $sql_traad_id;
+            return array ($ukat_id, $sql_traad_id);
         }
     }
     else {

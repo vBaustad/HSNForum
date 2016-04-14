@@ -105,7 +105,7 @@ function slettPost(id) {
                 document.getElementById("meldinger").innerHTML = xmlhttp.responseText;
             }
         };
-        xmlhttp.open("GET", "includes/endringer.php?innlegg_id="+id, true);
+        xmlhttp.open("GET", "includes/endringer.php?innlegg_id="+id+"&slett_innlegg", true);
         xmlhttp.send();
         location.reload();
     });

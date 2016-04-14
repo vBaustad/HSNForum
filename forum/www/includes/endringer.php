@@ -101,7 +101,7 @@ if (isset($_POST['slett_traad_submit'])) {
 }
 
 /* SLETTE INNLEGG */
-if (isset($_GET['innlegg_id'])) {
+if (isset($_GET['innlegg_id']) && isset($_GET['slett_innlegg']) && innlogget()) {
     $innlegg_id = $_GET['innlegg_id'];
 
     if ($stmt =  $conn-> prepare("DELETE FROM innlegg WHERE innlegg_id = ?")) {
@@ -256,6 +256,7 @@ if (isset($_POST['endre_rettigheter_submit']) && innlogget() && bruker_level() =
             $stmt->close();
         }
     }
+    header("Location: ../bruker.php?bruker=$bruker_id");
 }
 
 /* NY TRÅD */
@@ -294,11 +295,21 @@ if (isset($_POST['svar_btn']) && innlogget()) {
 }
 
 /* NY LIKE, TRÅD */
-if (isset($_GET['traad_id']) && isset($_GET['bruker_id']) && isset($_GET['bruker_navn']) && innlogget()) {
-    echo likTraad($conn, $_GET['traad_id'], $_GET['bruker_id'], $_GET['bruker_navn']);
+if (isset($_GET['liktraad']) && isset($_GET['traad_id']) && isset($_GET['bruker_id']) && isset($_GET['bruker_navn']) && innlogget()) {
+
+    $traad_id = $_GET['traad_id'];
+    $ukat_id = hvorErJeg($conn, "traad", $traad_id)[0];
+    likTraad($conn, $_GET['traad_id'], $_GET['bruker_id'], $_GET['bruker_navn']);
+    header("Location: ../traad.php?ukat_id=$ukat_id&traad_id=$traad_id");
 }
 
 /* NY LIKE, INNLEGG */
-if (isset($_GET['traad_id']) && isset($_GET['innlegg_id']) && isset($_GET['bruker_id']) && isset($_GET['bruker_navn']) && innlogget()) {
-    echo likInnlegg($conn, $_GET['traad_id'], $_GET['innlegg_id'], $_GET['bruker_id'], $_GET['bruker_navn']);
+if (isset($_GET['likinnlegg']) && isset($_GET['traad_id']) && isset($_GET['innlegg_id']) && isset($_GET['bruker_id']) && isset($_GET['bruker_navn']) && innlogget()) {
+    echo "Lol";
+    echo "tråd id = " . $_GET['traad_id'] . " innlegg_id = " . $_GET['innlegg_id'] . " bruker id = " . $_GET['bruker_id'] . " brukernavn = " . $_GET['bruker_navn'];
+    $traad_id = $_GET['traad_id'];
+    $ukat_id = hvorErJeg($conn, "traad", $traad_id)[0];
+    likInnlegg($conn, $_GET['traad_id'], $_GET['innlegg_id'], $_GET['bruker_id'], $_GET['bruker_navn']);
+
+    // header("Location: ../traad.php?ukat_id=$ukat_id&traad_id=$traad_id");
 }

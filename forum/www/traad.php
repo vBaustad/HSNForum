@@ -17,6 +17,7 @@ if (isset($_GET['ukat_id']) && isset($_GET['traad_id']) && innlogget()) {
             <li><a href="kategori.php?kat_id=$kat_id">$katnavn</a></li>
             <li><a href="kategori.php?kat_id=$kat_id&ukat_id=$ukat_id">$ukatnavn</a></li>            
         </ol>
+        <div class="clearfix"></div>
 _END;
 
     // Finner sideNr
@@ -78,7 +79,7 @@ _END;
     }
     $bilde = hentBilde($conn, $traad_bruker_id);
     $datosjekk = datoSjekk($traad_traad_dato);
-    $likes = getLikes($conn, null, $traad_id);
+    $traadlikes = getLikes($conn, null, $traad_id);
     $traad_innhold = strip_tags($traad_traad_innhold, '<i><b><u>');
 
 
@@ -120,19 +121,18 @@ _END;
                         </div>
                         <ol class="likepost pull-right clearfix">
 _END;
-                            /* TODO: Sjekk erinnlogget() */
                             if (harLikt($conn, "traad", null, $traad_id, $_SESSION['bruker_id']) == false) {
-                                echo '<li id="likepost_btn">
+                                echo '<li id="liktraad_btn">
                                             <a href="includes/endringer.php?traad_id='
                                                 . $traad_id . '&bruker_id='
                                                 . $_SESSION['bruker_id'] . '&bruker_navn='
-                                                . $_SESSION['bruker_navn'] . '"> 
-                                        <i class="fa fa-thumbs-up"></i> Lik</a></li>';
+                                                . $_SESSION['bruker_navn'] . '&liktraad=true"> 
+                                        <i class="fa fa-thumbs-up"></i> Lik</a></li><li>' . $traadlikes . '</li>';
                             } else {
-                                echo "Du og ";
+                                echo '<li>Du og ' . $traadlikes . '</li>';
                             }
                             echo <<<_END
-                            <li>$likes</li>
+                            
                         </ol>
                     </div>
                 </div>
@@ -157,6 +157,7 @@ _END;
         $bilde = hentBilde($conn, $pagedata_bruker_id);
         $dato = datoSjekk($pagedata_innlegg_dato);
         $innlegg_innhold = strip_tags($pagedata_innlegg_innhold, '<i><b><u>');
+        $innlegglikes = getLikes($conn, $pagedata_innlegg_id, $traad_id);
 
         if ($stmt = $conn->prepare("SELECT bruker_dato FROM bruker WHERE bruker_id = ?")) {
             $stmt->bind_param("i", $pagedata_bruker_id);
@@ -183,21 +184,40 @@ _END;
                 </div>
                 <div class="table-cell traadright">
 _END;
-                if (innlogget() == true && bruker_level() == "admin" || innlogget() && $pagedata_bruker_id == $_SESSION['bruker_id']) {
+
+                    echo <<<_END
+                    <div class="pull-left">
+                        <i class="test fa fa-clock-o"></i> $dato<p class="traad_mobile"> av <a href="#">$traad_bruker_navn</a></p>
+                        <div class="innlegg_innhold">
+                            $pagedata_innlegg_innhold
+                        </div>
+                    </div>
+                    <div class="likeogslett pull-right">
+_END;
+                    if (innlogget() == true && bruker_level() == "admin" || innlogget() && $pagedata_bruker_id == $_SESSION['bruker_id']) {
                         echo <<<_END
-                            <input type="button" class="pull-right button-std mar-bot mar-right" id="$pagedata_innlegg_id" 
-                                   value="slett innlegg" onclick="slettPost(id)">
+                            <input type="button" class="pull-right button-std mar-bot mar-right" id="$pagedata_innlegg_id"
+                               value="slett innlegg" onclick="slettPost(id)">
                             <div class="clearfix"></div>
 _END;
                     }
-                echo <<<_END
-                
-                    <i class="fa fa-clock-o"></i> $dato<p class="traad_mobile"> av <a href="#">$traad_bruker_navn</a></p>
-                    <div class="innlegg_innhold">
-                        $pagedata_innlegg_innhold
+                        echo '<ol class="likepost">';
+                            if (harLikt($conn, "innlegg", $pagedata_innlegg_id, $traad_id, $_SESSION['bruker_id']) == false) {
+                                echo '<li id="likinnlegg_btn">
+                                                                <a href="includes/endringer.php?traad_id='
+                                    . $traad_id . '&innlegg_id='
+                                    . $pagedata_innlegg_id . '&bruker_id='
+                                    . $_SESSION['bruker_id'] . '&bruker_navn='
+                                    . $_SESSION['bruker_navn'] . '&likinnlegg=true"> 
+                                                            <i class="fa fa-thumbs-up"></i> Lik</a></li><li>' . $innlegglikes . '</li>';
+                            } else {
+                                echo '<li>Du og ' . $innlegglikes . '</li>';
+                            }
+                            echo '</ol>';
+
+                    echo '</div>
                     </div>
-                </div></div>
-_END;
+                </div>';
     }
     $stmt_pagedata->close();
     echo <<<_END
