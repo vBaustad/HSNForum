@@ -104,10 +104,21 @@ if (isset($_POST['slett_traad_submit'])) {
 if (isset($_GET['innlegg_id']) && isset($_GET['slett_innlegg']) && innlogget()) {
     $innlegg_id = $_GET['innlegg_id'];
 
-    if ($stmt =  $conn-> prepare("DELETE FROM innlegg WHERE innlegg_id = ?")) {
+    if ($stmt = $conn->prepare("SELECT bruker_id FROM innlegg WHERE innlegg_id = ?")) {
         $stmt->bind_param("i", $innlegg_id);
         $stmt->execute();
+        $stmt->bind_result($innlegg_av_bruker_id);
+        $stmt->store_result();
+        $stmt->fetch();
         $stmt->close();
+
+        if ($innlegg_av_bruker_id == $_SESSION['bruker_id'] || bruker_level() == 'admin') {
+            if ($stmt =  $conn-> prepare("DELETE FROM innlegg WHERE innlegg_id = ?")) {
+                $stmt->bind_param("i", $innlegg_id);
+                $stmt->execute();
+                $stmt->close();
+            }
+        }
     }
     else {
         echo "kunne ikke slette innlegg.";
@@ -311,5 +322,5 @@ if (isset($_GET['likinnlegg']) && isset($_GET['traad_id']) && isset($_GET['innle
     $ukat_id = hvorErJeg($conn, "traad", $traad_id)[0];
     likInnlegg($conn, $_GET['traad_id'], $_GET['innlegg_id'], $_GET['bruker_id'], $_GET['bruker_navn']);
 
-    // header("Location: ../traad.php?ukat_id=$ukat_id&traad_id=$traad_id");
+    header("Location: ../traad.php?ukat_id=$ukat_id&traad_id=$traad_id");
 }
