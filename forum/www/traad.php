@@ -81,6 +81,20 @@ _END;
     $likes = getLikes($conn, null, $traad_id);
     $traad_innhold = strip_tags($traad_traad_innhold, '<i><b><u>');
 
+
+    if ($stmt = $conn->prepare("SELECT bruker_dato FROM bruker WHERE bruker_id = ?")) {
+        $stmt->bind_param("i", $traad_bruker_id);
+        $stmt->execute();
+        $stmt->store_result();
+        $stmt->bind_result($bruker_dato);
+        $stmt->fetch();
+        $stmt->close();
+    }
+
+
+    $bruker_siden_traad = date("d-m-Y", strtotime($bruker_dato));
+
+
     echo <<<_END
         </div>
         <div class="traadtop"><h3>$traad_traad_tittel<br><small>Skrevet av 
@@ -97,7 +111,7 @@ _END;
                             $traad_bruker_navn
                         </a>
                         <div class="clearfix"></div>
-                        <small>Echo mer om bruker her!</small>
+                        <small>Medlem siden: <br>$bruker_siden_traad!</small>
                     </div>
                     <div class="table-cell traadright">
                         <i class="fa fa-clock-o"></i> $datosjekk<p class="traad_mobile"> av <a href="#">$traad_bruker_navn</a></p>
@@ -134,10 +148,26 @@ _END;
     $stmt_pagedata->bind_result($pagedata_innlegg_id, $pagedata_traad_id, $pagedata_innlegg_innhold, $pagedata_innlegg_dato,
                                 $pagedata_ukat_id, $pagedata_bruker_id, $pagedata_bruker_navn);
 
+
+
+
+
+
     while ($stmt_pagedata->fetch()) {
         $bilde = hentBilde($conn, $pagedata_bruker_id);
         $dato = datoSjekk($pagedata_innlegg_dato);
         $innlegg_innhold = strip_tags($pagedata_innlegg_innhold, '<i><b><u>');
+
+        if ($stmt = $conn->prepare("SELECT bruker_dato FROM bruker WHERE bruker_id = ?")) {
+            $stmt->bind_param("i", $pagedata_bruker_id);
+            $stmt->execute();
+            $stmt->store_result();
+            $stmt->bind_result($innlegg_bruker_dato);
+            $stmt->fetch();
+            $stmt->close();
+        }
+
+        $bruker_siden_innlegg = date("d-m-Y", strtotime($innlegg_bruker_dato));
 
         echo <<<_END
             <div class="table-row traadspacer"></div>
@@ -149,7 +179,7 @@ _END;
                         $pagedata_bruker_navn
                     </a>
                     <div class="clearfix"></div>
-                    <small>Echo mer om bruker her!</small>
+                    <small>Medlem siden: <br>$bruker_siden_innlegg</small>
                 </div>
                 <div class="table-cell traadright">
 _END;
