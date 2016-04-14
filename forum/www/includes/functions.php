@@ -332,6 +332,18 @@ function hvorErJeg ($conn, $type, $id) {
             return array ($sql_kat_id, $sql_ukat_navn);
         }
     }
+    elseif ($type == "traad") {
+        if ($stmt = $conn->prepare("SELECT traad_tittel FROM traad WHERE traad_id = ?")) {
+            $stmt->bind_param("i", $id);
+            $stmt->execute();
+            $stmt->store_result();
+            $stmt->bind_result($sql_traad_id);
+            $stmt->fetch();
+            $stmt->close();
+
+            return $sql_traad_id;
+        }
+    }
     else {
         return "index.php";
     }

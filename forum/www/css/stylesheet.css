@@ -318,8 +318,7 @@ body {
     margin-top: 40px;
 }
 
-/* TODO: press alt inn i std_btn? */
-#ny_traad_submitt, #nytt_bilde_submitt, #ny_epost_submitt, #nytt_pass_submitt, #registrer_submitt, #logginn_submitt, #ny_kat_submit, #ny_ukat_submit {
+#endre_rettigheter_submit, #ny_traad_submitt, #nytt_bilde_submitt, #ny_epost_submitt, #nytt_pass_submitt, #registrer_submitt, #logginn_submitt, #ny_kat_submit, #ny_ukat_submit {
     color: white;
     font-size: 1.3em;
     width: 100%;
@@ -811,7 +810,7 @@ thead > tr:first-child > th {
     margin: 0;
 }
 
-#endre_bilde_box, #endre_epost_box, #endre_pass_box, #bruker_info {
+#endre_bilde_box, #endre_epost_box, #endre_pass_box, #bruker_info, #endre_rettigheter_box {
     display: none;
 }
 #bruker_container {
@@ -822,7 +821,7 @@ thead > tr:first-child > th {
     background: #c4c1bc;
 }
 
-#bruker_container h2, #endre_pass_box h2, #endre_epost_box h2, #endre_bilde_box h2 {
+#endre_rettigheter_box h2, #bruker_container h2, #endre_pass_box h2, #endre_epost_box h2, #endre_bilde_box h2 {
     margin: 0;
 }
 
@@ -875,11 +874,16 @@ thead > tr:first-child > th {
     padding-right: 5px;
 }
 
-#bruker_info, #endre_pass_box, #endre_bilde_box, #endre_epost_box {
+#bruker_info, #endre_pass_box, #endre_bilde_box, #endre_epost_box, #endre_rettigheter_box {
     box-sizing: border-box;
     padding: 10px 10px 10px 10px;
     list-style: none;
     float: left;
+}
+
+#endre_rettigheter_box {
+    width: 40%;
+    min-width: 300px;
 }
 
 .bruker_info_format {
@@ -929,6 +933,11 @@ thead > tr:first-child > th {
     padding-top: 15px;
 }
 
+.popup-feil {
+    padding: 0 12px 0 12px;
+    margin-bottom: 0;
+}
+
 /* TRÅD.php */
 
 #likepost_btn {
@@ -969,16 +978,28 @@ thead > tr:first-child > th {
 }
 
 #innlegg_innhold {
+    width: 100%;
     margin-top: 10px;
     padding: 5px;
     box-sizing: border-box;
     resize: none;
-    width: 100%;
     height: 100px;
 }
 
 #innlegg_innhold:focus {
     outline-color: #1ab188;
+}
+
+#innleggErr {
+    display: none;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 10px;
+    font-weight: 700;
+    background: #ff7583;
+    padding: 2px 10px 2px 10px;
+    border-radius: 3px;
+    text-align: center;
 }
 
 .traad_side_btn, .traad_side_btn_avtive {

@@ -24,23 +24,34 @@ $(document).ready(function () {
     });
     
     // bruker.php funksjoner
+    $("#bruker_info").show();
+    $("#om_bruker").addClass("bruker_container_pil green_bg");
+    $("#endre_pass, #endre_epost, #endre_bilde, #endre_rettigheter").removeClass("bruker_container_pil green_bg");
+    $("#endre_pass_box, #endre_epost_box, #endre_bilde_box, #endre_rettigheter_box").hide();
+
     $("#om_bruker").click(function () {
         $("#bruker_info").show();
         $("#om_bruker").addClass("bruker_container_pil green_bg");
-        $("#endre_pass, #endre_epost, #endre_bilde").removeClass("bruker_container_pil green_bg");
-        $("#endre_pass_box, #endre_epost_box, #endre_bilde_box").hide();
+        $("#endre_pass, #endre_epost, #endre_bilde, #endre_rettigheter").removeClass("bruker_container_pil green_bg");
+        $("#endre_pass_box, #endre_epost_box, #endre_bilde_box, #endre_rettigheter_box").hide();
+    });
+    $("#endre_rettigheter").click(function () {
+        $("#endre_rettigheter_box").show();
+        $("#endre_rettigheter").addClass("bruker_container_pil green_bg");
+        $("#om_bruker, #endre_epost, #endre_bilde").removeClass("bruker_container_pil green_bg");
+        $("#endre_pass_box, #bruker_info, #endre_epost_box, #endre_bilde_box").hide();
     });
     $("#endre_pass").click(function () {
         $("#endre_pass_box").show();
         $("#endre_pass").addClass("bruker_container_pil green_bg");
-        $("#om_bruker, #endre_epost, #endre_bilde").removeClass("bruker_container_pil green_bg");
-        $("#bruker_info, #endre_epost_box, #endre_bilde_box").hide();
+        $("#om_bruker, #endre_epost, #endre_bilde, #endre_rettigheter").removeClass("bruker_container_pil green_bg");
+        $("#bruker_info, #endre_epost_box, #endre_bilde_box, #endre_rettigheter_box").hide();
     });
     $("#endre_epost").click(function () {
         $("#endre_epost_box").show();
         $("#endre_epost").addClass("bruker_container_pil green_bg");
-        $("#om_bruker, #endre_pass, #endre_bilde").removeClass("bruker_container_pil green_bg");
-        $("#bruker_info, #endre_pass_box, #endre_bilde_box").hide();
+        $("#om_bruker, #endre_pass, #endre_bilde, #endre_rettigheter").removeClass("bruker_container_pil green_bg");
+        $("#bruker_info, #endre_pass_box, #endre_bilde_box, #endre_rettigheter_box").hide();
     });
     $("#endre_bilde").click(function () {
         $("#endre_bilde_box").show();

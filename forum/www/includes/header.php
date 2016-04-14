@@ -59,7 +59,7 @@ require_once (__DIR__ . '/db_connect.php');
     <div class="page-header">
         <h1 class="pull-left">
             <a id="logo-text" href="index.php"><b>FORUM</b> FOR <span class="purple">HSN</span> STUDENTER</a><br>
-            <small>Noe annet her...</small>
+            <small>Lær, delta, forstå...</small>
         </h1>
         <div class="pull-right">
             <?php

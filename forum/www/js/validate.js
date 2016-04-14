@@ -280,3 +280,76 @@ function sjekkSkjema() {
         return true;
     }
 }
+
+function innleggVal() {
+    var innhold = document.getElementById("innlegg_innhold").value;
+    // Hvis innholdet er KUN whitespace elle er tom
+    if (!/\S/.test(innhold)) {
+        document.getElementById("innlegg_innhold").style.border = 'solid 3px #e35152';
+        document.getElementById("innleggErr").style.display = "block";
+        document.getElementById("innleggErr").innerHTML = "Innlegget må inneholde noe mer enn bare mellomrom!";
+
+    } else if (innhold == "") {
+        document.getElementById("innlegg_innhold").style.border = 'solid 3px #e35152';
+        document.getElementById("innleggErr").style.display = "block";
+        document.getElementById("innleggErr").innerHTML = "Du må skrive noe først!";
+    } else if (innhold.length < 6) {
+        document.getElementById("innlegg_innhold").style.border = 'solid 3px #e35152';
+        document.getElementById("innleggErr").style.display = "block";
+        document.getElementById("innleggErr").innerHTML = "Innlegget må ha mer enn 5 bokstaver!";
+    } else {
+        document.getElementById("innlegg_innhold").style.border = 'solid 3px #60bb80';
+        document.getElementById("innleggErr").style.display = "none";
+        return true;
+    }
+    return false;
+}
+
+function traadVal() {
+    var tittel = document.getElementById("ny_traad_navn").value;
+    var innhold = document.getElementById("ny_traad_text").value;
+
+    var tittelok = 0;
+    var innholdok = 0;
+
+    if (!/\S/.test(tittel)) {
+        document.getElementById("ny_traad_navn").style.border = 'solid 3px #e35152';
+        document.getElementById("TittelErr").style.display = "block";
+        document.getElementById("TittelErr").innerHTML = "Tittelen kan ikke være tom!";
+    } else if (tittel == "") {
+        document.getElementById("ny_traad_navn").style.border = 'solid 3px #e35152';
+        document.getElementById("TittelErr").style.display = "block";
+        document.getElementById("TittelErr").innerHTML = "Tittelen kan ikke være tom!";
+    } else if (tittel.length < 6) {
+        document.getElementById("ny_traad_navn").style.border = 'solid 3px #e35152';
+        document.getElementById("TittelErr").style.display = "block";
+        document.getElementById("TittelErr").innerHTML = "Tittelen må ha mer enn 5 bokstaver!";
+    } else {
+        document.getElementById("ny_traad_navn").style.border = 'solid 3px #60bb80';
+        document.getElementById("TittelErr").style.display = "none";
+    }
+
+    if (!/\S/.test(innhold)) {
+        document.getElementById("ny_traad_text").style.border = 'solid 3px #e35152';
+        document.getElementById("InnholdErr").style.display = "block";
+        document.getElementById("InnholdErr").innerHTML = "Innholdet kan ikke være tomt!";
+    } else if (innhold == "") {
+        document.getElementById("ny_traad_text").style.border = 'solid 3px #e35152';
+        document.getElementById("InnholdErr").style.display = "block";
+        document.getElementById("InnholdErr").innerHTML = "Innholdet kan ikke være tomt!";
+    } else if (innhold.length < 6) {
+        document.getElementById("ny_traad_text").style.border = 'solid 3px #e35152';
+        document.getElementById("InnholdErr").style.display = "block";
+        document.getElementById("InnholdErr").innerHTML = "Innlegget må ha mer enn 5 bokstaver!";
+    } else {
+        document.getElementById("ny_traad_text").style.border = 'solid 3px #60bb80';
+        document.getElementById("InnholdErr").style.display = "none";
+
+    }
+
+    if (/\S/.test(innhold) && innhold != "" && innhold.length > 5 && /\S/.test(tittel) && tittel != "" && tittel.length > 5) {
+        return true;
+    }
+
+    return false;
+}
