@@ -1,5 +1,5 @@
 <?php
-require_once(__DIR__ . '/../includes/db_connect.php');
+require_once ('db_connect.php');
 
 if (isset($_GET['bnavn']) && $_GET['bnavn'] != "") {
     $bnavn = $_GET['bnavn'];
@@ -17,7 +17,6 @@ if (isset($_GET['bnavn']) && $_GET['bnavn'] != "") {
         exit();
     }
     else {
-        echo 'Brukernavnet <b>' . $bnavn . '</b> er ledig!';
         exit();
     }
 }

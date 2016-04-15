@@ -30,7 +30,7 @@ if (isset($_GET['kat_id']) && !isset($_GET['ukat_id']) && !isset($_GET['traad_id
 
 if (isset($_GET['kat_id']) && isset($_GET['ukat_id']) && !isset($_GET['traad_id'])) {
     $katnavn = hvorErJeg($conn, "kat", $kat_id);
-    $ukatnavn = hvorErJeg($conn, "ukat", $ukat_id)[1];
+    $ukatnavn = hvorErJeg($conn, "ukat", $_GET['ukat_id'])[1];
 
     $sti = '<ul class="sti">
                 <li><a href="index.php">Hjem</a></li>

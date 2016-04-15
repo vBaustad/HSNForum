@@ -1,1 +1,0 @@
-// TODO: Flytt inn i functions.js DONE

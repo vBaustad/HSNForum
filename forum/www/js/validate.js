@@ -7,22 +7,14 @@ function valBNavn(verdi) {
 }
 
 function valNavn(verdi) {
-    var ptn = /^[a-zA-Z]+$/;
+    var ptn = /^[A-Za-z0-9øæåØÆÅ]+$/;
     return ptn.test(verdi);
 }
 
 function valEpost(verdi) {
-    // var ptn = /^(([0-9]{6})+@+(student)+.|([a-zA-Z]+.+[a-zA-Z]+@))+(hit|usn|hbv)+.(no)$/;
-
-    // Brukes for testing-purposes
-    var ptn = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    var ptn = /^(([0-9]{6})+@+(student)+.|([a-zA-Z]+.+[a-zA-Z]+@))+(hit|usn|hbv)+.(no)$/;
     return ptn.test(verdi)
 }
-
-function lengde(verdi, min, max) {
-    return (verdi.length >= min && verdi.length <= max);
-}
-
 
 function valPassord(verdi) {
     /*
@@ -43,8 +35,6 @@ function valPassord(verdi) {
 /*                                    */
 function sjekkBNavn(verdi) {
     var ptn = /^[A-Za-z0-9]+$/;
-
-    // Erstatt mange linjer(document.getelementbyid med var bnavn ?
 
     var bnavn = document.getElementById("brukernavn_reg").value;
 
@@ -135,10 +125,10 @@ function sjekkEpost(verdi) {
      * Eller:    x antall bokstaver a-z etterfulgt av punktum etterfulgt av x antall bokstaver igjen a-z + "@"
      * Deretter: hit eller usn eller hbn etterfulgt av punktum etterfulgt av "no"
      * */
-    // var ptn = /^(([0-9]{6})+@+(student)+.|([a-zA-Z]+.+[a-zA-Z]+@))+(hit|usn|hbv)+.(no)$/;
+    var ptn = /^(([0-9]{6})+@+(student)+.|([a-zA-Z]+.+[a-zA-Z]+@))+(hit|usn|hbv)+.(no)$/;
 
     // Brukes for testing-purposes
-    var ptn = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    //var ptn = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
     var epost = document.getElementById("epost_reg").value;
 
@@ -201,18 +191,14 @@ function sjekkEpostTo(verdi) {
 }
 
 function sjekkPass(verdi) {
-    var ptn1 = /[a-z]+/;
-    var ptn2 = /[A-Z]+/;
-    var ptn3 = /[0-9]+/;
+    var ptn = /^(?=.*[a-z])(?=.*[A-Z])(?=.+[0-9])[a-zA-Z0-9$@$!%*?&]{6,}$/;
 
     var pw = document.getElementById(verdi).value;
     if (pw == 0) {
-        document.getElementById("passErr").innerHTML = "Epost kan ikke være blank";
+        document.getElementById("passErr").innerHTML = "Passordet kan ikke være blank";
         document.getElementById(verdi).style.border = 'solid 3px #e35152';
     } else {
-        if (ptn1.test(document.getElementById(verdi).value)
-            && ptn2.test(document.getElementById(verdi).value)
-            && ptn3.test(document.getElementById(verdi).value)) {
+        if (ptn.test(document.getElementById(verdi).value)) {
             document.getElementById("passErr").innerHTML = "";
             document.getElementById(verdi).style.border = 'solid 3px #60bb80';
             return true;

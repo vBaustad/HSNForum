@@ -1,6 +1,6 @@
 <?php
-require_once (__DIR__ . '/functions.php');
-require_once (__DIR__ . '/db_connect.php');
+require_once ('functions.php');
+require_once ('db_connect.php');
 ?>
 <!DOCTYPE html>
 <html lang="no" xmlns="http://www.w3.org/1999/xhtml">
@@ -28,7 +28,7 @@ require_once (__DIR__ . '/db_connect.php');
 <script src="js/functions.js"></script>
 
 <script type="text/javascript">
-    <?php if (innlogget() == true && bruker_level() == "admin")  { ?>
+    <?php if (innlogget() == true && bruker_level(null, "session", null) == "admin")  { ?>
         $(document).ready(function() {
             $("#ny_ukat_btn").click(function () {
                 $("#ny_ukat").show();

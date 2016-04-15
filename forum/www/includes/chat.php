@@ -12,7 +12,7 @@ if (innlogget() == true) {
         $msg_melding = str_replace(":)", "<i class=\"fa fa-smile-o\"></i>", $msg_melding_get);
         // Fjerner bruk av HTML tags
         $msg_melding_stripped = strip_tags($msg_melding, '<i><b><u>');
-        $bruker_level = bruker_level();
+        $bruker_level = bruker_level(null, "session", null);
 
         $sql = "INSERT INTO chat (`bruker_navn`, `bruker_status`, `bruker_id`, `msg_melding`, `msg_dato`)
                             VALUES (?, ?, ?, ?, NOW())";

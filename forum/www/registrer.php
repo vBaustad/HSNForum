@@ -4,23 +4,19 @@ require_once 'includes/db_connect.php';
 require_once 'index.php';
 require_once 'includes/header.php';
 
-function valBNavn($verdi)
-{
+function valBNavn($verdi) {
     return preg_match("/^[A-Za-z0-9]+$/", $verdi);
 }
 
-function valNavn($verdi)
-{
-    return preg_match("/^[a-zA-Z]+$/", $verdi);
+function valNavn($verdi) {
+    return preg_match("/^[a-zA-ZøæåØÆÅ]+$/", $verdi);
 }
 
-function valEpost($verdi)
-{
-    return preg_match("/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/", $verdi);
+function valEpost($verdi) {
+    return preg_match("/^(([0-9]{6})+@+(student)+.|([a-zA-Z]+.+[a-zA-Z]+@))+(hit|usn|hbv)+.(no)$/", $verdi);
 }
 
-function valPass($verdi)
-{
+function valPass($verdi) {
     return ((strlen($verdi) >= 6 || strlen($verdi) <= 30)
         && preg_match("/[a-z]+/", $verdi)
         && preg_match("/[A-Z]+/", $verdi)
@@ -109,8 +105,14 @@ _END;
 _END;
     }
 
+    $stmt_epost = $conn->prepare("SELECT bruker_mail FROM bekreft WHERE bruker_mail = ?");
+    $stmt_epost->bind_param("s", $epost);
+    $stmt_epost->execute();
+    $stmt_epost->bind_result($stmt_epost_res);
+    $stmt_epost->store_result();
+
     /* Sjekker om alt er OK og deretter legger til ny bruker */
-    if ($err == 0) {
+    if ($err == 0 && $stmt_epost->num_rows == 0) {
         // Genererer passord
         $salt1 = 'dkn?';
         $salt2 = '$l3*!';

@@ -4,6 +4,7 @@ require_once 'includes/header.php';
 require_once 'includes/boxes.php';
 
 // TODO: Fikse ordentlig svar på opplastingav bilde. med header
+// TODO: Fikse alle gamle get_result til bind_result! Siden SKAL kjøre på db-kurs :D
 if (isset($_GET['bruker']) && $_GET['bruker'] > 0) {
     $bruker_id = $_GET['bruker'];
 
@@ -52,7 +53,7 @@ if (isset($_GET['bruker']) && $_GET['bruker'] > 0) {
         <ul id="bruker_endringer">
             <li id="om_bruker"><i class="fa fa-user"></i>Om $sql_bruker_navn</li>
 _END;
-    if (innlogget() && bruker_level() == 'admin' && $_GET['bruker'] != $_SESSION['bruker_id']) {
+    if (innlogget() && bruker_level(null, "session", null) == 'admin' && $_GET['bruker'] != $_SESSION['bruker_id']) {
         echo '<li id="endre_rettigheter"><i class="fa fa-star"></i>Endre rettigheter</li>';
     }
         if (innlogget() && $_GET['bruker'] == $_SESSION['bruker_id']) {
@@ -115,10 +116,18 @@ _END;
     }
 
     /*Om bruker*/
+        $status = bruker_level($conn, "bruker", $bruker_id);
+
+        if ($status == 'admin') {
+            $status = "Administrator";
+        } else {
+            $status = "Vanlig bruker";
+        }
         echo <<<_END
         <div id="bruker_info">
             <h2>Om $sql_bruker_navn </h2>
             <div>Navn: <p class="bruker_info_format">$sql_bruker_fornavn $sql_bruker_etternavn </p></div>
+            <div>Status: <p class="bruker_info_format">$status</p></div>
 _END;
             if (innlogget() && $_GET['bruker'] == $_SESSION['bruker_id']) {
                 echo '<div>Epost: <p class="bruker_info_format">' . $sql_bruker_mail . '</p></div>';

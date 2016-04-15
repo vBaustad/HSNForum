@@ -29,7 +29,7 @@ if ($stmt_ukat = $conn->prepare("SELECT kat_id, ukat_id, ukat_navn, ukat_beskriv
             </ol>
 _END;
 
-        if (innlogget() == true && bruker_level() == "admin") {
+        if (innlogget() == true && bruker_level(null, "session", null) == "admin") {
             echo '<a class="pull-right button-std mar-bot" id="ny_ukat_btn" href="#"><i class="fa fa-plus-square-o"></i> Ny underkategori</a>';
             echo '<a class="pull-right button-std mar-bot mar-right" id="slett_kat_btn" href="#"><i class="fa fa-minus-square-o"></i> Slett kategori</a>';
         }
@@ -107,7 +107,7 @@ _END;
                 <li><a href="#">$ukatnavn</a></li>            
             </ol>
 _END;
-        if (innlogget() && bruker_level() == "admin") {
+        if (innlogget() && bruker_level(null, "session", null) == "admin") {
             echo <<<_END
             <a class="pull-right button-std mar-bot" id="ny_traad_btn" href="traad.php?kat_id=$kat_id&ukat_id=$ukat_id&nytraad">
                 <i class="fa fa-plus-square-o"></i> Ny tråd
@@ -117,7 +117,7 @@ _END;
             </a>
 _END;
         }
-        elseif (innlogget() && bruker_level() == "regular") {
+        elseif (innlogget() && bruker_level(null, "session", null) == "regular") {
             echo <<<_END
             <a class="pull-right button-std mar-bot" id="ny_traad_btn" href="traad.php?kat_id=$kat_id&ukat_id=$ukat_id&nytraad">
                 <i class="fa fa-plus-square-o"></i> Ny tråd

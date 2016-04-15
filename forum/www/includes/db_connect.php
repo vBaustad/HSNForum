@@ -18,5 +18,5 @@ if (isset($_SESSION['bruker_id'])) {
 
 // Check connection
 if (mysqli_connect_errno()) {
-    echo "Failed to connect to MySQL: " . mysqli_connect_error();
+    echo "Kunne ikke koble opp til databasen: " . mysqli_connect_error();
 }

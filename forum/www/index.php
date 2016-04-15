@@ -4,7 +4,7 @@ require_once 'includes/header.php';
 require_once 'chatbox.php';
 require_once 'includes/boxes.php';
 
-if (bruker_level() == "admin") {
+if (bruker_level(null, "session", null) == "admin") {
     echo '<a class="pull-right button-std mar-bot" id="ny_kat_btn" href="#"><i class="fa fa-plus-square-o"></i> Ny kategori</a>';
 }
 

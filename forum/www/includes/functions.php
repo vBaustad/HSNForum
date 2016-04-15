@@ -40,9 +40,9 @@ function likInnlegg($conn, $traad_id, $innlegg_id, $bruker_id, $bruker_navn) {
         $stmt->bind_param("iiis", $traad_id, $innlegg_id, $bruker_id, $bruker_navn);
         $stmt->execute();
         $stmt->close();
-        return "Du har nå likt dette innlegget";
+        return true;
     } else {
-        return "Du kan kun like 1 gang";
+        return false;
     }
 }
 
@@ -137,45 +137,27 @@ function harLikt ($conn, $type, $innlegg_id, $traad_id, $bruker_id) {
 }
 
 function aktivitetIdag($conn, $type, $bruker_id){
-
     $dato = DATE('Y-m-d') . '%';
 
     if ($type == "traad") {
         if ($stmt = $conn->prepare("SELECT COUNT(*) AS aktivitetIdag FROM innlegg WHERE bruker_id = ? AND innlegg_dato LIKE ? ")) {
-
             $stmt->bind_param("ss", $bruker_id, $dato);
             $stmt->execute();
             $stmt->store_result();
-
-            //Bind results
             $stmt->bind_result($sql_aktivitetIdag);
-
-            //fetch value
             $stmt->fetch();
-
-            //close statement
             $stmt->close();
-
 
             return $sql_aktivitetIdag;
         }
     } elseif ($type == "innlegg") {
         if ($stmt = $conn->prepare("SELECT COUNT(*) AS aktivitetIdag FROM traad WHERE bruker_id = ? AND traad_dato LIKE ?")) {
-
             $stmt->bind_param("ss", $bruker_id, $dato);
             $stmt->execute();
             $stmt->store_result();
-
-            //Bind results
             $stmt->bind_result($sql_aktivitetIdag);
-
-            //fetch value
             $stmt->fetch();
-
-            //close statement
             $stmt->close();
-
-
             return $sql_aktivitetIdag;
         }
     }
@@ -185,33 +167,20 @@ function aktiveBrukere($conn, $sistAktiv){
     $dagensDato = DATE("Y-m-d");
     $formatDato = DATE("Y-m-d", strtotime($sistAktiv));
 
-
     if ($formatDato == $dagensDato) {
-
         $sistAktiv = DATE("Y-m-d H" . '%');
 
-
         if($stmt = $conn->prepare("SELECT COUNT(*) AS aktiveBrukere FROM bruker WHERE bruker_sist_aktiv LIKE ?")){
-            //Bind parameters
             $stmt->bind_param("s", $sistAktiv);
-
             $stmt->execute();
             $stmt->store_result();
-
-            //Bind results
             $stmt->bind_result($sql_aktiveBrukere);
-
-            //fetch value
             $stmt->fetch();
-
-            //close statement
             $stmt->close();
 
             return $sql_aktiveBrukere;
         }
-
     }
-
 }
 
 function setAktiv($conn, $bruker_id) {
@@ -404,11 +373,28 @@ function innlogget() {
     else return false;
 }
 
-function bruker_level() {
-    if (isset($_SESSION['innlogget']) && $_SESSION['bruker_level'] == '2') {
-        return "admin";
+function bruker_level($conn, $type, $bruker_id) {
+    if ($type == "session") {
+        if (isset($_SESSION['innlogget']) && $_SESSION['bruker_level'] == '2') {
+            return "admin";
+        }
     }
-    else return "regular";
+
+    if ($type == "bruker") {
+        if ($stmt = $conn->prepare("SELECT bruker_level FROM bruker WHERE bruker_id = ?")) {
+            $stmt->bind_param("i", $bruker_id);
+            $stmt->execute();
+            $stmt->bind_result($bruker_status);
+            $stmt->store_result();
+            $stmt->fetch();
+
+            if ($bruker_status == '2') {
+                return "admin";
+            }
+            $stmt->close();
+        }
+    } 
+    return "regular";
 }
 
 /* Sender epost til ny bruker */
@@ -420,7 +406,7 @@ function send_email($info) {
     $curpath = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
     $bekreftbruker = str_replace("registrer", "bekreftbruker", $curpath);
 
-    // Creating the message
+    // Setter sammen meldingen
     $melding = '<!DOCTYPE html PUBLIC>';
     $melding .= '<html xmlns="http://www.w3.org/1999/xhtml">';
     $melding .= '<head>';

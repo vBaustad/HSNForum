@@ -11,16 +11,13 @@ if (isset($_GET['ukat_id']) && isset($_GET['traad_id']) && innlogget()) {
     $kat_id = hvorErJeg($conn, "ukat", $ukat_id)[0];
     $katnavn = hvorErJeg($conn, "kat", $kat_id);
     $ukatnavn = hvorErJeg($conn, "ukat", $ukat_id)[1];
-    echo <<<_END
-        <ol class="sti pull-left mar-bot">
-            <li><a href="index.php">Hjem</a></li>
-            <li><a href="kategori.php?kat_id=$kat_id">$katnavn</a></li>
-            <li><a href="kategori.php?kat_id=$kat_id&ukat_id=$ukat_id">$ukatnavn</a></li>            
-        </ol>
-_END;
 
     // Finner sideNr
-    $curr_side = isset($_GET['side']) ? intval($_GET['side']) : 1;
+    if (isset($_GET['side'])) {
+        $curr_side = $_GET['side'];
+    } else {
+        $curr_side = 1;
+    }
 
     $traad_sql = "SELECT traad_id, ukat_id, traad_tittel, traad_innhold, traad_dato, bruker_navn, bruker_id FROM traad WHERE ukat_id = ? AND traad_id = ?";
     $stmt_traad = $conn->prepare($traad_sql);
@@ -41,26 +38,33 @@ _END;
     $stmt_innlegg->fetch();
     $stmt_innlegg->close();
 
-    // Fnner ant innlegg
+    // Finner ant innlegg
     $antInnlegg = tellInnlegg($conn, "traad", $traad_id);
 
-    // TODO: Gå gjennom kode og forstå!!!
     $innlegg_per_side = 10;
 
     // Finner antall sider vi må vise
     $side_teller = ceil($antInnlegg / $innlegg_per_side);
 
-    // ???
+    // Finner hvor vi skal starte å vise informasjonen
     $forste_innlegg = ($curr_side - 1) * $innlegg_per_side;
-
-    if (innlogget() && bruker_level() == "admin" || innlogget() && $traad_bruker_id == $_SESSION['bruker_id'] ) {
+    echo '<div class="sti_container pull-left">';
+    if (innlogget() && bruker_level(null, "session", null) == "admin" || innlogget() && $traad_bruker_id == $_SESSION['bruker_id'] ) {
         echo <<<_END
-            <a class="pull-right button-std mar-bot" name="slett_traad_btn" id="slett_traad_btn" href="#">
+            <a class="pull-right button-std" name="slett_traad_btn" id="slett_traad_btn" href="#">
                 <i class="fa fa-minus-square-o"></i> Slett tråd
             </a>
-            <div class="clearfix"></div>
 _END;
     }
+    echo <<<_END
+            <ol class="sti pull-left mar-bot">
+                <li><a href="index.php">Hjem</a></li>
+                <li><a href="kategori.php?kat_id=$kat_id">$katnavn</a></li>
+                <li><a href="kategori.php?kat_id=$kat_id&ukat_id=$ukat_id">$ukatnavn</a></li>            
+            </ol>
+        </div>
+        <div class="clearfix"></div>
+_END;
 
     // Viser ut sideLinks
     echo '<div class="pull-right">';
@@ -79,18 +83,24 @@ _END;
     $bilde = hentBilde($conn, $traad_bruker_id);
     $datosjekk = datoSjekk($traad_traad_dato);
     $traadlikes = getLikes($conn, null, $traad_id);
-    $traad_innhold = strip_tags($traad_traad_innhold, '<i><b><u>');
 
-    if ($stmt = $conn->prepare("SELECT bruker_dato FROM bruker WHERE bruker_id = ?")) {
-        $stmt->bind_param("i", $traad_bruker_id);
-        $stmt->execute();
-        $stmt->store_result();
-        $stmt->bind_result($bruker_dato);
-        $stmt->fetch();
-        $stmt->close();
-    }
+    $stmt = $conn->prepare("SELECT bruker_dato FROM bruker WHERE bruker_id = ?");
+    $stmt->bind_param("i", $traad_bruker_id);
+    $stmt->execute();
+    $stmt->store_result();
+    $stmt->bind_result($bruker_dato);
+    $stmt->fetch();
 
     $bruker_siden_traad = date("d-m-Y", strtotime($bruker_dato));
+    $stmt->close();
+
+    //Sjekker status til trådstarter
+    if (bruker_level($conn, "bruker", $traad_bruker_id) == 'admin') {
+        $navnklasse = "admin";
+    } else {
+        $navnklasse = "regular";
+    }
+
     echo <<<_END
         </div>
         <div class="traadtop"><h3>$traad_traad_tittel<br><small>Skrevet av 
@@ -99,20 +109,19 @@ _END;
         </div>
         <div id="traadtable">
             <div class="table-row-group">
-                <div class="table-row">
-                    <div class="table-cell center traadleft skjul-liten">
-                        <a href="bruker.php?bruker=$traad_bruker_id">
+                <div class="table-row table_header">
+                    <div class="table-cell traad_op_left center traadleft skjul-liten">
+                        <a class="admin" href="bruker.php?bruker=$traad_bruker_id">
                             <img alt="profilbilde" class="avatar_forum" src="img/profilbilder/$bilde">
-                            <div class="clearfix"></div>
-                            $traad_bruker_navn
+                            <div class="clearfix"></div><span class="$navnklasse">$traad_bruker_navn</span>
                         </a>
                         <div class="clearfix"></div>
-                        <small>Medlem siden: <br>$bruker_siden_traad!</small>
+                        <small>Medlem siden: <br>$bruker_siden_traad</small>
                     </div>
-                    <div class="table-cell traadright">
+                    <div class="table-cell traad_op_right traadright">
                         <i class="fa fa-clock-o"></i> $datosjekk<p class="traad_mobile"> av <a href="#">$traad_bruker_navn</a></p>
                         <div class="traad_innhold">
-                            $traad_innhold
+                            $traad_traad_innhold
                         </div>
                         <ol class="likepost pull-right clearfix">
 _END;
@@ -149,6 +158,13 @@ _END;
         $innlegg_innhold = strip_tags($pagedata_innlegg_innhold, '<i><b><u>');
         $innlegglikes = getLikes($conn, $pagedata_innlegg_id, $traad_id);
 
+        //Sjekker status til innleggene
+        if (bruker_level($conn, "bruker", $pagedata_bruker_id) == 'admin') {
+            $navnklasse = "admin";
+        } else {
+            $navnklasse = "regular";
+        }
+
         if ($stmt = $conn->prepare("SELECT bruker_dato FROM bruker WHERE bruker_id = ?")) {
             $stmt->bind_param("i", $pagedata_bruker_id);
             $stmt->execute();
@@ -167,7 +183,7 @@ _END;
                     <a href="bruker.php?bruker=$pagedata_bruker_id">
                         <img alt="avatar" class="avatar_forum" src="img/profilbilder/$bilde">
                         <div class="clearfix"></div>
-                        $pagedata_bruker_navn
+                        <span class="$navnklasse">$pagedata_bruker_navn</span>
                     </a>
                     <div class="clearfix"></div>
                     <small>Medlem siden: <br>$bruker_siden_innlegg</small>
@@ -184,7 +200,7 @@ _END;
                     </div>
                     <div class="likeogslett pull-right">
 _END;
-                    if (innlogget() == true && bruker_level() == "admin" || innlogget() && $pagedata_bruker_id == $_SESSION['bruker_id']) {
+                    if (innlogget() == true && bruker_level(null, "session", null) == "admin" || innlogget() && $pagedata_bruker_id == $_SESSION['bruker_id']) {
                         echo <<<_END
                             <input type="button" class="pull-right button-std mar-bot mar-right" id="$pagedata_innlegg_id"
                                value="slett innlegg" onclick="slettPost(id)">
@@ -219,7 +235,7 @@ _END;
         <form name="form_svar" action="includes/endringer.php?ukat_id=$ukat_id&traad_id=$traad_id" method="post" onsubmit="return innleggVal()">
             
             <textarea name="innlegg_innhold" id="innlegg_innhold" placeholder="Har du noe spennende å bidra med..?"></textarea>
-            <input type="submit" name="svar_btn" id="svar_btn" class="std_btn" value="Svar" onclick="post()">
+            <input type="submit" name="svar_btn" id="svar_btn" class="std_btn" value="Svar" >
         </form>
 _END;
 } else if (innlogget() == false) {

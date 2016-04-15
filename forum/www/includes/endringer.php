@@ -112,7 +112,7 @@ if (isset($_GET['innlegg_id']) && isset($_GET['slett_innlegg']) && innlogget()) 
         $stmt->fetch();
         $stmt->close();
 
-        if ($innlegg_av_bruker_id == $_SESSION['bruker_id'] || bruker_level() == 'admin') {
+        if ($innlegg_av_bruker_id == $_SESSION['bruker_id'] || bruker_level(null, "session", null) == 'admin') {
             if ($stmt =  $conn-> prepare("DELETE FROM innlegg WHERE innlegg_id = ?")) {
                 $stmt->bind_param("i", $innlegg_id);
                 $stmt->execute();
@@ -246,7 +246,7 @@ if (isset($_POST['nytt_bilde_submitt']) && isset($_FILES['upload_file']) && innl
 }
 
 /* GI/FJERN RETTIGHETER */
-if (isset($_POST['endre_rettigheter_submit']) && innlogget() && bruker_level() == 'admin') {
+if (isset($_POST['endre_rettigheter_submit']) && innlogget() && bruker_level(null, "session", null) == 'admin') {
     $bruker_id = $_GET['bruker_id'];
     $bruker_level = $_GET['bruker_level'];
 
@@ -306,7 +306,8 @@ if (isset($_POST['svar_btn']) && innlogget()) {
 }
 
 /* NY LIKE, TRÅD */
-if (isset($_GET['liktraad']) && !isset($_GET['likinnlegg']) && isset($_GET['traad_id']) && isset($_GET['bruker_id']) && isset($_GET['bruker_navn']) && innlogget()) {
+if (isset($_GET['liktraad']) && !isset($_GET['likinnlegg']) && isset($_GET['traad_id']) 
+    && isset($_GET['bruker_id']) && isset($_GET['bruker_navn']) && innlogget()) {
     $traad_id = $_GET['traad_id'];
     $ukat_id = hvorErJeg($conn, "traad", $traad_id)[0];
     likTraad($conn, $_GET['traad_id'], $_GET['bruker_id'], $_GET['bruker_navn']);
@@ -314,7 +315,8 @@ if (isset($_GET['liktraad']) && !isset($_GET['likinnlegg']) && isset($_GET['traa
 }
 
 /* NY LIKE, INNLEGG */
-if ( isset($_GET['likinnlegg']) && !isset($_GET['liktraad']) && isset($_GET['traad_id']) && isset($_GET['innlegg_id']) && isset($_GET['bruker_id']) && isset($_GET['bruker_navn']) && innlogget()) {
+if (isset($_GET['likinnlegg']) && !isset($_GET['liktraad']) && isset($_GET['traad_id']) 
+    && isset($_GET['innlegg_id']) && isset($_GET['bruker_id']) && isset($_GET['bruker_navn']) && innlogget()) {
     $traad_id = $_GET['traad_id'];
     $ukat_id = hvorErJeg($conn, "traad", $traad_id)[0];
     likInnlegg($conn, $_GET['traad_id'], $_GET['innlegg_id'], $_GET['bruker_id'], $_GET['bruker_navn']);

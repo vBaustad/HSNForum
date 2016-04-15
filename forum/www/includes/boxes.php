@@ -6,7 +6,7 @@ require_once 'db_connect.php';
 <!-- Feilkoder -->
 <div id="registrer-feil">
     <div class="popup-header center">
-        <h3 class="popup-header-text icon-error white"><i class="fa fa-exclamation-triangle"></i> Uff da...</h3>
+        <h2 class="popup-header-text icon-error white"><i class="fa fa-exclamation-triangle"></i> Uff da...</h2>
         <hr class="hr-popup">
     </div>
 
@@ -14,7 +14,7 @@ require_once 'db_connect.php';
         <p class="white">Det oppstod en feil under registreringen.<br>Venligst prøv igjen...</p>
         <p class="white">Skulle problemet fortsette, ta <a class="link-light" href="#">kontakt</a> med administrator
             og oppgi denne feilkoden:</p>
-        <h3 style="display: none" id="feilkode" class="white"></h3>
+        <h2 style="display: none" id="feilkode" class="white"></h2>
         <button name="button-avbryt" type="submit" class="button-lukk"> Lukk</button>
     </div>
 </div>
@@ -47,7 +47,7 @@ require_once 'db_connect.php';
         <form id="registrerForm" name="registrer" method="post" action="registrer.php" onsubmit="return sjekkSkjema()">
             <div class="popup-divider">
                 <input type="text" name="brukernavn_reg" id="brukernavn_reg" class="popup-input valid"
-                       placeholder="Brukernavn" onkeyup="sjekkBNavn()" onblur="sjekkBNavn(id)">
+                       placeholder="Brukernavn" onblur="sjekkBNavn(id)">
                 <span id="bnavnErr"></span> <span id="sjekkBnavn"></span>
             </div>
 
@@ -65,7 +65,7 @@ require_once 'db_connect.php';
 
             <div class="popup-divider clearfix">
                 <input type="text" name="epost_reg" id="epost_reg" class="popup-input" placeholder="Epost-adresse"
-                       onkeyup="sjekkEpost()" onblur="sjekkEpost(id)">
+                       onkeyup="sjekkEpost(id)" onblur="sjekkEpost(id)">
                 <span id="epostErr"></span> <span id="sjekkEpost"></span>
             </div>
 
@@ -118,7 +118,7 @@ require_once 'db_connect.php';
 <!-- Bruker laget -->
 <div class="registrer-box-success">
     <div class="popup-header center">
-        <h3 class="popup-header-text icon-success white"> Registrering fullført!</h3>
+        <h2 class="popup-header-text icon-success white"><i class="fa fa-check-square-o"></i> Registrering fullført!</h2>
         <hr class="hr-popup">
     </div>
 

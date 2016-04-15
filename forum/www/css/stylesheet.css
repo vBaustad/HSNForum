@@ -454,8 +454,17 @@ body {
     -webkit-border-radius: 3px;
 }
 
+.sti_container {
+    width: 100%;
+    height: 60px;
+}
+
+#slett_traad_btn {
+    margin-top: 16px;
+}
+
 .sti {
-    padding: 8px 15px;
+    padding: 7px 15px;
     list-style: none;
     background-color: rgba(173, 184, 217, 1);
     border-radius: 4px;
@@ -1058,9 +1067,13 @@ thead > tr:first-child > th {
 }
 
 .traadtop {
-    background: #d3d4d8;
+    background: #9ba5ff;
     padding: 1px 15px 1px;
     border-radius: 3px 3px 0 0;
+}
+
+.traadtop h3 small {
+    color: #282828;
 }
 
 #traadtable {
@@ -1091,16 +1104,40 @@ thead > tr:first-child > th {
     -webkit-border-radius: 55px;
 }
 
+.traadleft > a {
+    text-decoration: none;
+    font-weight: 400;
+    color: #000000;
+    text-shadow: #e4e4e4 0 0 2px;
+}
+.traadleft > a:hover {
+    text-decoration: underline;
+    font-weight: 400;
+    color: #000000;
+    text-shadow: #e4e4e4 0 0 2px;
+}
+
 .traadleft {
     width: 150px;
-    background: #949494;
+    background: rgba(107, 107, 255, 0.4);
     padding: 15px 5px 15px 5px;
 }
 
 .traadright {
-    background: #f2eaec;
+    background: #f0f0f0;
     padding: 15px 0 15px 15px;
     vertical-align: top;
+}
+
+.traad_op_left {
+    background: rgba(107, 107, 255, 0.4);
+}
+.traad_op_right {
+    background: rgb(212, 211, 255);
+}
+
+.traadtop {
+    border-bottom: 2px solid #6662d6;
 }
 
 .traadspacer {

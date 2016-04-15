@@ -18,7 +18,7 @@ if (isset($_POST['sok_btn'])) {
             $stmt_bruker->bind_param("s", $soktekst);
             $stmt_bruker->execute();
             $stmt_bruker->bind_result($bruker_navn, $bruker_id);
-        $stmt_bruker->store_result      ();
+            $stmt_bruker->store_result();
 
             echo <<<_END
             <table class="table table_sok table-striped">
@@ -48,7 +48,7 @@ _END;
                 echo '</h4></td>';
                 echo '</tr>';
             }
-        echo '</tbody></table><br       >';
+        echo '</tbody></table><br>';
 
             // Finner traader
             $sql = "SELECT ukat_id, traad_id, traad_tittel FROM traad WHERE traad_tittel LIKE ?";
@@ -56,7 +56,7 @@ _END;
             $stmt_traad->bind_param("s", $soktekst);
             $stmt_traad->execute();
             $stmt_traad->bind_result($ukat_id, $traad_id, $traad_tittel);
-        $stmt_traad->store_result       ();
+        $stmt_traad->store_result();
 
             if (innlogget()) {
             echo <<<_END
@@ -92,7 +92,7 @@ _END;
                     </tr>
 _END;
             }
-        echo '</tbody></table       >';
+        echo '</tbody></table>';
 
             // Finner underkategorier
             $sql = "SELECT ukat_id, kat_id, ukat_navn FROM underkategori WHERE ukat_navn LIKE ?";
@@ -100,7 +100,7 @@ _END;
             $stmt_ukat->bind_param("s", $soktekst);
             $stmt_ukat->execute();
             $stmt_ukat->bind_result($ukat_id, $kat_id, $ukat_navn);
-        $stmt_ukat->store_result        ();
+            $stmt_ukat->store_result();
 
             echo '<table class="table table_sok table-striped">';
             echo '<thead>';
@@ -144,7 +144,7 @@ _END;
             $stmt_bruker->bind_param("s", $soktekst);
             $stmt_bruker->execute();
             $stmt_bruker->bind_result($bruker_navn, $bruker_id);
-        $stmt_bruker->store_result      ();
+            $stmt_bruker->store_result();
 
             echo <<<_END
             <table class="table table_sok table-striped">
@@ -187,7 +187,7 @@ _END;
             $stmt_traad->bind_param("s", $soktekst);
             $stmt_traad->execute();
             $stmt_traad->bind_result($ukat_id, $traad_id, $traad_tittel);
-        $stmt_traad->store_result       ();
+            $stmt_traad->store_result();
 
             if (innlogget()) {
             echo <<<_END
@@ -234,7 +234,7 @@ _END;
             $stmt_ukat->bind_param("s", $soktekst);
             $stmt_ukat->execute();
             $stmt_ukat->bind_result($ukat_id, $kat_id, $ukat_navn);
-        $stmt_ukat->store_result        ();
+            $stmt_ukat->store_result();
 
             echo '<table class="table table_sok table-striped">';
             echo '<thead>';
